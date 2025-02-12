@@ -147,13 +147,18 @@ body::after {
         height: 40vw;
     }
     #people-container {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
+        flex-direction: row; /* CHANGED: Keep flex-direction: row; on small screens */
+        justify-content: space-between; /* ADDED: Ensure space-between is still applied */
+        align-items: flex-end; /* Keep align-items: flex-end to align to bottom */
+        width: 100%; /* Take full width of parent */
+        max-width: 80vw; /* ADDED: Limit max width to 80vw like other containers */
+        margin-left: auto;  /* ADDED: Center the container */
+        margin-right: auto; /* ADDED: Center the container */
     }
     #people-container img {
         height: 25vw;
-        max-width: 80vw;
-        margin-bottom: 0.625rem;
+        width: auto; /* CHANGED: Allow width to adjust based on content */
+        max-width: 40%; /* ADDED: Limit max width to prevent overlap on very narrow screens */
+        margin-bottom: 0; /* CHANGED: Remove bottom margin as they are side-by-side now */
     }
 }
