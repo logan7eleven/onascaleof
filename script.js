@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let albums = [];
     let people = {};
-    // let currentAlbumIndex = 0; // No longer needed, we'll use albumId
+    let currentAlbumIndex = 0;
     let currentVote = 0;
     let shownAlbumIds = []; // Array to track shown album IDs
 
@@ -44,9 +44,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    function updateDisplay(album) { // Now takes the album object directly
+    function updateDisplay() {
+        const album = albums[currentAlbumIndex];
         albumImage.src = album.url;
-        albumImage.dataset.albumId = album.id; // Store album ID in the image's dataset
+        albumImage.dataset.albumId = album.id; // Store album ID in dataset
         albumTooltip.textContent = `${album.name} by ${album.artist}`;
         scaleImage.src = `images/scale.png`;
         personLeft.src = `images/person1.png`;
@@ -59,28 +60,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function getRandomAlbum() {
-        const availableAlbums = albums.filter(album => !shownAlbumIds.includes(album.id));
+        // Original getRandomAlbum logic (as requested)
+        let randomIndex;
+        do {
+            randomIndex = Math.floor(Math.random() * albums.length);
+        } while (shownAlbumIds.includes(albums[randomIndex].id)); // Keep picking until a new ID is found
 
-        if (availableAlbums.length === 0) {
-            alert("You've seen all the albums!");
-            shownAlbumIds = []; // Reset for a new round
-            // Refilter after reset, same logic as before:
-             const newlyAvailableAlbums = albums.filter(album => !shownAlbumIds.includes(album.id));
-            if (newlyAvailableAlbums.length > 0){
-                const randomAlbum = newlyAvailableAlbums[Math.floor(Math.random() * newlyAvailableAlbums.length)];
-                updateDisplay(randomAlbum);
-                shownAlbumIds.push(randomAlbum.id);
-                return;
-            } else {
-                return;
-            }
-        }
+        currentAlbumIndex = randomIndex; //Use random index to set current index
+        currentVote = 0;
+        updateDisplay();
 
-        const randomAlbum = availableAlbums[Math.floor(Math.random() * availableAlbums.length)];
-        updateDisplay(randomAlbum);
-        shownAlbumIds.push(randomAlbum.id); // Store the ID
     }
-
 
     function moveScale(direction) {
       if (direction === "right") {
@@ -101,11 +91,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function submitVote() {
-        // Get album ID from the image's dataset
-        const albumId = parseInt(albumImage.dataset.albumId, 10); // Parse as integer
-
-        // No need to check if it's already shown; we're already tracking that.
-
+        const albumId = parseInt(albumImage.dataset.albumId, 10);
+        shownAlbumIds.push(albumId); // Add to shown IDs *here*
+        if (shownAlbumIds.length === 500) {
+            shownAlbumIds = []; // Reset if all albums seen
+        }
       let pickName = "";
       let outlineColor = '';
       if (currentVote > 0) {
@@ -147,15 +137,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
           buttonNext.addEventListener('click', () => {
+              const albumId = parseInt(albumImage.dataset.albumId, 10);
+              shownAlbumIds.push(albumId); // Track on "Next"
+              if (shownAlbumIds.length === 500) {
+                  shownAlbumIds = [];
+              }
               getRandomAlbum();
           });
           buttonEnter.addEventListener('click', submitVote);
 
            albumImage.addEventListener('click', () => {
-            const albumId = parseInt(albumImage.dataset.albumId, 10);
-            const album = albums.find(a => a.id === albumId); // Find album by ID
-            albumTooltip.textContent = `${album.name} by ${album.artist}`;
-            albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
+                const albumId = parseInt(albumImage.dataset.albumId, 10);
+                const album = albums.find(a => a.id === albumId);
+                albumTooltip.textContent = `${album.name} by ${album.artist}`;
+                albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
           });
             getRandomAlbum(); // Initial album display
         })
