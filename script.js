@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let people = {};
     let currentAlbumIndex = 0;
     let currentVote = 0;
+    let voteSubmitted = false; // Add a flag to track vote submission
 
     // Function to fetch and parse CSV data
     function fetchCSV(url) {
@@ -49,6 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
         personRightName.textContent = people.right;
         albumTooltip.style.display = 'none';
         albumImage.style.outline = '';
+
+        // Reset vote status
+        voteSubmitted = false;
+        buttonEnter.disabled = false;
     }
 
     function getRandomAlbum() {
@@ -58,39 +63,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function moveScale(direction) {
-      if (direction === "right") {
-        currentVote = Math.min(100, currentVote + 5);
-      } else if (direction === "left") {
-        currentVote = Math.max(-100, currentVote - 5);
-      }
+      if (!voteSubmitted) { // Only allow move if vote not submitted
+        if (direction === "right") {
+          currentVote = Math.min(100, currentVote + 5);
+        } else if (direction === "left") {
+          currentVote = Math.max(-100, currentVote - 5);
+        }
 
-      let scaleName = "";
-      if (currentVote > 0) {
-        scaleName = `scale_${currentVote}R.png`;
-      } else if (currentVote < 0) {
-        scaleName = `scale_${Math.abs(currentVote)}L.png`;
-      } else {
-        scaleName = `scale.png`;
+        let scaleName = "";
+        if (currentVote > 0) {
+          scaleName = `scale_${currentVote}R.png`;
+        } else if (currentVote < 0) {
+          scaleName = `scale_${Math.abs(currentVote)}L.png`;
+        } else {
+          scaleName = `scale.png`;
+        }
+        scaleImage.src = `images/${scaleName}`;
       }
-      scaleImage.src = `images/${scaleName}`;
     }
 
     function submitVote() {
-      let pickName = "";
-      let outlineColor = '';
-      if (currentVote > 0) {
-        pickName = `pick_${currentVote}R.png`;
-        outlineColor = '#F7B73D';
-      } else if (currentVote < 0) {
-        pickName = `pick_${Math.abs(currentVote)}L.png`;
-        outlineColor = '#BAA0FA';
-      } else {
-        pickName = `scale.png`;
-        outlineColor = '';
+      if (!voteSubmitted) { // Only allow submit if vote not submitted
+        let pickName = "";
+        let outlineColor = '';
+        if (currentVote > 0) {
+          pickName = `pick_${currentVote}R.png`;
+          outlineColor = '#F7B73D';
+        } else if (currentVote < 0) {
+          pickName = `pick_${Math.abs(currentVote)}L.png`;
+          outlineColor = '#BAA0FA';
+        } else {
+          pickName = `scale.png`;
+          outlineColor = '';
+        }
+        scaleImage.src = `images/${pickName}`;
+        albumImage.style.outline = `0.3rem solid ${outlineColor}`;
+        buttonEnter.disabled = true;
+        voteSubmitted = true; // Set vote as submitted
       }
-      scaleImage.src = `images/${pickName}`;
-      albumImage.style.outline = `0.3rem solid ${outlineColor}`;
-      buttonEnter.disabled = true;
     }
 
     personLeft.src = `images/person1.png`;
