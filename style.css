@@ -125,7 +125,7 @@ body::after {
 
 #person-left {
   width: 12vw; /* Reduced Width */
-  height: 20vw; /* Increased height (portrait style) */
+  height: 30vw; /* Increased height (portrait style) */
   object-fit: cover;
   object-position: 50% 33.333%;
   border-radius: 0.5rem;
@@ -136,7 +136,7 @@ body::after {
 
 #person-right {
   width: 12vw; /* Reduced Width */
-  height: 20vw; /* Increased height (portrait style) */
+  height: 30vw; /* Increased height (portrait style) */
   object-fit: cover;
   object-position: 50% 33.333%;
   border-radius: 0.5rem;
