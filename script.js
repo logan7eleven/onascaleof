@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
         buttonEnter.disabled = true;
     }
 
-    Promise.all([fetchCSV('albums.csv.txt'), fetchNames('people.txt')])
+    Promise.all([fetchCSV('albums.csv'), fetchNames('people.txt')])
     .then(([albumData, names]) => {
         albums = albumData;
         people = names;
