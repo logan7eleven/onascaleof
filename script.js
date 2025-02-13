@@ -1,3 +1,4 @@
+// script.js
 document.addEventListener('DOMContentLoaded', function() {
     const albumImage = document.getElementById('album-image');
     const scaleImage = document.getElementById('scale-image');
@@ -53,39 +54,35 @@ document.addEventListener('DOMContentLoaded', function() {
         buttonEnter.disabled = false;
     }
 
-  function getRandomAlbum() {
-    // Filter out albums that have already been shown
-    const availableAlbums = albums.filter(album => !shownAlbums.includes(album.url));
+    function getRandomAlbum() {
+        // Filter out albums that have already been shown
+        const availableAlbums = albums.filter(album => !shownAlbums.includes(album.url));
 
-    if (availableAlbums.length === 0) {
-        // All albums have been shown.  Reset or show a message.
-        alert("You've seen all the albums!"); // Or handle differently
-        shownAlbums = []; // Reset for a new "round"
+        if (availableAlbums.length === 0) {
+            // All albums *in the current selection* have been shown.
 
-        // **FIXED RECURSIVE CALL:** We need to re-filter after resetting shownAlbums
-        const newlyAvailableAlbums = albums.filter(album => !shownAlbums.includes(album.url));
-        if (newlyAvailableAlbums.length > 0) { // Check again after reset
+            // Check if it's the *very first* load (albums is loaded, but shownAlbums is empty)
+            if (shownAlbums.length === 0 && albums.length > 0) {
+                // First load: proceed normally
+            } else {
+                // Not the first load, and all albums *have* been shown.
+                alert("You've seen all the albums!");
+                shownAlbums = []; // Reset for a new "round"
+                //  Crucially, *don't* return here.  Let the rest of the function run.
+            }
+        }
+
+        //  This part runs *both* on the initial load AND after a reset.
+        const newlyAvailableAlbums = albums.filter(album => !shownAlbums.includes(album.url));  // Refilter!
+
+        if (newlyAvailableAlbums.length > 0) {
             const randomIndex = Math.floor(Math.random() * newlyAvailableAlbums.length);
             currentAlbumIndex = albums.indexOf(newlyAvailableAlbums[randomIndex]);
             currentVote = 0;
             updateDisplay();
-            shownAlbums.push(albums[currentAlbumIndex].url);
-            return; //  Important: Return after processing the new album
-        } else {
-             return; // No albums available even after reset (shouldn't happen with valid data)
+            shownAlbums.push(albums[currentAlbumIndex].url); // Add to shownAlbums
         }
     }
-
-    // Get a random index from the *available* albums
-    const randomIndex = Math.floor(Math.random() * availableAlbums.length);
-    currentAlbumIndex = albums.indexOf(availableAlbums[randomIndex]); // Get index in *original* albums array
-
-    currentVote = 0;
-    updateDisplay();
-
-    // Add the newly shown album to the shownAlbums array
-    shownAlbums.push(albums[currentAlbumIndex].url);
-}
 
 
     function moveScale(direction) {
