@@ -5,10 +5,12 @@ body {
   align-items: center;
   margin: 1.25rem;
   text-align: center;
-  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh:
   box-sizing: border-box;
-    background-color: #826E67;
-    position: relative; /* Necessary for absolute positioning of dots */
+  background-color: #826E67;
+  position: relative; /* Necessary for absolute positioning of dots */
+  overflow: hidden; /* Prevent scrolling */
 }
 
 body::before {
@@ -18,7 +20,7 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: -1;    
 }
 
 body::after {
@@ -114,8 +116,8 @@ body::after {
 }
 
 #person-left {
-    width: 12vw;
-    height: 24vw;
+    width: 12vh;
+    height: 20vh;
     object-fit: cover;
     object-position: 50% 33.333%;
     border-radius: 0.5rem;
@@ -125,8 +127,8 @@ body::after {
 }
 
 #person-right {
-    width: 12vw;
-    height: 24vw;
+    width: 12vh;
+    height: 20vh;
     object-fit: cover;
     object-position: 50% 33.333%;
     border-radius: 0.5rem;
@@ -138,7 +140,7 @@ body::after {
 #person-left-name,
 #person-right-name {
     font-size: 1.125rem;
-    width: 12vw;
+    width: 12vh;
     word-wrap: break-word;
     text-align: center;
     margin-top: 0.5rem;
@@ -192,7 +194,7 @@ body::after {
     #person-left-name,
     #person-right-name {
         font-size: 1.0rem;
-        width: 15vw; /* Adjust width */
+        width: 12vh; /* Adjust width */
     }
 
     #album-image {
@@ -204,6 +206,6 @@ body::after {
 /* Desktop Styles */
 @media (min-width: 601px) {
     #album-image {
-        height: 25vw; /* Adjust height for desktop */
+        height: 25vh; /* Adjust height for desktop */
     }
 }
