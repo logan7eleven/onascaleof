@@ -15,8 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let people = {};
     let currentAlbumIndex = 0;
     let currentVote = 0;
-    let localAlbumCount = 10;  // Number of local albums
-    let nextAlbumPromise = null; // To store the promise of the next album fetch
     let intervalId = null; // To store the interval ID
     let holdStartTime = null;
     let initialDelay = 500; // 0.5 seconds initial delay
@@ -24,72 +22,46 @@ document.addEventListener('DOMContentLoaded', function() {
     let slowInterval = 200; // Slower interval before initial delay
     let currentInterval = slowInterval;
     let direction = null;
-    let initialAlbumIndex = null;
 
-    // Updated fetchData function
-    function fetchData(sheetName) {
-      const sheetId = 'your-sheet-id'; // Replace with your actual Google Sheet ID
-      const apiKey = 'your-api-key'; // Replace with your actual API key
-      const apiUrl = `https://script.google.com/macros/s/AKfycbz2ywAJx-cOMkELZN6mh9OHdwajGsmzMn5kDVVELKAGsUs-1EhjwTQe6GqRmJ5XuR-rFg/exec`;
+    // Function to fetch and parse CSV data
+    function fetchCSV(url) {
+        return fetch(url)
+            .then(response => response.text())
+            .then(csv => {
+                return csv.split('\n').map(line => {
+                    const [name, artist, url] = line.split(',');
+                    return { name: name.trim(), artist: artist.trim(), url: url.trim() };
+                });
+            });
+    }
 
-      return fetch(apiUrl)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (!data.hasOwnProperty(sheetName)) {
-            console.error('Unexpected API response format:', data);
-            return null;
-          }
-
-          // API response always includes data objects, no separate headers
-          const sheetData = data[sheetName];
-
-          return sheetData.map(row => ({
-            name: row.Name,
-            artist: row.Artist,
-            url: row.url
-          }));
-        })
-        .catch(error => {
-          console.error("Error fetching sheet data:", error);
-          return null;
-        });
+    // Function to fetch and parse names from a text file
+    function fetchNames(url) {
+        return fetch(url)
+            .then(response => response.text())
+            .then(text => {
+                const lines = text.split('\n');
+                return { left: lines[0].trim(), right: lines[1].trim() };
+            });
     }
 
     function updateDisplay() {
-        let albumSource = "";
-        if (albums.length > 0) {
-            albumSource = albums[currentAlbumIndex].url;
-            albumTooltip.textContent = `${albums[currentAlbumIndex].name} by ${albums[currentAlbumIndex].artist}`;
-        } else {
-            albumSource = `images/album${currentAlbumIndex + 1}.png`;
-            albumTooltip.textContent = `Local album image, loading metadata...`;
-        }
-
-        albumImage.src = albumSource;
+        const album = albums[currentAlbumIndex];
+        albumImage.src = album.url;
+        albumTooltip.textContent = `${album.name} by ${album.artist}`;
         scaleImage.src = `images/scale.png`;
         personLeft.src = `images/person1.png`;
         personRight.src = `images/person2.png`;
+        personLeftName.textContent = people.left;
+        personRightName.textContent = people.right;
         albumTooltip.style.display = 'none';
         albumImage.style.outline = '';
     }
 
     function getRandomAlbum() {
-      currentAlbumIndex = Math.floor(Math.random() * (localAlbumCount));
-
+        currentAlbumIndex = Math.floor(Math.random() * albums.length);
         currentVote = 0;
         updateDisplay();
-
-        // Start fetching the *next* album's data in the background
-        if (albums.length > localAlbumCount) {
-            const nextIndex = Math.floor(Math.random() * (albums.length));
-            nextAlbumPromise = Promise.resolve(albums[nextIndex]);
-            console.log(`prefetching album index ${nextIndex}`)
-        }
     }
 
     function moveScale(direction) {
@@ -152,29 +124,13 @@ document.addEventListener('DOMContentLoaded', function() {
       direction = null;
     }
 
-    personLeftName.src = `images/person1.png`;
-    personRightName.src = `images/person2.png`;
+    // Load data from CSV and text file
+    Promise.all([fetchCSV('albums.csv'), fetchNames('people.txt')])
+        .then(([albumData, names]) => {
+            albums = albumData;
+            people = names;
 
-    //Initial album to preload images
-    getRandomAlbum();
-    updateDisplay()
-
-    // Initial data loading and setup
-    Promise.all([fetchData('albums'), fetchData('people')])
-      .then(([albumData, peopleData]) => {
-        if (albumData && peopleData) {
-          albums = albumData
-
-          if (peopleData.length === 2) {
-            people.left = peopleData[0];
-            people.right = peopleData[1];
-            personLeftName.textContent = people.left.name; // Set the left person's name
-            personRightName.textContent = people.right.name; // Set the right person's name
-          } else {
-            console.error("Error: the sheet must have 2 people")
-          }
-
-          // Mouse events
+             // Add event listeners to the buttons (after data is loaded)
           arrowLeft.addEventListener('mousedown', () => {
             startMoving('left');
           });
@@ -232,8 +188,10 @@ document.addEventListener('DOMContentLoaded', function() {
             albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
           });
 
-        } else {
-          console.error("Error loading all data");
-        }
-      });
+            getRandomAlbum(); // Initial album display
+        })
+        .catch(error => console.error('Error loading data:', error));
+
+     personLeft.src = `images/person1.png`;
+     personRight.src = `images/person2.png`;
 });
