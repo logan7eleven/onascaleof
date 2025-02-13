@@ -94,16 +94,17 @@ body::after {
 #people-container {
   position: relative;  /* Positioning context */
   width: 80vw;
-  height: 0; /* Remove content-based height */
   margin-bottom: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+
 }
 
 #people-container div {
-    position: absolute;
-    top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: static;
 }
 
 #person-left {
@@ -200,6 +201,16 @@ body::after {
     #person-right-name {
         font-size: 1.5rem;
     }
+
+  #site-title {
+    font-size: 3rem;  /* Reduced font size (3 * 1.5 = 4.5) */
+    margin-bottom: 1rem;
+    color: black; /* Changed color to black */
+    margin-top: 1rem; /* Added top margin for spacing */
+    max-width: 80%;  /* Prevent overflow on smaller screens */
+    word-wrap: break-word;  /* Wrap long words */
+  }
+
 }
 
 /* Desktop Styles */
