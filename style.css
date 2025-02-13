@@ -57,7 +57,7 @@ body::after {
 
 #album-image {
   max-width: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
@@ -189,16 +189,10 @@ body::after {
 /* Handle smaller screens using media queries */
 @media (max-width: 600px) {
 
-     #arrow-container {
-        display: flex;
-         box-sizing: border-box;
-          justify-content: space-around;
-    }
-
     #person-left-name,
     #person-right-name {
         font-size: 1.0rem;
-        width: 25vw; /* Adjust width */
+        width: 15vw; /* Adjust width */
     }
 
     #album-image {
