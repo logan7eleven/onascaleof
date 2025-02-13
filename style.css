@@ -112,9 +112,7 @@ body::after {
   width: 12vw;
   word-wrap: break-word;
   text-align: center;
-  /* Remove the margin-top that was pushing the names down */
-  margin-top: 0; 
-  /* Add a margin to the bottom of the image instead */
+  margin-top: 0.5rem; 
 }
 
 #person-left {
@@ -125,7 +123,6 @@ body::after {
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   outline: 0.3rem solid #BAA0FA;
-  /* Add margin below the image */
   margin-bottom: 0.5rem; /* Adjust this value to control the spacing */
 }
 
@@ -137,7 +134,6 @@ body::after {
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   outline: 0.3rem solid #F7B73D;
-  /* Add margin below the image */
   margin-bottom: 0.5rem; /* Adjust this value to control the spacing */
 }
 
