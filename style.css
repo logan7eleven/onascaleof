@@ -3,7 +3,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1.25rem;
+  margin: 1.00rem;
   text-align: center;
   min-height: 100vh;
   max-height: 100vh:
@@ -54,7 +54,7 @@ body::after {
 
 #album-container {
   max-width: 80vw;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.00rem;
   position: relative;
 }
 
@@ -84,14 +84,14 @@ body::after {
 }
 
 #scale-container {
-  width: 80vw;
+  width: 90vw;
   margin-bottom: 1.25rem;
   position: relative;
 }
 
 #scale-image {
   width: 100%;
-  height: auto;
+  height: 1vh;
   display: block;
   margin: 0 auto;
 }
