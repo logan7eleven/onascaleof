@@ -101,18 +101,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function startMoving(dir) {
-        direction = dir;
-        holdStartTime = Date.now();
-        currentInterval = slowInterval;
+      //Added set timeout to allow single press to function
+      setTimeout(() => {
+            direction = dir;
+            holdStartTime = Date.now();
+            currentInterval = slowInterval;
 
-        intervalId = setInterval(() => {
-            moveScale(direction);
-            if (Date.now() - holdStartTime >= initialDelay) {
-                clearInterval(intervalId);
-                currentInterval = fastInterval;
-                intervalId = setInterval(() => moveScale(direction), currentInterval);
-            }
-        }, currentInterval);
+            intervalId = setInterval(() => {
+                moveScale(direction);
+                if (Date.now() - holdStartTime >= initialDelay) {
+                    clearInterval(intervalId);
+                    currentInterval = fastInterval;
+                    intervalId = setInterval(() => moveScale(direction), currentInterval);
+                }
+            }, currentInterval);
+        }, 50); // Delay of 50 milliseconds
     }
 
     function stopMoving() {
@@ -131,56 +134,47 @@ document.addEventListener('DOMContentLoaded', function() {
             albums = albumData;
             people = names;
 
-            // Single-Click Event Listeners
-            arrowLeft.addEventListener('click', () => {
-                moveScale('left');
-            });
-
-            arrowRight.addEventListener('click', () => {
-                moveScale('right');
-            });
-
-            // Long-Press Event Listeners
-            arrowLeft.addEventListener('mousedown', () => {
-                startMoving('left');
-            });
-
-            arrowRight.addEventListener('mousedown', () => {
-                startMoving('right');
-            });
-
-            arrowLeft.addEventListener('mouseup', stopMoving);
-            arrowRight.addEventListener('mouseup', stopMoving);
-            arrowLeft.addEventListener('mouseleave', stopMoving);
-            arrowRight.addEventListener('mouseleave', stopMoving);
-
-            // Touch Events (for long-press)
-            arrowLeft.addEventListener('touchstart', (event) => {
-                event.preventDefault();
-                startMoving('left');
-            });
-
-            arrowRight.addEventListener('touchstart', (event) => {
-                event.preventDefault();
-                startMoving('right');
-            });
-
-            arrowLeft.addEventListener('touchend', stopMoving);
-            arrowRight.addEventListener('touchend', stopMoving);
-            arrowLeft.addEventListener('touchcancel', stopMoving);
-            arrowRight.addEventListener('touchcancel', stopMoving);
-
           buttonNext.addEventListener('click', async () => {
               getRandomAlbum()
               updateDisplay()
           });
           buttonEnter.addEventListener('click', submitVote);
 
-          albumImage.addEventListener('click', () => {
+           albumImage.addEventListener('click', () => {
             const album = albums[currentAlbumIndex]; // Get current album info
             albumTooltip.textContent = `${album.name} by ${album.artist}`; // Set tooltip text
             albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
           });
+
+            //Long press functions for arrows
+          arrowLeft.addEventListener('mousedown', () => {
+              startMoving('left');
+          });
+
+          arrowRight.addEventListener('mousedown', () => {
+              startMoving('right');
+          });
+
+          arrowLeft.addEventListener('mouseup', stopMoving);
+          arrowRight.addEventListener('mouseup', stopMoving);
+          arrowLeft.addEventListener('mouseleave', stopMoving);
+          arrowRight.addEventListener('mouseleave', stopMoving);
+
+           // Touch Events (for long-press)
+          arrowLeft.addEventListener('touchstart', (event) => {
+              event.preventDefault();
+              startMoving('left');
+          });
+
+          arrowRight.addEventListener('touchstart', (event) => {
+              event.preventDefault();
+              startMoving('right');
+          });
+
+          arrowLeft.addEventListener('touchend', stopMoving);
+          arrowRight.addEventListener('touchend', stopMoving);
+          arrowLeft.addEventListener('touchcancel', stopMoving);
+          arrowRight.addEventListener('touchcancel', stopMoving);
 
             updateDisplay()
 

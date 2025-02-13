@@ -91,19 +91,19 @@ body::after {
 }
 
 #people-container {
-  display: flex;
-  justify-content: space-between;
-  width: 80vw;
-  margin-bottom: 1.25rem;
-  align-items: flex-end; /* Align items to the bottom of the container */
+    display: flex;
+    justify-content: space-between; /* Distribute items */
+    width: 80vw;
+    margin-bottom: 1.25rem;
+    align-items: flex-end;
 }
 
 #people-container div {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 20%; /* Each container takes up 20% of the available width */
 }
-
 
 #person-left {
   width: 8vw; /* Set width to 12vw */
@@ -127,10 +127,11 @@ body::after {
 
 #person-left-name,
 #person-right-name {
-  font-size: 2.25rem; /* 75% of the title font size (4.5 * 0.75) */
-  width: 8vw; /* Match image width */
-  word-wrap: break-word;
-  margin-top: 0.5rem;
+    font-size: 1.125rem; /* Reduced font size by about half */
+    width: 9vw; /* Barely goes beyond the picture width (was 8vw before) */
+    word-wrap: break-word; /* Wrap text to prevent overflow */
+    text-align: center;
+    margin-top: 0.5rem;
 }
 
 #button-container {
