@@ -169,9 +169,6 @@ body::after {
   cursor: pointer;
   border-radius: 0;
   height: 3.75rem;
-  box-shadow: 0 0 rgba(0, 0, 0, 0);
-   width: 30%;  /* Adjust the width as needed for spacing */
-    box-sizing: border-box;
 }
 
 #button-container button {
