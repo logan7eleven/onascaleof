@@ -116,8 +116,8 @@ body::after {
 }
 
 #person-left {
-    width: 12vh;
-    height: 20vh;
+    width: 10vh;
+    height: 15vh;
     object-fit: cover;
     object-position: 50% 33.333%;
     border-radius: 0.5rem;
@@ -127,8 +127,8 @@ body::after {
 }
 
 #person-right {
-    width: 12vh;
-    height: 20vh;
+    width: 10vh;
+    height: 15vh;
     object-fit: cover;
     object-position: 50% 33.333%;
     border-radius: 0.5rem;
