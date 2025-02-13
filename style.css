@@ -136,7 +136,7 @@ body::after {
   width: 12vw;
   word-wrap: break-word;
   text-align: center;
-  margin-top: 1.5rem; /* Added margin on TOP of the name */
+  margin-top: 2.0rem; /* Added margin on TOP of the name */
   margin-bottom: 0; /*Remove bottom margin*/
 }
 
