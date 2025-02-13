@@ -44,6 +44,8 @@ body::after {
   margin-bottom: 1.25rem;
   color: black; /* Changed color to black */
   margin-top: 2rem; /* Added top margin for spacing */
+     width: 100%;   /* Take up entire width */
+    box-sizing: border-box;   /* Include padding/border */
 }
 
 #album-container {
@@ -92,22 +94,24 @@ body::after {
 }
 
 #people-container {
-  position: relative;  /* Positioning context */
-  width: 80vw;
-  height: 0; /* Remove content-based height */
+  width: 80vw; /* Take up entire width */
   margin-bottom: 1.25rem;
+   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
 }
 
 #people-container div {
-    position: absolute;
-    top: 0;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+      width: 50%;
 }
 
 #person-left {
-  width: 10vw;
+  width: 15vw;
   height: 15vw;
   object-fit: cover;
   object-position: 50% 33.333%;
@@ -117,7 +121,7 @@ body::after {
 }
 
 #person-right {
-  width: 10vw;
+  width: 15vw;
   height: 15vw;
   object-fit: cover;
   object-position: 50% 33.333%;
@@ -129,7 +133,7 @@ body::after {
 #person-left-name,
 #person-right-name {
   font-size: 1.125rem;
-  width: 18vw;
+  width: 15vw;
   word-wrap: break-word;
   text-align: center;
   margin-top: 0.5rem;
@@ -200,6 +204,9 @@ body::after {
     #person-right-name {
         font-size: 1.5rem;
     }
+  #album-image {
+     height: 35vh;
+  }
 }
 
 /* Desktop Styles */
