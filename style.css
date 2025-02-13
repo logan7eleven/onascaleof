@@ -171,12 +171,12 @@ body::after {
 @media (max-width: 600px) {
 
     #person-left {
-        width: auto;
+        width: 35vw;
         height: 25vw;
     }
 
     #person-right {
-        width: auto;
+        width: 35vw;
         height: 25vw;
     }
 
