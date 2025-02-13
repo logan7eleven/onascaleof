@@ -40,10 +40,10 @@ body::after {
 
 
 #site-title {
-  font-size: 4.5rem;  /* Increased font size (3 * 1.5 = 4.5) */
-  margin-bottom: 1.25rem;
+  font-size: 5vh;  /* Increased font size (3 * 1.5 = 4.5) */
+  margin-bottom: 1.00vh;
   color: black; /* Changed color to black */
-  margin-top: 2rem; /* Added top margin for spacing */
+  margin-top: 1.00vh; /* Added top margin for spacing */
 }
 
 #album-container {
@@ -129,7 +129,7 @@ body::after {
 #person-left-name,
 #person-right-name {
   font-size: 1.125rem;
-  width: 18vw;
+  width: 12vw;
   word-wrap: break-word;
   text-align: center;
   margin-top: 0.5rem;
@@ -155,7 +155,7 @@ body::after {
 }
 #arrow-container {
     display: flex;
-    width: 100%;
+    width: 70%;
     justify-content: center;
 }
 
