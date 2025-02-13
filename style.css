@@ -123,7 +123,7 @@ body::after {
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   outline: 0.3rem solid #BAA0FA;
-  margin-bottom: 0.5rem; /* Adjust this value to control the spacing */
+  margin-bottom: 0; /* Adjust this value to control the spacing */
 }
 
 #person-right {
@@ -134,7 +134,7 @@ body::after {
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   outline: 0.3rem solid #F7B73D;
-  margin-bottom: 0.5rem; /* Adjust this value to control the spacing */
+  margin-bottom: 0; /* Adjust this value to control the spacing */
 }
 
 #person-left-container {
