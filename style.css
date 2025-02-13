@@ -7,18 +7,18 @@ body {
   text-align: center;
   height: 100vh; /* Make body fill the viewport height */
   box-sizing: border-box;
-    background-color: #826E67;
-    position: relative; /* Necessary for absolute positioning of dots */
+  background-color: #826E67;
+  position: relative; /* Necessary for absolute positioning of dots */
 }
 
 body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 
 body::after {
@@ -38,11 +38,10 @@ body::after {
   background-position: 0 0, 50vw 50vh; /* Centered position for even spacing */
 }
 
-
 #site-title {
   font-size: 4vh;  /* Increased font size (3 * 1.5 = 4.5) */
   margin-bottom: 1.50vh;
-  color: black; /* Changed color to black */
+  color: black;  /* Changed color to black */
   margin-top: 0.2500vh; /* Added top margin for spacing */
 }
 
@@ -53,14 +52,14 @@ body::after {
 }
 
 #album-image {
-    max-width: 100%;
-    height: 80vw;
-    object-fit: contain;
-     object-position: center;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: border 0.3s ease-in-out;
+  max-width: 100%;
+  height: 80vw;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: border 0.3s ease-in-out;
 }
 
 #album-tooltip {
@@ -81,7 +80,7 @@ body::after {
 #scale-container {
   width: 80vw;
   margin-bottom: 1.25rem;
-    position: relative; /* Make scale container relative */
+  position: relative; /* Make scale container relative */
 }
 
 #scale-image {
@@ -94,25 +93,19 @@ body::after {
 #people-container {
   position: relative;  /* Positioning context */
   width: 80vw;
-  height: 0; /* Remove content-based height */
+  /* Remove height: 0. Let the content determine the height */
   margin-bottom: 1.25rem;
+  display: flex; /* Add flexbox layout */
+  justify-content: space-between; /* Space out the left and right elements */
 }
 
 #people-container div {
-    position: absolute;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#person-left-name,
-#person-right-name {
-  font-size: 1.125rem;
-  width: 12vw;
-  word-wrap: break-word;
-  text-align: center;
-  margin-top: 0.5rem; 
+  /* position: absolute;  Remove absolute positioning */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Ensure no margin conflicts */
+  margin: 0;
 }
 
 #person-left {
@@ -123,7 +116,7 @@ body::after {
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   outline: 0.3rem solid #BAA0FA;
-  margin-bottom: 0; /* Adjust this value to control the spacing */
+  margin-bottom: 0; /*remove the margin from the bottom of the image*/
 }
 
 #person-right {
@@ -134,17 +127,28 @@ body::after {
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   outline: 0.3rem solid #F7B73D;
-  margin-bottom: 0; /* Adjust this value to control the spacing */
+  margin-bottom: 0; /*remove the margin from the bottom of the image*/
+}
+
+#person-left-name,
+#person-right-name {
+  font-size: 1.125rem;
+  width: 12vw;
+  word-wrap: break-word;
+  text-align: center;
+  margin-top: 0.5rem; /* Added margin on TOP of the name */
+  margin-bottom: 0; /*Remove bottom margin*/
 }
 
 #person-left-container {
-  left: 0;
+  /* left: 0; Remove absolute positioning */
+  text-align: center; /* Center content */
 }
 
 #person-right-container {
-  right: 0;
+  /* right: 0;  Remove absolute positioning */
+  text-align: center; /* Center content */
 }
-
 
 #button-container {
   display: flex;
@@ -156,40 +160,39 @@ body::after {
   width: 100%;
 }
 #arrow-container {
-    display: flex;
-    width: 70%;
-    justify-content: center;
+  display: flex;
+  width: 70%;
+  justify-content: center;
 }
 
 #arrow-container button {
-    border: none; /* Remove border */
-    cursor: pointer;
-    border-radius: 0 rem;
-    height: 3.75rem;
-    box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0);
+  border: none; /* Remove border */
+  cursor: pointer;
+  border-radius: 0 rem;
+  height: 3.75rem;
+  box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0);
 }
 
 #button-container button {
-    border: none; /* Remove border */
-    cursor: pointer;
-    border-radius: 0 rem;
-    height: 2.75rem;
-    box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0);
+  border: none; /* Remove border */
+  cursor: pointer;
+  border-radius: 0 rem;
+  height: 2.75rem;
+  box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0);
 }
 
 #button-container button img { /* Target the images inside the buttons */
-   max-height: 2.75rem;
+  max-height: 2.75rem;
 }
 
 #button-next img {
-    max-height: 2.375rem;
+  max-height: 2.375rem;
 }
 
 /* Handle smaller screens using media queries */
 @media (max-width: 600px) {
-
-    #person-left-name,
-    #person-right-name {
-        font-size: 1.0rem;
-    }
+  #person-left-name,
+  #person-right-name {
+    font-size: 1.0rem;
+  }
 }
