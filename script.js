@@ -1,3 +1,4 @@
+// script.js
 document.addEventListener('DOMContentLoaded', function() {
     const albumImage = document.getElementById('album-image');
     const scaleImage = document.getElementById('scale-image');
@@ -15,22 +16,19 @@ document.addEventListener('DOMContentLoaded', function() {
     let people = {};
     let currentAlbumIndex = 0;
     let currentVote = 0;
-    let shownAlbumIds = []; // Array to track shown album IDs
+    let shownAlbums = []; // Array to track shown albums THIS SESSION
 
     // Function to fetch and parse CSV data
     function fetchCSV(url) {
         return fetch(url)
             .then(response => response.text())
             .then(csv => {
-                return csv.split('\n').map((line, index) => { // Add index for ID
+                const parsedAlbums = csv.split('\n').map(line => {
                     const [name, artist, url] = line.split(',');
-                    return {
-                        id: index, // Assign a unique ID based on row number
-                        name: (name || '').trim(),
-                        artist: (artist || '').trim(),
-                        url: (url || '').trim()
-                    };
+                    return { name: (name || '').trim(), artist: (artist || '').trim(), url: (url || '').trim() };
                 }).filter(album => album.name && album.artist && album.url);
+                console.log("Parsed Albums from CSV:", parsedAlbums); // Debug: Check parsed albums
+                return parsedAlbums;
             });
     }
 
@@ -40,14 +38,16 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.text())
             .then(text => {
                 const lines = text.split('\n');
-                return { left: (lines[0] || '').trim(), right: (lines[1] || '').trim() };
+                const names = { left: (lines[0] || '').trim(), right: (lines[1] || '').trim() };
+                console.log("Fetched Names:", names); // Debug: Check fetched names
+                return names;
             });
     }
 
     function updateDisplay() {
         const album = albums[currentAlbumIndex];
+        console.log("Updating display for album index:", currentAlbumIndex, "Album:", album); // Debug
         albumImage.src = album.url;
-        albumImage.dataset.albumId = album.id; // Store album ID in dataset
         albumTooltip.textContent = `${album.name} by ${album.artist}`;
         scaleImage.src = `images/scale.png`;
         personLeft.src = `images/person1.png`;
@@ -59,18 +59,52 @@ document.addEventListener('DOMContentLoaded', function() {
         buttonEnter.disabled = false;
     }
 
-    function getRandomAlbum() {
-        // Original getRandomAlbum logic (as requested)
-        let randomIndex;
-        do {
-            randomIndex = Math.floor(Math.random() * albums.length);
-        } while (shownAlbumIds.includes(albums[randomIndex].id)); // Keep picking until a new ID is found
+  function getRandomAlbum() {
+    console.log("getRandomAlbum called. shownAlbums:", shownAlbums); // Debug
+    // Filter out albums that have already been shown
+    const availableAlbums = albums.filter(album => !shownAlbums.includes(album.url));
+    console.log("Available Albums:", availableAlbums); // Debug: Check available albums
 
-        currentAlbumIndex = randomIndex; //Use random index to set current index
-        currentVote = 0;
-        updateDisplay();
+    if (availableAlbums.length === 0) {
+        // All albums have been shown.  Reset or show a message.
+        alert("You've seen all the albums!"); // Or handle differently
+        shownAlbums = []; // Reset for a new "round"
+        console.log("All albums shown, resetting shownAlbums:", shownAlbums); // Debug
 
+        // Re-filter after resetting shownAlbums
+        const newlyAvailableAlbums = albums.filter(album => !shownAlbums.includes(album.url));
+        console.log("Newly Available Albums (after reset):", newlyAvailableAlbums); // Debug
+
+        if (newlyAvailableAlbums.length > 0) { // Check again after reset
+            const randomIndex = Math.floor(Math.random() * newlyAvailableAlbums.length);
+            currentAlbumIndex = albums.indexOf(newlyAvailableAlbums[randomIndex]);
+            console.log("New random index:", randomIndex, "currentAlbumIndex in original albums:", currentAlbumIndex); // Debug
+            currentVote = 0;
+            updateDisplay();
+            shownAlbums.push(albums[currentAlbumIndex].url);
+            console.log("shownAlbums after adding new album:", shownAlbums); // Debug
+            return;
+        } else {
+             console.log("No albums available even after reset."); // Debug
+             return; // No albums available even after reset (shouldn't happen with valid data)
+        }
     }
+
+    // Get a random index from the *available* albums
+    const randomIndex = Math.floor(Math.random() * availableAlbums.length);
+     console.log("Random index from availableAlbums:", randomIndex); //Debug
+    currentAlbumIndex = albums.indexOf(availableAlbums[randomIndex]); // Get index in *original* albums array
+    console.log("currentAlbumIndex in original albums:", currentAlbumIndex); // Debug
+
+
+    currentVote = 0;
+    updateDisplay();
+
+    // Add the newly shown album to the shownAlbums array
+    shownAlbums.push(albums[currentAlbumIndex].url);
+     console.log("shownAlbums after adding new album:", shownAlbums); // Debug
+}
+
 
     function moveScale(direction) {
       if (direction === "right") {
@@ -91,11 +125,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function submitVote() {
-        const albumId = parseInt(albumImage.dataset.albumId, 10);
-        shownAlbumIds.push(albumId); // Add to shown IDs *here*
-        if (shownAlbumIds.length === 500) {
-            shownAlbumIds = []; // Reset if all albums seen
-        }
       let pickName = "";
       let outlineColor = '';
       if (currentVote > 0) {
@@ -121,6 +150,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(([albumData, names]) => {
             albums = albumData;
             people = names;
+            console.log("Albums loaded:", albums); // Debug: Check loaded albums
+            console.log("People loaded:", people); // Debug: Check loaded people
+
 
             // Event Listeners
             arrowLeft.addEventListener('click', () => moveScale('left'));
@@ -137,20 +169,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
           buttonNext.addEventListener('click', () => {
-              const albumId = parseInt(albumImage.dataset.albumId, 10);
-              shownAlbumIds.push(albumId); // Track on "Next"
-              if (shownAlbumIds.length === 500) {
-                  shownAlbumIds = [];
-              }
               getRandomAlbum();
           });
           buttonEnter.addEventListener('click', submitVote);
 
            albumImage.addEventListener('click', () => {
-                const albumId = parseInt(albumImage.dataset.albumId, 10);
-                const album = albums.find(a => a.id === albumId);
-                albumTooltip.textContent = `${album.name} by ${album.artist}`;
-                albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
+            const album = albums[currentAlbumIndex];
+            albumTooltip.textContent = `${album.name} by ${album.artist}`;
+            albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
           });
             getRandomAlbum(); // Initial album display
         })
