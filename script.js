@@ -17,11 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentVote = 0;
     let intervalId = null; // To store the interval ID
     let holdStartTime = null;
-    let initialDelay = 500; // 0.5 seconds initial delay
-    let fastInterval = 200;  // Rapid interval after initial delay, capped at 200
-    let slowInterval = 200; // Slower interval before initial delay
-    let currentInterval = slowInterval;
+    let fastInterval = 200;  // Cap the maximum speed
     let direction = null;
+
 
     // Function to fetch and parse CSV data
     function fetchCSV(url) {
@@ -101,25 +99,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function startMoving(dir) {
-      direction = dir;
-      holdStartTime = Date.now();
-      currentInterval = slowInterval;
-
-      intervalId = setInterval(() => {
-        moveScale(direction);
-        if (currentInterval != fastInterval) {
-            clearInterval(intervalId)
-            currentInterval = fastInterval
-            intervalId = setInterval(() => moveScale(direction), currentInterval)
-        }
-      }, currentInterval);
+        direction = dir;
+        intervalId = setInterval(() => {
+            moveScale(direction);
+        }, fastInterval);
     }
 
     function stopMoving() {
       clearInterval(intervalId);
       intervalId = null;
-      holdStartTime = null;
-      direction = null;
     }
 
     personLeft.src = `images/person1.png`;
@@ -131,7 +119,9 @@ document.addEventListener('DOMContentLoaded', function() {
             albums = albumData;
             people = names;
 
-              // Long press functions for arrows
+
+            // Arrow: Long-Press (Mouse)
+
             arrowLeft.addEventListener('mousedown', () => {
                 startMoving('left');
             });
@@ -145,18 +135,8 @@ document.addEventListener('DOMContentLoaded', function() {
             arrowLeft.addEventListener('mouseleave', stopMoving);
             arrowRight.addEventListener('mouseleave', stopMoving);
 
-           // Single click Functions
-             arrowLeft.addEventListener('click', (event) => {
-                event.preventDefault()
-                moveScale('left')
-             })
-             arrowRight.addEventListener('click', (event) => {
-                event.preventDefault()
-                moveScale('right')
-            })
-
-             // Touch Events (for long-press)
-             arrowLeft.addEventListener('touchstart', (event) => {
+            //Arrow: Long-Press (Touch)
+            arrowLeft.addEventListener('touchstart', (event) => {
                 event.preventDefault();
                 startMoving('left');
             });
@@ -170,6 +150,17 @@ document.addEventListener('DOMContentLoaded', function() {
             arrowRight.addEventListener('touchend', stopMoving);
             arrowLeft.addEventListener('touchcancel', stopMoving);
             arrowRight.addEventListener('touchcancel', stopMoving);
+
+            //Arrow: Single tap (all methods)
+             arrowLeft.addEventListener('click', (event) => {
+                event.preventDefault()
+                console.log('moving left');
+            });
+            arrowRight.addEventListener('click', (event) => {
+                event.preventDefault()
+                console.log('moving right');
+            });
+
 
           buttonNext.addEventListener('click', async () => {
               getRandomAlbum()
