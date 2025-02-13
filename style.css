@@ -114,12 +114,12 @@ body::after {
 
 /* Align people with scaler */
 #person-left-container {
-  left: 0;
+  left: 2vw;
   align-items: flex-start;
 }
 
 #person-right-container {
-  right: 0;
+  right: 2vw;
   align-items: flex-start;
 }
 
@@ -202,7 +202,8 @@ body::after {
     #person-left-name,
     #person-right-name {
         font-size: 1.0rem;
-       width: 25vw
+        width: 10vw
+        word-wrap: break-word;
     }
 
     #album-image {
