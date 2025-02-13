@@ -115,7 +115,7 @@ body::after {
 
 #person-left {
     width: 12vw;
-    height: 30vw;
+    height: 24vw;
     object-fit: cover;
     object-position: 50% 33.333%;
     border-radius: 0.5rem;
@@ -126,7 +126,7 @@ body::after {
 
 #person-right {
     width: 12vw;
-    height: 30vw;
+    height: 24vw;
     object-fit: cover;
     object-position: 50% 33.333%;
     border-radius: 0.5rem;
@@ -204,19 +204,12 @@ body::after {
     #album-image {
         height: 35vh;
     }
-
-    #site-title {
-        font-size: 3rem;
-    }
-     #arrow-container button {
-           width: 30%;
-        box-sizing: border-box;
-     }
+  
 }
 
 /* Desktop Styles */
 @media (min-width: 601px) {
     #album-image {
-        height: 15vw; /* Adjust height for desktop */
+        height: 25vw; /* Adjust height for desktop */
     }
 }
