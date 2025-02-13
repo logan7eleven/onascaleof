@@ -11,6 +11,7 @@ const buttonNext = document.getElementById('button-next');
 const albumTooltip = document.getElementById('album-tooltip');
 
 let albums = [];
+let localAlbums = []; // Array for local album data
 let people = {};
 let currentAlbumIndex = 0;
 let currentVote = 0;
@@ -23,8 +24,9 @@ let fastInterval = 50;  // Rapid interval after initial delay
 let slowInterval = 200; // Slower interval before initial delay
 let currentInterval = slowInterval;
 let direction = null;
-let useLocalFirstAlbum = true;  // Flag to ensure the first album is local
+let useGoogleSheetAlbums = false; // Flag to control if the sheet albums should be used
 let initialAlbumIndex = null;
+
 
 // Updated fetchData function
 function fetchData(sheetName) {
@@ -61,34 +63,38 @@ function fetchData(sheetName) {
 }
 
 function updateDisplay() {
-  const album = albums[currentAlbumIndex];
-  const isLocal = (useLocalFirstAlbum)? false : (currentAlbumIndex < localAlbumCount)
+    let albumSource = "";
+    if (useGoogleSheetAlbums) {
+        albumSource = albums[currentAlbumIndex].url;
+        albumTooltip.textContent = `${albums[currentAlbumIndex].name} by ${albums[currentAlbumIndex].artist}`;
+    } else {
+        albumSource = `images/album${currentAlbumIndex + 1}.png`;
+        albumTooltip.textContent = `${localAlbums[currentAlbumIndex].name} by ${localAlbums[currentAlbumIndex].artist}`;
+    }
 
-  albumImage.src = (useLocalFirstAlbum)? `images/album${initialAlbumIndex + 1}.png` : (isLocal ? `images/album${currentAlbumIndex + 1}.png` : album.url);  // Use local image if within range
-  albumTooltip.textContent = `${album.name} by ${album.artist}`;
-  scaleImage.src = `images/scale.png`;
-  personLeft.src = `images/person1.png`;
-  personRight.src = `images/person2.png`;
-  albumTooltip.style.display = 'none';
-  albumImage.style.outline = '';
+    albumImage.src = albumSource;
+    scaleImage.src = `images/scale.png`;
+    personLeft.src = `images/person1.png`;
+    personRight.src = `images/person2.png`;
+    albumTooltip.style.display = 'none';
+    albumImage.style.outline = '';
 }
 
 function getRandomAlbum() {
-  if(useLocalFirstAlbum){
-    initialAlbumIndex = Math.floor(Math.random() * (localAlbumCount));
-    currentAlbumIndex = initialAlbumIndex
-  } else {
-    currentAlbumIndex = Math.floor(Math.random() * (albums.length));
-  }
-  currentVote = 0;
-  updateDisplay();
+    if (useGoogleSheetAlbums) {
+        currentAlbumIndex = Math.floor(Math.random() * (albums.length));
+    } else {
+        currentAlbumIndex = Math.floor(Math.random() * (localAlbumCount));
+    }
+    currentVote = 0;
+    updateDisplay();
 
-  // Start fetching the *next* album's data in the background
-  if (albums.length > localAlbumCount && !useLocalFirstAlbum) {
-    const nextIndex = Math.floor(Math.random() * (albums.length));
-    nextAlbumPromise = Promise.resolve(albums[nextIndex]);
-    console.log(`prefetching album index ${nextIndex}`)
-  }
+    // Start fetching the *next* album's data in the background
+    if (albums.length > localAlbumCount && useGoogleSheetAlbums) {
+        const nextIndex = Math.floor(Math.random() * (albums.length));
+        nextAlbumPromise = Promise.resolve(albums[nextIndex]);
+        console.log(`prefetching album index ${nextIndex}`)
+    }
 }
 
 function moveScale(direction) {
@@ -151,26 +157,42 @@ function stopMoving() {
   direction = null;
 }
 
+//Create initial local albums
+for (let i = 0; i < localAlbumCount; i++) {
+    localAlbums.push({
+        name: `Album ${i + 1}`, // Placeholder name
+        artist: `Artist ${i + 1}`, // Placeholder artist
+        url: `images/album${i + 1}.png` // Local URL
+    });
+}
+
 // Initial data loading and setup
 Promise.all([fetchData('albums'), fetchData('people')])
   .then(([albumData, peopleData]) => {
     if (albumData && peopleData) {
-      albums = albumData;
-      // Limit albums array to the length of local images + the remaining album data
+      albums = albumData; // Now albums has all of the google sheet data
       if (albums.length > localAlbumCount) {
-        albums = albums.slice(0, localAlbumCount).concat(albumData.slice(localAlbumCount));
+        albums = albums.slice(localAlbumCount); //remove the first 10
       }
-      console.log(albums)
+
+      // Add Google Sheet albums to the localAlbums
+      localAlbums.forEach((album, index) => {
+        album.name = albumData[index].Name;
+        album.artist = albumData[index].Artist
+      })
 
       if (peopleData.length === 2) {
         people.left = peopleData[0];
         people.right = peopleData[1];
         personLeftName.textContent = people.left.name; // Set the left person's name
         personRightName.textContent = people.right.name; // Set the right person's name
-
       } else {
         console.error("Error: the sheet must have 2 people")
       }
+
+      // Ensure people images are always local
+      personLeft.src = `images/person1.png`;
+      personRight.src = `images/person2.png`;
 
       getRandomAlbum(); // Load initial album immediately
 
@@ -222,18 +244,10 @@ Promise.all([fetchData('albums'), fetchData('people')])
         }
       })
 
-
       buttonNext.addEventListener('click', async () => {
-        useLocalFirstAlbum = false; // Disable local images after the first "Next"
-        if (nextAlbumPromise) {
-          // If we pre-fetched an album, use that
-          currentAlbumIndex = Math.floor(Math.random() * (albums.length));
-          updateDisplay();
-        } else {
-          getRandomAlbum(); // Otherwise, fetch a new one regularly
-        }
-        buttonEnter.disabled = false;
-        nextAlbumPromise = null;
+          useGoogleSheetAlbums = true
+          albums = localAlbums.concat(albums) //concat the remaining
+          getRandomAlbum()
       });
       buttonEnter.addEventListener('click', submitVote);
 
