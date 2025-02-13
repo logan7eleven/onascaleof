@@ -199,16 +199,6 @@ body::after {
 /* Handle smaller screens using media queries */
 @media (max-width: 600px) {
 
-    #person-left {
-        width: 25vw;
-        height: 30vw;
-    }
-
-    #person-right {
-        width: 25vw;
-        height: 30vw;
-    }
-
     #person-left-name,
     #person-right-name {
         font-size: 1.0rem;
