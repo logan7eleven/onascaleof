@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let maxInterval = 50;  //Min Time between movement
     let minInterval = 500; //Max Time Between Movement
     let direction = null;
+    let nextVote = null;
 
     // Function to fetch and parse CSV data
     function fetchCSV(url) {
@@ -64,21 +65,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function moveScale(direction) {
-      if (direction === "right") {
-        currentVote = Math.min(100, currentVote + 5);
-      } else if (direction === "left") {
-        currentVote = Math.max(-100, currentVote - 5);
-      }
+        if (direction === "right") {
+            currentVote = Math.min(100, currentVote + 1);
+        } else if (direction === "left") {
+            currentVote = Math.max(-100, currentVote - 1);
+        }
 
-      let scaleName = "";
-      if (currentVote > 0) {
-        scaleName = `scale_${currentVote}R.png`;
-      } else if (currentVote < 0) {
-        scaleName = `scale_${Math.abs(currentVote)}L.png`;
-      } else {
-        scaleName = `scale.png`;
-      }
-      scaleImage.src = `images/${scaleName}`;
+        let scaleName = "";
+        if (currentVote > 0) {
+            scaleName = `scale_${currentVote}R.png`;
+        } else if (currentVote < 0) {
+            scaleName = `scale_${Math.abs(currentVote)}L.png`;
+        } else {
+            scaleName = `scale.png`;
+        }
+        scaleImage.src = `images/${scaleName}`;
     }
 
     function submitVote() {
@@ -102,16 +103,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function startMoving(dir) {
         direction = dir;
         holdStartTime = Date.now();
-        //Initial move to take into account single tap
-        moveScale(direction);
+        nextVote = currentVote
 
         intervalId = setInterval(() => {
             const timeHeld = Date.now() - holdStartTime;
             let interval = minInterval - (minInterval - maxInterval) * Math.min(1, timeHeld/ 1000); //Increase Time
-            if (direction) {
-                moveScale(direction);
-                if (timeHeld >= longPressDelay) {
-                    console.log(`Long press triggered after ${timeHeld}ms, setting timer to ${interval}ms`);
+            clearInterval(intervalId)
+
+            if (timeHeld >= longPressDelay) {
+                if (direction === "right") {
+                    nextVote = Math.min(100, nextVote + 1);
+                } else if (direction === "left") {
+                    nextVote = Math.max(-100, nextVote - 1);
                 }
             }
         }, 50);
@@ -121,6 +124,8 @@ document.addEventListener('DOMContentLoaded', function() {
       clearInterval(intervalId);
       intervalId = null;
       direction = null;
+      currentVote = nextVote
+      updateDisplay()
     }
 
     personLeft.src = `images/person1.png`;
