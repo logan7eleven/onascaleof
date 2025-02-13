@@ -40,12 +40,13 @@ body::after {
 
 
 #site-title {
-  font-size: 4.5rem;  /* Increased font size (3 * 1.5 = 4.5) */
+  font-size: 4.5rem;
   margin-bottom: 1.25rem;
-  color: black; /* Changed color to black */
-  margin-top: 2rem; /* Added top margin for spacing */
-     width: 100%;   /* Take up entire width */
-    box-sizing: border-box;   /* Include padding/border */
+  color: black;
+  margin-top: 2rem;
+    width: calc(100% - 2.5rem);   /* Take up entire width - margins*/
+    padding: 0 1.25rem; /* Keep content within the width */
+  box-sizing: border-box;   /* Include padding/border in width calculation */
 }
 
 #album-container {
@@ -190,11 +191,11 @@ body::after {
 /* Handle smaller screens using media queries */
 @media (max-width: 600px) {
 
-       #person-left-name,
+    #person-left-name,
     #person-right-name {
         font-size: 1.0rem;
     }
-  #album-image {
-     height: 35vh;
+    #album-image {
+        height: 35vh;
   }
 }
