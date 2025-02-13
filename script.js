@@ -1,3 +1,4 @@
+// script.js
 document.addEventListener('DOMContentLoaded', function() {
     const albumImage = document.getElementById('album-image');
     const scaleImage = document.getElementById('scale-image');
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let people = {};
     let currentAlbumIndex = 0;
     let currentVote = 0;
+    let shownAlbums = []; // Array to track shown albums THIS SESSION
 
     // Function to fetch and parse CSV data
     function fetchCSV(url) {
@@ -23,8 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(csv => {
                 return csv.split('\n').map(line => {
                     const [name, artist, url] = line.split(',');
-                    return { name: name.trim(), artist: artist.trim(), url: url.trim() };
-                });
+                    return { name: (name || '').trim(), artist: (artist || '').trim(), url: (url || '').trim() };
+                }).filter(album => album.name && album.artist && album.url);
             });
     }
 
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.text())
             .then(text => {
                 const lines = text.split('\n');
-                return { left: lines[0].trim(), right: lines[1].trim() };
+                return { left: (lines[0] || '').trim(), right: (lines[1] || '').trim() };
             });
     }
 
@@ -49,13 +51,32 @@ document.addEventListener('DOMContentLoaded', function() {
         personRightName.textContent = people.right;
         albumTooltip.style.display = 'none';
         albumImage.style.outline = '';
+        buttonEnter.disabled = false;
     }
 
     function getRandomAlbum() {
-        currentAlbumIndex = Math.floor(Math.random() * albums.length);
+        // Filter out albums that have already been shown
+        const availableAlbums = albums.filter(album => !shownAlbums.includes(album.url));
+
+        if (availableAlbums.length === 0) {
+            // All albums have been shown.  Reset or show a message.
+            alert("You've seen all the albums!"); // Or handle differently
+            shownAlbums = []; // Reset for a new "round"
+            return getRandomAlbum();  // Call recursively to get a new album
+            // OR:  You could disable the "Next" button, show a message, etc.
+        }
+
+        // Get a random index from the *available* albums
+        const randomIndex = Math.floor(Math.random() * availableAlbums.length);
+        currentAlbumIndex = albums.indexOf(availableAlbums[randomIndex]); // Get index in *original* albums array
+
         currentVote = 0;
         updateDisplay();
+
+        // Add the newly shown album to the shownAlbums array
+        shownAlbums.push(albums[currentAlbumIndex].url);
     }
+
 
     function moveScale(direction) {
       if (direction === "right") {
@@ -97,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
     personRight.src = `images/person2.png`;
 
     // Load data from CSV and text file
-    Promise.all([fetchCSV('albums.csv'), fetchNames('people.txt')])
+    Promise.all([fetchCSV('albums.csv.txt'), fetchNames('people.txt')])
         .then(([albumData, names]) => {
             albums = albumData;
             people = names;
@@ -116,20 +137,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
 
-          buttonNext.addEventListener('click', async () => {
-              getRandomAlbum()
-              updateDisplay()
+          buttonNext.addEventListener('click', () => {
+              getRandomAlbum();
           });
           buttonEnter.addEventListener('click', submitVote);
 
            albumImage.addEventListener('click', () => {
-            const album = albums[currentAlbumIndex]; // Get current album info
-            albumTooltip.textContent = `${album.name} by ${album.artist}`; // Set tooltip text
+            const album = albums[currentAlbumIndex];
+            albumTooltip.textContent = `${album.name} by ${album.artist}`;
             albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
           });
-
-            updateDisplay()
-
             getRandomAlbum(); // Initial album display
         })
         .catch(error => console.error('Error loading data:', error));
