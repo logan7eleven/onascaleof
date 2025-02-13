@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let intervalId = null; // To store the interval ID
     let holdStartTime = null;
     let initialDelay = 500; // 0.5 seconds initial delay
-    let fastInterval = 50;  // Rapid interval after initial delay
+    let fastInterval = 200;  // Rapid interval after initial delay, capped at 200
     let slowInterval = 200; // Slower interval before initial delay
     let currentInterval = slowInterval;
     let direction = null;
@@ -101,28 +101,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function startMoving(dir) {
-      //Added set timeout to allow single press to function
-      setTimeout(() => {
-            direction = dir;
-            holdStartTime = Date.now();
-            currentInterval = slowInterval;
+      direction = dir;
+      holdStartTime = Date.now();
+      currentInterval = slowInterval;
 
-            intervalId = setInterval(() => {
-                moveScale(direction);
-                if (Date.now() - holdStartTime >= initialDelay) {
-                    clearInterval(intervalId);
-                    currentInterval = fastInterval;
-                    intervalId = setInterval(() => moveScale(direction), currentInterval);
-                }
-            }, currentInterval);
-        }, 50); // Delay of 50 milliseconds
+      intervalId = setInterval(() => {
+        moveScale(direction);
+        if (currentInterval != fastInterval) {
+            clearInterval(intervalId)
+            currentInterval = fastInterval
+            intervalId = setInterval(() => moveScale(direction), currentInterval)
+        }
+      }, currentInterval);
     }
 
     function stopMoving() {
-        clearInterval(intervalId);
-        intervalId = null;
-        holdStartTime = null;
-        direction = null;
+      clearInterval(intervalId);
+      intervalId = null;
+      holdStartTime = null;
+      direction = null;
     }
 
     personLeft.src = `images/person1.png`;
@@ -133,6 +130,46 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(([albumData, names]) => {
             albums = albumData;
             people = names;
+
+              // Long press functions for arrows
+            arrowLeft.addEventListener('mousedown', () => {
+                startMoving('left');
+            });
+
+            arrowRight.addEventListener('mousedown', () => {
+                startMoving('right');
+            });
+
+            arrowLeft.addEventListener('mouseup', stopMoving);
+            arrowRight.addEventListener('mouseup', stopMoving);
+            arrowLeft.addEventListener('mouseleave', stopMoving);
+            arrowRight.addEventListener('mouseleave', stopMoving);
+
+           // Single click Functions
+             arrowLeft.addEventListener('click', (event) => {
+                event.preventDefault()
+                moveScale('left')
+             })
+             arrowRight.addEventListener('click', (event) => {
+                event.preventDefault()
+                moveScale('right')
+            })
+
+             // Touch Events (for long-press)
+             arrowLeft.addEventListener('touchstart', (event) => {
+                event.preventDefault();
+                startMoving('left');
+            });
+
+            arrowRight.addEventListener('touchstart', (event) => {
+                event.preventDefault();
+                startMoving('right');
+            });
+
+            arrowLeft.addEventListener('touchend', stopMoving);
+            arrowRight.addEventListener('touchend', stopMoving);
+            arrowLeft.addEventListener('touchcancel', stopMoving);
+            arrowRight.addEventListener('touchcancel', stopMoving);
 
           buttonNext.addEventListener('click', async () => {
               getRandomAlbum()
@@ -145,36 +182,6 @@ document.addEventListener('DOMContentLoaded', function() {
             albumTooltip.textContent = `${album.name} by ${album.artist}`; // Set tooltip text
             albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
           });
-
-            //Long press functions for arrows
-          arrowLeft.addEventListener('mousedown', () => {
-              startMoving('left');
-          });
-
-          arrowRight.addEventListener('mousedown', () => {
-              startMoving('right');
-          });
-
-          arrowLeft.addEventListener('mouseup', stopMoving);
-          arrowRight.addEventListener('mouseup', stopMoving);
-          arrowLeft.addEventListener('mouseleave', stopMoving);
-          arrowRight.addEventListener('mouseleave', stopMoving);
-
-           // Touch Events (for long-press)
-          arrowLeft.addEventListener('touchstart', (event) => {
-              event.preventDefault();
-              startMoving('left');
-          });
-
-          arrowRight.addEventListener('touchstart', (event) => {
-              event.preventDefault();
-              startMoving('right');
-          });
-
-          arrowLeft.addEventListener('touchend', stopMoving);
-          arrowRight.addEventListener('touchend', stopMoving);
-          arrowLeft.addEventListener('touchcancel', stopMoving);
-          arrowRight.addEventListener('touchcancel', stopMoving);
 
             updateDisplay()
 
