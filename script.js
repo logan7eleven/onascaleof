@@ -101,28 +101,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function startMoving(dir) {
-      direction = dir;
-      holdStartTime = Date.now();
-      currentInterval = slowInterval; // Start with the slower interval
+        direction = dir;
+        holdStartTime = Date.now();
+        currentInterval = slowInterval;
 
-      intervalId = setInterval(() => {
-        moveScale(direction);
-
-        // Check if the initial delay has passed and switch to the faster interval
-        if (Date.now() - holdStartTime >= initialDelay) {
-          clearInterval(intervalId);
-          currentInterval = fastInterval;
-          intervalId = setInterval(() => moveScale(direction), currentInterval);
-        }
-      }, currentInterval);
+        intervalId = setInterval(() => {
+            moveScale(direction);
+            if (Date.now() - holdStartTime >= initialDelay) {
+                clearInterval(intervalId);
+                currentInterval = fastInterval;
+                intervalId = setInterval(() => moveScale(direction), currentInterval);
+            }
+        }, currentInterval);
     }
 
     function stopMoving() {
-      clearInterval(intervalId);
-      intervalId = null;
-      holdStartTime = null;
-      direction = null;
+        clearInterval(intervalId);
+        intervalId = null;
+        holdStartTime = null;
+        direction = null;
     }
+
+    personLeft.src = `images/person1.png`;
+    personRight.src = `images/person2.png`;
 
     // Load data from CSV and text file
     Promise.all([fetchCSV('albums.csv'), fetchNames('people.txt')])
@@ -130,53 +131,44 @@ document.addEventListener('DOMContentLoaded', function() {
             albums = albumData;
             people = names;
 
-             // Add event listeners to the buttons (after data is loaded)
-          arrowLeft.addEventListener('mousedown', () => {
-            startMoving('left');
-          });
-          arrowRight.addEventListener('mousedown', () => {
-            startMoving('right');
-          });
+            // Single-Click Event Listeners
+            arrowLeft.addEventListener('click', () => {
+                moveScale('left');
+            });
 
-          arrowLeft.addEventListener('mouseup', stopMoving);
-          arrowRight.addEventListener('mouseup', stopMoving);
-          arrowLeft.addEventListener('mouseleave', stopMoving);
-          arrowRight.addEventListener('mouseleave', stopMoving);
+            arrowRight.addEventListener('click', () => {
+                moveScale('right');
+            });
 
-          // Touch events
-          arrowLeft.addEventListener('touchstart', (event) => {
-            event.preventDefault();  // Prevent scrolling
-            startMoving('left');
-          });
-          arrowRight.addEventListener('touchstart', (event) => {
-            event.preventDefault();
-            startMoving('right');
-          });
-
-          arrowLeft.addEventListener('touchend', stopMoving);
-          arrowRight.addEventListener('touchend', stopMoving);
-          arrowLeft.addEventListener('touchcancel', stopMoving);
-          arrowRight.addEventListener('touchcancel', stopMoving);
-
-          //Keyboard events
-          document.addEventListener('keydown', (event) => {
-            if (event.key === 'ArrowLeft') {
-              if (!intervalId) {
+            // Long-Press Event Listeners
+            arrowLeft.addEventListener('mousedown', () => {
                 startMoving('left');
-              }
-            } else if (event.key === 'ArrowRight') {
-              if (!intervalId) {
+            });
+
+            arrowRight.addEventListener('mousedown', () => {
                 startMoving('right');
-              }
-            }
-          });
-          document.addEventListener('keyup', (event) => {
-            if (event.key === 'ArrowLeft' && direction === 'left') {
-              stopMoving();
-            } else if (event.key === 'ArrowRight' && direction === 'right') {
-              stopMoving();
-            }
-          })
+            });
+
+            arrowLeft.addEventListener('mouseup', stopMoving);
+            arrowRight.addEventListener('mouseup', stopMoving);
+            arrowLeft.addEventListener('mouseleave', stopMoving);
+            arrowRight.addEventListener('mouseleave', stopMoving);
+
+            // Touch Events (for long-press)
+            arrowLeft.addEventListener('touchstart', (event) => {
+                event.preventDefault();
+                startMoving('left');
+            });
+
+            arrowRight.addEventListener('touchstart', (event) => {
+                event.preventDefault();
+                startMoving('right');
+            });
+
+            arrowLeft.addEventListener('touchend', stopMoving);
+            arrowRight.addEventListener('touchend', stopMoving);
+            arrowLeft.addEventListener('touchcancel', stopMoving);
+            arrowRight.addEventListener('touchcancel', stopMoving);
 
           buttonNext.addEventListener('click', async () => {
               getRandomAlbum()
@@ -185,13 +177,14 @@ document.addEventListener('DOMContentLoaded', function() {
           buttonEnter.addEventListener('click', submitVote);
 
           albumImage.addEventListener('click', () => {
+            const album = albums[currentAlbumIndex]; // Get current album info
+            albumTooltip.textContent = `${album.name} by ${album.artist}`; // Set tooltip text
             albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
           });
+
+            updateDisplay()
 
             getRandomAlbum(); // Initial album display
         })
         .catch(error => console.error('Error loading data:', error));
-
-     personLeft.src = `images/person1.png`;
-     personRight.src = `images/person2.png`;
 });
