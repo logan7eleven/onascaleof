@@ -117,6 +117,7 @@ body::after {
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   outline: 0.3rem solid #BAA0FA;
   margin-bottom: 0; /*remove the margin from the bottom of the image*/
+  margin-bottom: 1.0rem;
 }
 
 #person-right {
@@ -128,6 +129,7 @@ body::after {
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   outline: 0.3rem solid #F7B73D;
   margin-bottom: 0; /*remove the margin from the bottom of the image*/
+  margin-bottom: 1.0rem;
 }
 
 #person-left-name,
@@ -143,11 +145,13 @@ body::after {
 #person-left-container {
   /* left: 0; Remove absolute positioning */
   text-align: center; /* Center content */
+  padding-top: 1.25rem;  /* Add padding to create space */
 }
 
 #person-right-container {
   /* right: 0;  Remove absolute positioning */
   text-align: center; /* Center content */
+  padding-top: 1.25rem;  /* Add padding to create space */
 }
 
 #button-container {
