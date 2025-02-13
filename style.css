@@ -52,7 +52,7 @@ body::after {
 }
 
 #album-image {
-  max-width: 100%;
+  max-width: 80%;
   height: 80vw;
   object-fit: contain;
   object-position: center;
@@ -78,7 +78,7 @@ body::after {
 }
 
 #scale-container {
-  width: 80vw;
+  width: 90vw;
   margin-bottom: 1.25rem;
   position: relative; /* Make scale container relative */
 }
@@ -109,8 +109,8 @@ body::after {
 }
 
 #person-left {
-  width: 10vw;
-  height: 15vw;
+  width: 15vw;
+  height: 20vw;
   object-fit: cover;
   object-position: 50% 33.333%;
   border-radius: 0.5rem;
@@ -121,8 +121,8 @@ body::after {
 }
 
 #person-right {
-  width: 10vw;
-  height: 15vw;
+  width: 15vw;
+  height: 20vw;
   object-fit: cover;
   object-position: 50% 33.333%;
   border-radius: 0.5rem;
@@ -134,7 +134,7 @@ body::after {
 
 #person-left-name,
 #person-right-name {
-  font-size: 1.125rem;
+  font-size: 1.0rem;
   width: 12vw;
   word-wrap: break-word;
   text-align: center;
@@ -174,7 +174,6 @@ body::after {
   cursor: pointer;
   border-radius: 0 rem;
   height: 3.75rem;
-  box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0);
 }
 
 #button-container button {
@@ -182,7 +181,6 @@ body::after {
   cursor: pointer;
   border-radius: 0 rem;
   height: 2.75rem;
-  box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0);
 }
 
 #button-container button img { /* Target the images inside the buttons */
@@ -191,12 +189,4 @@ body::after {
 
 #button-next img {
   max-height: 2.375rem;
-}
-
-/* Handle smaller screens using media queries */
-@media (max-width: 600px) {
-  #person-left-name,
-  #person-right-name {
-    font-size: 1.0rem;
-  }
 }
