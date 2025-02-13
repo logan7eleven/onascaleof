@@ -17,9 +17,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentVote = 0;
     let intervalId = null; // To store the interval ID
     let holdStartTime = null;
-    let fastInterval = 200;  // Cap the maximum speed
+    let longPressDelay = 500; // Delay before long press activates (ms)
+    let maxInterval = 50;  //Min Time between movement
+    let minInterval = 500; //Max Time Between Movement
     let direction = null;
-
 
     // Function to fetch and parse CSV data
     function fetchCSV(url) {
@@ -100,14 +101,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function startMoving(dir) {
         direction = dir;
+        holdStartTime = Date.now();
+        //Initial move to take into account single tap
+        moveScale(direction);
+
         intervalId = setInterval(() => {
-            moveScale(direction);
-        }, fastInterval);
+            const timeHeld = Date.now() - holdStartTime;
+            let interval = minInterval - (minInterval - maxInterval) * Math.min(1, timeHeld/ 1000); //Increase Time
+            if (direction) {
+                moveScale(direction);
+                if (timeHeld >= longPressDelay) {
+                    console.log(`Long press triggered after ${timeHeld}ms, setting timer to ${interval}ms`);
+                }
+            }
+        }, 50);
     }
 
     function stopMoving() {
       clearInterval(intervalId);
       intervalId = null;
+      direction = null;
     }
 
     personLeft.src = `images/person1.png`;
@@ -120,47 +133,43 @@ document.addEventListener('DOMContentLoaded', function() {
             people = names;
 
 
-            // Arrow: Long-Press (Mouse)
-
-            arrowLeft.addEventListener('mousedown', () => {
-                startMoving('left');
-            });
-
-            arrowRight.addEventListener('mousedown', () => {
-                startMoving('right');
-            });
-
-            arrowLeft.addEventListener('mouseup', stopMoving);
-            arrowRight.addEventListener('mouseup', stopMoving);
-            arrowLeft.addEventListener('mouseleave', stopMoving);
-            arrowRight.addEventListener('mouseleave', stopMoving);
-
-            //Arrow: Long-Press (Touch)
-            arrowLeft.addEventListener('touchstart', (event) => {
-                event.preventDefault();
-                startMoving('left');
-            });
-
-            arrowRight.addEventListener('touchstart', (event) => {
-                event.preventDefault();
-                startMoving('right');
-            });
-
-            arrowLeft.addEventListener('touchend', stopMoving);
-            arrowRight.addEventListener('touchend', stopMoving);
-            arrowLeft.addEventListener('touchcancel', stopMoving);
-            arrowRight.addEventListener('touchcancel', stopMoving);
-
-            //Arrow: Single tap (all methods)
-             arrowLeft.addEventListener('click', (event) => {
+        arrowLeft.addEventListener('click', (event) => {
                 event.preventDefault()
-                console.log('moving left');
-            });
-            arrowRight.addEventListener('click', (event) => {
+                moveScale('left')
+             })
+        arrowRight.addEventListener('click', (event) => {
                 event.preventDefault()
-                console.log('moving right');
-            });
+                moveScale('right')
+        });
 
+        arrowLeft.addEventListener('mousedown', () => {
+          startMoving('left');
+        });
+
+        arrowRight.addEventListener('mousedown', () => {
+            startMoving('right');
+        });
+
+        arrowLeft.addEventListener('mouseup', stopMoving);
+        arrowRight.addEventListener('mouseup', stopMoving);
+        arrowLeft.addEventListener('mouseleave', stopMoving);
+        arrowRight.addEventListener('mouseleave', stopMoving);
+
+          // Touch Events (for long-press)
+        arrowLeft.addEventListener('touchstart', (event) => {
+            event.preventDefault();
+            startMoving('left');
+        });
+
+        arrowRight.addEventListener('touchstart', (event) => {
+            event.preventDefault();
+            startMoving('right');
+        });
+
+        arrowLeft.addEventListener('touchend', stopMoving);
+        arrowRight.addEventListener('touchend', stopMoving);
+        arrowLeft.addEventListener('touchcancel', stopMoving);
+        arrowRight.addEventListener('touchcancel', stopMoving);
 
           buttonNext.addEventListener('click', async () => {
               getRandomAlbum()
