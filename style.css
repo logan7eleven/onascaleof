@@ -7,8 +7,8 @@ body {
   text-align: center;
   height: 100vh;
   box-sizing: border-box;
-  background-color: #826E67;
-  position: relative;
+    background-color: #826E67;
+    position: relative; /* Necessary for absolute positioning of dots */
 }
 
 body::before {
@@ -28,12 +28,12 @@ body::after {
   left: 0;
   width: 100%;
   height: 100%;
-  background-size: 100vw 100vh;
+  background-size: 100vw 100vh; /* Adjust size for proper spacing */
   z-index: -1;
   opacity: 1;
   pointer-events: none;
   background-image: radial-gradient(circle, #A1887F 40%, transparent 40%), radial-gradient(circle, #A1887F 40%, transparent 40%);
-  background-position: 0 0, 50vw 50vh;
+  background-position: 0 0, 50vw 50vh; /* Centered position for even spacing */
 }
 
 #site-title {
@@ -57,7 +57,6 @@ body::after {
 
 #album-image {
   max-width: 100%;
-  height: 80vw;
   object-fit: contain;
   object-position: center;
   border-radius: 0.5rem;
@@ -95,66 +94,54 @@ body::after {
 }
 
 #people-container {
-  width: 80vw;
-  margin-bottom: 1.25rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between; /* Distribute items */
-  text-align: center;
-  align-items: flex-start; /* Align vertically */
-    position: relative;
+    width: 80vw;
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Distribute items */
+    text-align: center;
+    box-sizing: border-box;
+    padding: 0;
 }
 
 #people-container div {
-    position: absolute;
-        width: auto;
-        height: auto;
-
-}
-
-/* Align people with scaler */
-#person-left-container {
-  left: 2vw;
-  align-items: flex-start;
-}
-
-#person-right-container {
-  right: 2vw;
-  align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: auto;
+    margin: 0;
 }
 
 #person-left {
-  width: 12vw; /* Reduced Width */
-  height: 30vw; /* Increased height (portrait style) */
-  object-fit: cover;
-  object-position: 50% 33.333%;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  outline: 0.3rem solid #BAA0FA;
+    width: 12vw;
+    height: 30vw;
+    object-fit: cover;
+    object-position: 50% 33.333%;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    outline: 0.3rem solid #BAA0FA;
     margin-bottom: 0.5rem;
 }
 
 #person-right {
-  width: 12vw; /* Reduced Width */
-  height: 30vw; /* Increased height (portrait style) */
-  object-fit: cover;
-  object-position: 50% 33.333%;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  outline: 0.3rem solid #F7B73D;
+    width: 12vw;
+    height: 30vw;
+    object-fit: cover;
+    object-position: 50% 33.333%;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    outline: 0.3rem solid #F7B73D;
     margin-bottom: 0.5rem;
 }
 
 #person-left-name,
 #person-right-name {
-    position: absolute;
-        width: 10vw;
-         bottom: 0;
-         left:0
-  font-size: 1.125rem;
-  word-wrap: break-word;
-  text-align: center;
-  margin-top: 0.5rem;
+    font-size: 1.125rem;
+    width: 12vw;
+    word-wrap: break-word;
+    text-align: center;
+    margin-top: 0.5rem;
 }
 
 #button-container {
@@ -167,9 +154,10 @@ body::after {
 }
 
 #arrow-container {
-  display: flex;
-  width: 100%;
-  justify-content: center;
+    display: flex;
+    width: 100%;
+    justify-content: space-between; /* Distribute items evenly */
+     box-sizing: border-box; /* Include padding/border in the width */
 }
 
 #arrow-container button {
@@ -178,6 +166,8 @@ body::after {
   border-radius: 0;
   height: 3.75rem;
   box-shadow: 0 0 rgba(0, 0, 0, 0);
+   width: 30%;  /* Adjust the width as needed for spacing */
+    box-sizing: border-box;
 }
 
 #button-container button {
@@ -188,8 +178,8 @@ body::after {
   box-shadow: 0 0 rgba(0, 0, 0, 0);
 }
 
-#button-container button img {
-  max-height: 2.75rem;
+#button-container button img { /* Target the images inside the buttons */
+   max-height: 2.75rem;
 }
 
 #button-next img {
@@ -199,11 +189,16 @@ body::after {
 /* Handle smaller screens using media queries */
 @media (max-width: 600px) {
 
+     #arrow-container {
+        display: flex;
+         box-sizing: border-box;
+          justify-content: space-around;
+    }
+
     #person-left-name,
     #person-right-name {
         font-size: 1.0rem;
-        width: 10vw
-        word-wrap: break-word;
+        width: 25vw; /* Adjust width */
     }
 
     #album-image {
@@ -213,5 +208,15 @@ body::after {
     #site-title {
         font-size: 3rem;
     }
-    width: 100%
+     #arrow-container button {
+           width: 30%;
+        box-sizing: border-box;
+     }
+}
+
+/* Desktop Styles */
+@media (min-width: 601px) {
+    #album-image {
+        height: 25vw; /* Adjust height for desktop */
+    }
 }
