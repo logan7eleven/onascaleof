@@ -3,24 +3,22 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1.00rem;
+  margin: 1.25rem;
   text-align: center;
-  min-height: 100vh;
-  max-height: 100vh:
+  height: 100vh; /* Make body fill the viewport height */
   box-sizing: border-box;
-  background-color: #826E67;
-  position: relative; /* Necessary for absolute positioning of dots */
-  overflow: hidden; /* Prevent scrolling */
+    background-color: #826E67;
+    position: relative; /* Necessary for absolute positioning of dots */
 }
 
 body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;    
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 body::after {
@@ -34,39 +32,35 @@ body::after {
   z-index: -1;
   opacity: 1;
   pointer-events: none;
-  background-image: radial-gradient(circle, #A1887F 40%, transparent 40%), radial-gradient(circle, #A1887F 40%, transparent 40%);
+  background-image:
+    radial-gradient(circle, #A1887F 40%, transparent 40%), /* Larger dot size */
+    radial-gradient(circle, #A1887F 40%, transparent 40%);
   background-position: 0 0, 50vw 50vh; /* Centered position for even spacing */
 }
 
+
 #site-title {
-    align-items: center;
-    font-size: 2.5vh;
-    margin-bottom: 1.00vh;
-    color: black;
-    margin-top: 0.25vh;
-    width: 80vw;
-    max-width: 100%; /* Allow it to expand to fill body width */
-    box-sizing: border-box;
-    padding: 0;
-    margin-left: auto;
-    margin-right: auto;
+  font-size: 4.5rem;  /* Increased font size (3 * 1.5 = 4.5) */
+  margin-bottom: 1.25rem;
+  color: black; /* Changed color to black */
+  margin-top: 2rem; /* Added top margin for spacing */
 }
 
 #album-container {
   max-width: 80vw;
-  margin-bottom: 1.00rem;
+  margin-bottom: 1.25rem;
   position: relative;
 }
 
 #album-image {
-  max-width: 100%;
-  object-fit: cover;
-  height: 35vh;
-  object-position: center;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: border 0.3s ease-in-out;
+    max-width: 100%;
+    height: 80vw;
+    object-fit: contain;
+     object-position: center;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: border 0.3s ease-in-out;
 }
 
 #album-tooltip {
@@ -85,98 +79,100 @@ body::after {
 }
 
 #scale-container {
-  width: 90vw;
+  width: 80vw;
   margin-bottom: 1.25rem;
-  position: relative;
+    position: relative; /* Make scale container relative */
 }
 
 #scale-image {
   width: 100%;
-  height: 1.75vh;
+  height: auto;
   display: block;
   margin: 0 auto;
 }
 
 #people-container {
-    width: 80vw;
-    margin-bottom: 1.25rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; /* Distribute items */
-    text-align: center;
-    box-sizing: border-box;
-    padding: 0;
+  position: relative;  /* Positioning context */
+  width: 80vw;
+  height: 0; /* Remove content-based height */
+  margin-bottom: 1.25rem;
 }
 
 #people-container div {
+    position: absolute;
+    top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
-    width: auto;
-    margin: 0;
 }
 
 #person-left {
-    width: 10vh;
-    height: 15vh;
-    object-fit: cover;
-    object-position: 50% 33.333%;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-    outline: 0.3rem solid #BAA0FA;
-    margin-bottom: 0.5rem;
+  width: 10vw;
+  height: 15vw;
+  object-fit: cover;
+  object-position: 50% 33.333%;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  outline: 0.3rem solid #BAA0FA;
 }
 
 #person-right {
-    width: 10vh;
-    height: 15vh;
-    object-fit: cover;
-    object-position: 50% 33.333%;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-    outline: 0.3rem solid #F7B73D;
-    margin-bottom: 0.5rem;
+  width: 10vw;
+  height: 15vw;
+  object-fit: cover;
+  object-position: 50% 33.333%;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  outline: 0.3rem solid #F7B73D;
 }
 
 #person-left-name,
 #person-right-name {
-    font-size: 1.125rem;
-    width: 12vh;
-    word-wrap: break-word;
-    text-align: center;
-    margin-top: 0.5rem;
+  font-size: 1.125rem;
+  width: 18vw;
+  word-wrap: break-word;
+  text-align: center;
+  margin-top: 0.5rem;
 }
+
+#person-left-container {
+  left: 0;
+}
+
+#person-right-container {
+  right: 0;
+}
+
 
 #button-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stack buttons vertically */
+  justify-content: center;
   align-items: center;
   gap: 0.625rem;
   margin-bottom: 1.25rem;
   width: 100%;
 }
-
 #arrow-container {
     display: flex;
     width: 100%;
-    justify-content: space-between; /* Distribute items evenly */
-     box-sizing: border-box; /* Include padding/border in the width */
+    justify-content: center;
 }
 
 #arrow-container button {
-  border: none;
-  cursor: pointer;
-  border-radius: 0;
-  height: 3.75rem;
+    border: none; /* Remove border */
+    cursor: pointer;
+    border-radius: 0 rem;
+    height: 3.75rem;
+    box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0);
 }
 
 #button-container button {
-  border: none;
-  cursor: pointer;
-  border-radius: 0;
-  height: 2.75rem;
-  box-shadow: 0 0 rgba(0, 0, 0, 0);
+    border: none; /* Remove border */
+    cursor: pointer;
+    border-radius: 0 rem;
+    height: 2.75rem;
+    box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0);
 }
 
 #button-container button img { /* Target the images inside the buttons */
@@ -184,7 +180,7 @@ body::after {
 }
 
 #button-next img {
-  max-height: 2.375rem;
+    max-height: 2.375rem;
 }
 
 /* Handle smaller screens using media queries */
@@ -193,7 +189,5 @@ body::after {
     #person-left-name,
     #person-right-name {
         font-size: 1.0rem;
-        width: 12vh; /* Adjust width */
     }
-  
 }
