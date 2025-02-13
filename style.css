@@ -40,7 +40,7 @@ body::after {
 
 
 #site-title {
-  font-size: 3rem;
+  font-size: 4.5rem;  /* Increased font size (3 * 1.5 = 4.5) */
   margin-bottom: 1.25rem;
   color: black; /* Changed color to black */
   margin-top: 2rem; /* Added top margin for spacing */
@@ -98,6 +98,13 @@ body::after {
   align-items: flex-end; /* Align items to the bottom of the container */
 }
 
+#people-container div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
 #person-left {
   width: 8vw; /* Set width to 12vw */
   height: 12vw; /* Set height to 20vw */
@@ -118,12 +125,35 @@ body::after {
   outline: 0.3rem solid #F7B73D;
 }
 
+#person-left-name,
+#person-right-name {
+  font-size: 2.25rem; /* 75% of the title font size (4.5 * 0.75) */
+  width: 8vw; /* Match image width */
+  word-wrap: break-word;
+  margin-top: 0.5rem;
+}
+
 #button-container {
   display: flex;
+  flex-direction: column; /* Stack buttons vertically */
   justify-content: center;
   align-items: center;
   gap: 0.625rem;
   margin-bottom: 1.25rem;
+  width: 100%;
+}
+#arrow-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+#arrow-container button {
+    border: none; /* Remove border */
+    cursor: pointer;
+    border-radius: 0 rem;
+    height: 3.75rem;
+    box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0);
 }
 
 #button-container button {
@@ -136,6 +166,10 @@ body::after {
 
 #button-container button img { /* Target the images inside the buttons */
    max-height: 3.75rem;
+}
+
+#button-next img {
+    max-height: 3.375rem;
 }
 
 /* Handle smaller screens using media queries */
@@ -162,6 +196,11 @@ body::after {
         width: auto;
         max-width: 40%;
         margin-bottom: 0;
+    }
+    #person-left-name,
+    #person-right-name {
+        font-size: 1.875rem;
+        width: auto;
     }
     #scale-container {
         margin-bottom: 0.8rem; /* ADDED margin-bottom (if not already present) */

@@ -1,3 +1,4 @@
+      
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,7 @@
 
     <div id="album-container">
         <img id="album-image" src="" alt="Album Cover">
-         <div id="album-tooltip"></div> <!-- Tooltip here -->
+        <div id="album-tooltip"></div> <!-- Tooltip here -->
     </div>
 
 
@@ -20,15 +21,23 @@
     </div>
 
     <div id="people-container">
-        <img id="person-left" src="" alt="Person Left">
-        <img id="person-right" src="" alt="Person Right">
+        <div>
+            <img id="person-left" src="images/person1.png" alt="Person Left">
+            <div id="person-left-name"></div>
+        </div>
+        <div>
+            <img id="person-right" src="images/person2.png" alt="Person Right">
+            <div id="person-right-name"></div>
+        </div>
     </div>
 
     <div id="button-container">
-        <button id="arrow-left"><img src="images/arrow_L.png"></button>
-        <button id="button-next"><img src="images/button_next.png"></button>
+        <div id = "arrow-container">
+            <button id="arrow-left"><img src="images/arrow_L.png"></button>
+            <button id="arrow-right"><img src="images/arrow_R.png"></button>
+        </div>
         <button id="button-enter"><img src="images/button_enter.png"></button>
-        <button id="arrow-right"><img src="images/arrow_R.png"></button>
+        <button id="button-next"><img src="images/button_next.png"></button>
     </div>
 
     <script src="script.js"></script>
