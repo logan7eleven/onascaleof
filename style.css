@@ -39,10 +39,10 @@ body::after {
 }
 
 #site-title {
-    font-size: 4.5rem;
-    margin-bottom: 1.25rem;
+    font-size: 4.5vh;
+    margin-bottom: 1.25vh;
     color: black;
-    margin-top: 2rem;
+    margin-top: 1.25vh;
     width: 80vw;
     max-width: 100%; /* Allow it to expand to fill body width */
     box-sizing: border-box;
