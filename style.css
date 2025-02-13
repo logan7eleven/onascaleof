@@ -190,38 +190,11 @@ body::after {
 /* Handle smaller screens using media queries */
 @media (max-width: 600px) {
 
-    #person-left {
-        width: 30vw;
-        height: 30vw;
-    }
-
-    #person-right {
-        width: 30vw;
-        height: 30vw;
-    }
-
-    #person-left-name,
+       #person-left-name,
     #person-right-name {
-        font-size: 1.5rem;
+        font-size: 1.0rem;
     }
   #album-image {
      height: 35vh;
   }
 }
-
-/* Desktop Styles */
-
-    #person-left {
-        width: 15vw;
-        height: 15vw;
-    }
-
-    #person-right {
-        width: 15vw;
-        height: 15vw;
-    }
-
-    #person-left-name,
-    #person-right-name {
-        font-size: 1.125rem;
-    }
