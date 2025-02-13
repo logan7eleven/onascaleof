@@ -1,191 +1,231 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const albumImage = document.getElementById('album-image');
-    const scaleImage = document.getElementById('scale-image');
-    const personLeft = document.getElementById('person-left');
-    const personRight = document.getElementById('person-right');
-    const personLeftName = document.getElementById('person-left-name');
-    const personRightName = document.getElementById('person-right-name');
-    const arrowLeft = document.getElementById('arrow-left');
-    const arrowRight = document.getElementById('arrow-right');
-    const buttonEnter = document.getElementById('button-enter');
-    const buttonNext = document.getElementById('button-next');
-    const albumTooltip = document.getElementById('album-tooltip');
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.25rem;
+  text-align: center;
+  height: 100vh; /* Make body fill the viewport height */
+  box-sizing: border-box;
+    background-color: #826E67;
+    position: relative; /* Necessary for absolute positioning of dots */
+}
 
-    let albums = [];
-    let people = {};
-    let currentAlbumIndex = 0;
-    let currentVote = 0;
-    let intervalId = null; // To store the interval ID
-    let holdStartTime = null;
-    let longPressDelay = 500; // Delay before long press activates (ms)
-    let maxInterval = 50;  //Min Time between movement
-    let minInterval = 500; //Max Time Between Movement
-    let direction = null;
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
 
-    // Function to fetch and parse CSV data
-    function fetchCSV(url) {
-        return fetch(url)
-            .then(response => response.text())
-            .then(csv => {
-                return csv.split('\n').map(line => {
-                    const [name, artist, url] = line.split(',');
-                    return { name: name.trim(), artist: artist.trim(), url: url.trim() };
-                });
-            });
+body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 100vw 100vh; /* Adjust size for proper spacing */
+  z-index: -1;
+  opacity: 1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, #A1887F 40%, transparent 40%), /* Larger dot size */
+    radial-gradient(circle, #A1887F 40%, transparent 40%);
+  background-position: 0 0, 50vw 50vh; /* Centered position for even spacing */
+}
+
+
+#site-title {
+  font-size: 4.5rem;  /* Increased font size (3 * 1.5 = 4.5) */
+  margin-bottom: 1.25rem;
+  color: black; /* Changed color to black */
+  margin-top: 2rem; /* Added top margin for spacing */
+}
+
+#album-container {
+  max-width: 80vw;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+#album-image {
+    max-width: 100%;
+    height: 20vw;
+    object-fit: contain;
+     object-position: center;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: border 0.3s ease-in-out;
+}
+
+#album-tooltip {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  white-space: nowrap;
+}
+
+#scale-container {
+  width: 80vw;
+  margin-bottom: 1.25rem;
+}
+
+#scale-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+#people-container {
+    display: flex;
+    justify-content: space-between; /* Distribute items */
+    width: 80vw;
+    margin-bottom: 1.25rem;
+    align-items: flex-end;
+}
+
+#people-container div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%; /* Each container takes up 30% of the available width */
+}
+
+#person-left {
+  object-fit: cover; /* Use cover to crop the image */
+  object-position: 50% 33.333%; /* Center the crop 1/3 up from the middle */
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  outline: 0.3rem solid #BAA0FA;
+}
+
+#person-right {
+  object-fit: cover; /* Use cover to crop the image */
+  object-position: 50% 33.333%; /* Center the crop 1/3 up from the middle */
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  outline: 0.3rem solid #F7B73D;
+}
+
+#person-left-name,
+#person-right-name {
+    word-wrap: break-word; /* Wrap text to prevent overflow */
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+#button-container {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+#arrow-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+#arrow-container button {
+    border: none; /* Remove border */
+    cursor: pointer;
+    border-radius: 0 rem;
+    height: 3.75rem;
+    box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0);
+}
+
+#button-container button {
+    border: none; /* Remove border */
+    cursor: pointer;
+    border-radius: 0 rem;
+    height: 3.75rem;
+    box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0);
+}
+
+#button-container button img { /* Target the images inside the buttons */
+   max-height: 3.75rem;
+}
+
+#button-next img {
+    max-height: 3.375rem;
+}
+
+/* Handle smaller screens using media queries */
+@media (max-width: 600px) {
+
+    #person-left {
+        width: auto;
+        height: 25vw;
     }
 
-    // Function to fetch and parse names from a text file
-    function fetchNames(url) {
-        return fetch(url)
-            .then(response => response.text())
-            .then(text => {
-                const lines = text.split('\n');
-                return { left: lines[0].trim(), right: lines[1].trim() };
-            });
+    #person-right {
+        width: auto;
+        height: 25vw;
     }
 
-    function updateDisplay() {
-        const album = albums[currentAlbumIndex];
-        albumImage.src = album.url;
-        albumTooltip.textContent = `${album.name} by ${album.artist}`;
-        scaleImage.src = `images/scale.png`;
-        personLeft.src = `images/person1.png`;
-        personRight.src = `images/person2.png`;
-        personLeftName.textContent = people.left;
-        personRightName.textContent = people.right;
-        albumTooltip.style.display = 'none';
-        albumImage.style.outline = '';
+    #person-left-name,
+    #person-right-name {
+         font-size: 1.5rem;
+        width: auto;
+    }
+    #site-title {
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem; /* REDUCED margin-bottom */
+    }
+    #album-image {
+        height: 40vw;
+    }
+    #people-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 100%;
+        max-width: 80vw;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 0.8rem; /* REDUCED margin-bottom */
+    }
+    #people-container img {
+        max-width: 40%;
+        margin-bottom: 0;
+    }
+    #scale-container {
+        margin-bottom: 0.8rem; /* ADDED margin-bottom (if not already present) */
+    }
+    #album-container {
+        margin-bottom: 0.8rem; /* ADDED margin-bottom (if not already present) */
+    }
+    #button-container {
+        margin-bottom: 0.8rem; /* ADDED margin-bottom (if not already present) */
+    }
+}
+
+    #person-left {
+        width: 15vw;
     }
 
-    function getRandomAlbum() {
-        currentAlbumIndex = Math.floor(Math.random() * albums.length);
-        currentVote = 0;
-        updateDisplay();
+    #person-right {
+        width: 15vw;
     }
 
-    function moveScale(direction) {
-      if (direction === "right") {
-        currentVote = Math.min(100, currentVote + 5);
-      } else if (direction === "left") {
-        currentVote = Math.max(-100, currentVote - 5);
-      }
-
-      let scaleName = "";
-      if (currentVote > 0) {
-        scaleName = `scale_${currentVote}R.png`;
-      } else if (currentVote < 0) {
-        scaleName = `scale_${Math.abs(currentVote)}L.png`;
-      } else {
-        scaleName = `scale.png`;
-      }
-      scaleImage.src = `images/${scaleName}`;
+    #person-left-name,
+    #person-right-name {
+        font-size: 1.125rem;
     }
-
-    function submitVote() {
-      let pickName = "";
-      let outlineColor = '';
-      if (currentVote > 0) {
-        pickName = `pick_${currentVote}R.png`;
-        outlineColor = '#F7B73D';
-      } else if (currentVote < 0) {
-        pickName = `pick_${Math.abs(currentVote)}L.png`;
-        outlineColor = '#BAA0FA';
-      } else {
-        pickName = `scale.png`;
-        outlineColor = '';
-      }
-      scaleImage.src = `images/${pickName}`;
-      albumImage.style.outline = `0.3rem solid ${outlineColor}`;
-      buttonEnter.disabled = true;
-    }
-
-    function startMoving(dir) {
-        direction = dir;
-        holdStartTime = Date.now();
-        //Initial move to take into account single tap
-        moveScale(direction);
-
-        intervalId = setInterval(() => {
-            const timeHeld = Date.now() - holdStartTime;
-            let interval = minInterval - (minInterval - maxInterval) * Math.min(1, timeHeld/ 1000); //Increase Time
-            if (direction) {
-                moveScale(direction);
-                if (timeHeld >= longPressDelay) {
-                    console.log(`Long press triggered after ${timeHeld}ms, setting timer to ${interval}ms`);
-                }
-            }
-        }, 50);
-    }
-
-    function stopMoving() {
-      clearInterval(intervalId);
-      intervalId = null;
-      direction = null;
-    }
-
-    personLeft.src = `images/person1.png`;
-    personRight.src = `images/person2.png`;
-
-    // Load data from CSV and text file
-    Promise.all([fetchCSV('albums.csv'), fetchNames('people.txt')])
-        .then(([albumData, names]) => {
-            albums = albumData;
-            people = names;
-
-
-        arrowLeft.addEventListener('click', (event) => {
-                event.preventDefault()
-                moveScale('left')
-             })
-        arrowRight.addEventListener('click', (event) => {
-                event.preventDefault()
-                moveScale('right')
-        });
-
-        arrowLeft.addEventListener('mousedown', () => {
-          startMoving('left');
-        });
-
-        arrowRight.addEventListener('mousedown', () => {
-            startMoving('right');
-        });
-
-        arrowLeft.addEventListener('mouseup', stopMoving);
-        arrowRight.addEventListener('mouseup', stopMoving);
-        arrowLeft.addEventListener('mouseleave', stopMoving);
-        arrowRight.addEventListener('mouseleave', stopMoving);
-
-          // Touch Events (for long-press)
-        arrowLeft.addEventListener('touchstart', (event) => {
-            event.preventDefault();
-            startMoving('left');
-        });
-
-        arrowRight.addEventListener('touchstart', (event) => {
-            event.preventDefault();
-            startMoving('right');
-        });
-
-        arrowLeft.addEventListener('touchend', stopMoving);
-        arrowRight.addEventListener('touchend', stopMoving);
-        arrowLeft.addEventListener('touchcancel', stopMoving);
-        arrowRight.addEventListener('touchcancel', stopMoving);
-
-          buttonNext.addEventListener('click', async () => {
-              getRandomAlbum()
-              updateDisplay()
-          });
-          buttonEnter.addEventListener('click', submitVote);
-
-           albumImage.addEventListener('click', () => {
-            const album = albums[currentAlbumIndex]; // Get current album info
-            albumTooltip.textContent = `${album.name} by ${album.artist}`; // Set tooltip text
-            albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
-          });
-
-            updateDisplay()
-
-            getRandomAlbum(); // Initial album display
-        })
-        .catch(error => console.error('Error loading data:', error));
-});

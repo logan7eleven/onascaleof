@@ -15,13 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let people = {};
     let currentAlbumIndex = 0;
     let currentVote = 0;
-    let intervalId = null; // To store the interval ID
-    let holdStartTime = null;
-    let longPressDelay = 500; // Delay before long press activates (ms)
-    let maxInterval = 50;  //Min Time between movement
-    let minInterval = 500; //Max Time Between Movement
-    let direction = null;
-    let nextVote = null;
 
     // Function to fetch and parse CSV data
     function fetchCSV(url) {
@@ -65,21 +58,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function moveScale(direction) {
-        if (direction === "right") {
-            currentVote = Math.min(100, currentVote + 1);
-        } else if (direction === "left") {
-            currentVote = Math.max(-100, currentVote - 1);
-        }
+      if (direction === "right") {
+        currentVote = Math.min(100, currentVote + 5);
+      } else if (direction === "left") {
+        currentVote = Math.max(-100, currentVote - 5);
+      }
 
-        let scaleName = "";
-        if (currentVote > 0) {
-            scaleName = `scale_${currentVote}R.png`;
-        } else if (currentVote < 0) {
-            scaleName = `scale_${Math.abs(currentVote)}L.png`;
-        } else {
-            scaleName = `scale.png`;
-        }
-        scaleImage.src = `images/${scaleName}`;
+      let scaleName = "";
+      if (currentVote > 0) {
+        scaleName = `scale_${currentVote}R.png`;
+      } else if (currentVote < 0) {
+        scaleName = `scale_${Math.abs(currentVote)}L.png`;
+      } else {
+        scaleName = `scale.png`;
+      }
+      scaleImage.src = `images/${scaleName}`;
     }
 
     function submitVote() {
@@ -100,34 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
       buttonEnter.disabled = true;
     }
 
-    function startMoving(dir) {
-        direction = dir;
-        holdStartTime = Date.now();
-        nextVote = currentVote
-
-        intervalId = setInterval(() => {
-            const timeHeld = Date.now() - holdStartTime;
-            let interval = minInterval - (minInterval - maxInterval) * Math.min(1, timeHeld/ 1000); //Increase Time
-            clearInterval(intervalId)
-
-            if (timeHeld >= longPressDelay) {
-                if (direction === "right") {
-                    nextVote = Math.min(100, nextVote + 1);
-                } else if (direction === "left") {
-                    nextVote = Math.max(-100, nextVote - 1);
-                }
-            }
-        }, 50);
-    }
-
-    function stopMoving() {
-      clearInterval(intervalId);
-      intervalId = null;
-      direction = null;
-      currentVote = nextVote
-      updateDisplay()
-    }
-
     personLeft.src = `images/person1.png`;
     personRight.src = `images/person2.png`;
 
@@ -137,44 +102,19 @@ document.addEventListener('DOMContentLoaded', function() {
             albums = albumData;
             people = names;
 
+            // Event Listeners
+            arrowLeft.addEventListener('click', () => moveScale('left'));
+            arrowRight.addEventListener('click', () => moveScale('right'));
 
-        arrowLeft.addEventListener('click', (event) => {
-                event.preventDefault()
-                moveScale('left')
-             })
-        arrowRight.addEventListener('click', (event) => {
-                event.preventDefault()
-                moveScale('right')
-        });
+             // Key press Functions
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowLeft') {
+                    moveScale('left');
+                } else if (event.key === 'ArrowRight') {
+                    moveScale('right');
+                }
+            });
 
-        arrowLeft.addEventListener('mousedown', () => {
-          startMoving('left');
-        });
-
-        arrowRight.addEventListener('mousedown', () => {
-            startMoving('right');
-        });
-
-        arrowLeft.addEventListener('mouseup', stopMoving);
-        arrowRight.addEventListener('mouseup', stopMoving);
-        arrowLeft.addEventListener('mouseleave', stopMoving);
-        arrowRight.addEventListener('mouseleave', stopMoving);
-
-          // Touch Events (for long-press)
-        arrowLeft.addEventListener('touchstart', (event) => {
-            event.preventDefault();
-            startMoving('left');
-        });
-
-        arrowRight.addEventListener('touchstart', (event) => {
-            event.preventDefault();
-            startMoving('right');
-        });
-
-        arrowLeft.addEventListener('touchend', stopMoving);
-        arrowRight.addEventListener('touchend', stopMoving);
-        arrowLeft.addEventListener('touchcancel', stopMoving);
-        arrowRight.addEventListener('touchcancel', stopMoving);
 
           buttonNext.addEventListener('click', async () => {
               getRandomAlbum()
