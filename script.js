@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to fetch and parse CSV data
     function fetchCSV(url) {
         return fetch(url)
-            .then(response => response.text())
-            .then(csv => {
+          .then(response => response.text())
+          .then(csv => {
                 return csv.split('\n').map(line => {
-                    const [name, artist, url] = line.split(',');
+                    const [name, artist, url] = line.split('\t'); // Use '\t' for tab separation
                     return { name: name.trim(), artist: artist.trim(), url: url.trim() };
                 });
             });
