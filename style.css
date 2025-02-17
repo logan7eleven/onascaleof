@@ -1,9 +1,3 @@
-I understand. You want the images to scale up to the container's size (80vw x 80vw) while maintaining aspect ratio, and you don't want any part of the image to be cropped. It's okay if some parts of the container remain blank. You also want the container to be shaded with a dark grey color.
-
-Here's the updated CSS:
-
-CSS
-
 body {
     font-family: sans-serif;
     display: flex;
