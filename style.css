@@ -1,192 +1,190 @@
 body {
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 1.25rem;
-  text-align: center;
-  height: 100vh; /* Make body fill the viewport height */
-  box-sizing: border-box;
-  background-color: #826E67;
-  position: relative; /* Necessary for absolute positioning of dots */
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.25rem;
+    text-align: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+    background-color: #826E67;
+    position: relative;
 }
 
 body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 body::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: 100vw 100vh; /* Adjust size for proper spacing */
-  z-index: -1;
-  opacity: 1;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle, #A1887F 40%, transparent 40%), /* Larger dot size */
-    radial-gradient(circle, #A1887F 40%, transparent 40%);
-  background-position: 0 0, 50vw 50vh; /* Centered position for even spacing */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: 100vw 100vh;
+    z-index: -1;
+    opacity: 1;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle, #A1887F 40%, transparent 40%),
+        radial-gradient(circle, #A1887F 40%, transparent 40%);
+    background-position: 0 0, 50vw 50vh;
 }
 
 #site-title {
-  font-size: 4vh;  /* Increased font size (3 * 1.5 = 4.5) */
-  margin-bottom: 1.50vh;
-  color: black;  /* Changed color to black */
-  margin-top: 0.2500vh; /* Added top margin for spacing */
+    font-size: 4vh;
+    margin-bottom: 1.50vh;
+    color: black;
+    margin-top: 0.2500vh;
 }
 
 #album-container {
-  max-width: 80vw;
-  margin-bottom: 1.75rem;
-  position: relative;
+    width: 80vw; /* Fixed width for the container */
+    height: 80vw; /* Fixed height to match the width (square) */
+    margin-bottom: 1.75rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #album-image {
-  max-width: 80%;
-  height: 80vw;
-  object-fit: contain;
-  object-position: center;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: border 0.3s ease-in-out;
+    max-width: 100%;
+    max-height: 100%; /* Ensure image doesn't exceed container */
+    object-fit: contain; /* Maintain aspect ratio and fit within container */
+    object-position: center;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: border 0.3s ease-in-out;
 }
 
 #album-tooltip {
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid #ccc;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
-  z-index: 100;
-  top: -1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: none;
-  white-space: nowrap;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    top: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    white-space: nowrap;
 }
 
 #scale-container {
-  width: 90vw;
-  margin-bottom: 1.25rem;
-  position: relative; /* Make scale container relative */
+    width: 90vw;
+    margin-bottom: 1.25rem;
+    position: relative;
 }
 
 #scale-image {
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
 }
 
 #people-container {
-  position: relative;  /* Positioning context */
-  width: 80vw;
-  /* Remove height: 0. Let the content determine the height */
-  margin-bottom: 1.25rem;
-  display: flex; /* Add flexbox layout */
-  justify-content: space-between; /* Space out the left and right elements */
+    position: relative;
+    width: 80vw;
+    margin-bottom: 1.25rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 #people-container div {
-  /* position: absolute;  Remove absolute positioning */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* Ensure no margin conflicts */
-  margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
 }
 
 #person-left {
-  width: 15vw;
-  height: 20vw;
-  object-fit: cover;
-  object-position: 50% 33.333%;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  outline: 0.3rem solid #BAA0FA;
-  margin-bottom: 0; /*remove the margin from the bottom of the image*/
-  margin-bottom: 1.0rem;
+    width: 15vw;
+    height: 20vw;
+    object-fit: cover;
+    object-position: 50% 33.333%;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    outline: 0.3rem solid #BAA0FA;
+    margin-bottom: 1.0rem;
 }
 
 #person-right {
-  width: 15vw;
-  height: 20vw;
-  object-fit: cover;
-  object-position: 50% 33.333%;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  outline: 0.3rem solid #F7B73D;
-  margin-bottom: 0; /*remove the margin from the bottom of the image*/
-  margin-bottom: 1.0rem;
+    width: 15vw;
+    height: 20vw;
+    object-fit: cover;
+    object-position: 50% 33.333%;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    outline: 0.3rem solid #F7B73D;
+    margin-bottom: 1.0rem;
 }
 
 #person-left-name,
 #person-right-name {
-  font-size: 1.0rem;
-  width: 12vw;
-  word-wrap: break-word;
-  text-align: center;
-  margin-top: 0; /* Added margin on TOP of the name */
-  margin-bottom: 0; /*Remove bottom margin*/
+    font-size: 1.0rem;
+    width: 12vw;
+    word-wrap: break-word;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 #person-left-container {
-  /* left: 0; Remove absolute positioning */
-  text-align: center; /* Center content */
-  padding-top: 1.25rem;  /* Add padding to create space */
+    text-align: center;
+    padding-top: 1.25rem;
 }
 
 #person-right-container {
-  /* right: 0;  Remove absolute positioning */
-  text-align: center; /* Center content */
-  padding-top: 1.25rem;  /* Add padding to create space */
+    text-align: center;
+    padding-top: 1.25rem;
 }
 
 #button-container {
-  display: flex;
-  flex-direction: column; /* Stack buttons vertically */
-  justify-content: center;
-  align-items: center;
-  gap: 0.625rem;
-  margin-bottom: 1.25rem;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 1.25rem;
+    width: 100%;
 }
+
 #arrow-container {
-  display: flex;
-  width: 70%;
-  justify-content: center;
+    display: flex;
+    width: 70%;
+    justify-content: center;
 }
 
 #arrow-container button {
-  border: none; /* Remove border */
-  cursor: pointer;
-  border-radius: 0 rem;
-  height: 3.75rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 0 rem;
+    height: 3.75rem;
 }
 
 #button-container button {
-  border: none; /* Remove border */
-  cursor: pointer;
-  border-radius: 0 rem;
-  height: 2.75rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 0 rem;
+    height: 2.75rem;
 }
 
-#button-container button img { /* Target the images inside the buttons */
-  max-height: 2.75rem;
+#button-container button img {
+    max-height: 2.75rem;
 }
 
 #button-next img {
-  max-height: 2.375rem;
+    max-height: 2.375rem;
 }
