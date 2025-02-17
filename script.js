@@ -22,8 +22,9 @@ document.addEventListener('DOMContentLoaded', function() {
         return fetch(url)
           .then(response => response.text())
           .then(csv => {
-                return csv.split('\n').map(line => {
-                    const [name, artist, url] = line.split('\t'); // Use '\t' for tab separation
+                const lines = csv.split('\n');
+                return lines.slice(1).map(line => { // Skip the first line (header)
+                    const [name, artist, url] = line.split(',');
                     return { name: name.trim(), artist: artist.trim(), url: url.trim() };
                 });
             });
