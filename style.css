@@ -53,7 +53,7 @@ body::after {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0); /* Dark gray background */
+    background-color: rgba(0, 0, 0, 1);
 }
 
 #album-image {
