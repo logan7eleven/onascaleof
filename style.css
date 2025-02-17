@@ -1,3 +1,9 @@
+I understand. You want the images to scale up to the container's size (80vw x 80vw) while maintaining aspect ratio, and you don't want any part of the image to be cropped. It's okay if some parts of the container remain blank. You also want the container to be shaded with a dark grey color.
+
+Here's the updated CSS:
+
+CSS
+
 body {
     font-family: sans-serif;
     display: flex;
@@ -53,12 +59,13 @@ body::after {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark gray background */
 }
 
 #album-image {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain;
+    object-fit: contain; /* Key: Contain to show full image */
     object-position: center;
     border-radius: 0.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
