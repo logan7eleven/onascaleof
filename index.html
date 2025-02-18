@@ -5,17 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>On a Scale Of</title>
     <link rel="stylesheet" href="style.css">
+    
+    <!-- ✅ Firebase SDK (Restored to Correct Format) -->
+    <script defer src="https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js"></script>
+    
+    <!-- ✅ Your Main Script -->
+    <script defer src="script.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>On a Scale Of</h1>
+        
         <div class="screen">
             <img id="album-image" src="" alt="Album Cover">
             <div id="album-tooltip" class="tooltip"></div>
         </div>
+
         <div class="scale">
             <img id="scale-image" src="images/scale.png" alt="Scale">
         </div>
+
         <div class="people">
             <div class="person">
                 <img id="person-left" src="" alt="Person Left">
@@ -26,19 +36,16 @@
                 <p id="person-right-name"></p>
             </div>
         </div>
+
         <div class="buttons">
-            <button id="arrow-left">&#9665;</button>
-            <button id="button-enter">ENTER</button>
-            <button id="arrow-right">&#9655;</button>
+            <!-- ✅ Restored Image Buttons for Voting -->
+            <img id="arrow-left" src="images/arrow-left.png" alt="Left Arrow">
+            <img id="button-enter" src="images/enter.png" alt="Enter Button">
+            <img id="arrow-right" src="images/arrow-right.png" alt="Right Arrow">
         </div>
-        <button id="button-next">NEXT</button>
+
+        <!-- ✅ Restored Image Button for Skipping -->
+        <img id="button-next" src="images/next.png" alt="Next Button">
     </div>
-
-    <!-- ✅ Load Firebase using the correct non-module CDN links -->
-    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js"></script>
-
-    <!-- ✅ Load your script AFTER Firebase -->
-    <script src="script.js"></script>
 </body>
 </html>
