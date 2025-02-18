@@ -100,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 albumID: currentAlbumIndex,  // Ensure this is stored correctly
                 vote_value: currentVote,  // Ensure this is stored correctly
                 peopleID: peopleID, // Ensure this is stored correctly
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then(() => {
                 console.log("Vote successfully submitted:", { albumID: currentAlbumIndex, vote_value: currentVote, peopleID });
