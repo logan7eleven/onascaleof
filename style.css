@@ -116,7 +116,7 @@ body::after {
     justify-content: space-between;
     margin-bottom: 1%;
     box-sizing: border-box;
-    height: 5em; /* Scaled with the font side*/
+    height: 25em; /* set height here*/
 }
 
 .person-arrow-button {
@@ -127,29 +127,31 @@ body::after {
     cursor: pointer;
     border-radius: 0.5rem;
     width: calc(50% - 0.25rem);
-    height: 100%;
+    height: 100%;/*Take all space*/
     padding: 1%;
     box-sizing: border-box;
-    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .person-arrow-button:first-of-type {
     flex-direction: row;
+    background-color: #BAA0FA; /* Purple for left side */
 }
 
 .person-arrow-button:last-of-type {
     flex-direction: row-reverse;
+    background-color: #F7B73D; /* Gold for right side */
 }
 
 .person-image-container {
-    position: absolute;
+    position: relative;
     height: 100%;
-    width: 75%;
+    width: 75%;/* The 3/4 ratio is achieved*/
     box-sizing: border-box;
+    overflow:hidden;
 }
 
 .person-arrow-button img {
-    position: absolute;
+    position: absolute;/*Allows for proper fit*/
     top: 0;
     left: 0;
     width: 100%;
