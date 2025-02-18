@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentAlbumIndex = 0;
     let currentVote = 0;
     let voteSubmitted = false;
-    let peopleID = ""; // Will be set dynamically from people.csv
+    let peopleID = 0; // Will be set dynamically from people.csv
 
     // Firebase setup
     const firebaseConfig = {
@@ -107,7 +107,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 albumID: currentAlbumIndex, 
                 vote_value: currentVote, 
                 peopleID: peopleID, 
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then(() => {
                 console.log("Vote submitted:", { albumID: currentAlbumIndex, vote_value: currentVote, peopleID });
