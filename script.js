@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const personRight = document.getElementById('person-right');
     const personLeftName = document.getElementById('person-left-name');
     const personRightName = document.getElementById('person-right-name');
-    const arrowLeft = document.getElementById('arrow-left');
-    const arrowRight = document.getElementById('arrow-right');
     const buttonEnter = document.getElementById('button-enter');
     const buttonNext = document.getElementById('button-next');
     const albumTooltip = document.getElementById('album-tooltip');
@@ -75,13 +73,11 @@ function fetchPeople(url) {
         if (leftPerson) {
             people.left = leftPerson;
             personLeft.src = leftPerson.url;
-            personLeftName.textContent = leftPerson.name;
         }
         
         if (rightPerson) {
             people.right = rightPerson;
             personRight.src = rightPerson.url;
-            personRightName.textContent = rightPerson.name;
         }
     }
 
@@ -165,8 +161,8 @@ function fetchPeople(url) {
             albums = albumData;
             loadPeople(peopleData);
 
-            buttonPersonLeft.addEventListener('click', () => moveScale('left'));
-            buttonPersonRight.addEventListener('click', () => moveScale('right'));
+            buttonPersonLeft.addEventListener('click', () => moveScale('left')); // Line 173: Hook up left button
+            buttonPersonRight.addEventListener('click', () => moveScale('right')); // Line 174: Hook up right button
             buttonEnter.addEventListener('click', submitVote);
 
             document.addEventListener('keydown', (event) => {
