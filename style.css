@@ -47,11 +47,11 @@ body::after {
 }
 
 #site-title {
-    font-size: 8%; /* Increased font size */
+    font-size: 10%; /* 1/10 of container height */
     margin-bottom: 1.5%;
     color: black;
     margin-top: 0.25%;
-    width: 100%; /* Take full width */
+    width: 100%;
 }
 
 #album-container {
@@ -121,13 +121,14 @@ body::after {
     display: flex;
     align-items: center;
     border: none;
-    padding: 0.5%; /* Padding around image and arrow */
+    padding: 0; /* Remove padding */
     cursor: pointer;
-    border-radius: 0.5rem; /* Rounded edges like other buttons */
-    width: calc(50% - 0.25rem); /* Account for gap between buttons */
-    height: 30%; /* Increased button height */
-    transition: filter 0.3s ease; /* Transition for the filter */
+    border-radius: 0.5rem;
+    width: calc(50% - 0.25rem);
+    height: calc(25% - 1% - 0.25rem); /* 25% of container height, minus margin and a bit more*/
+    transition: filter 0.3s ease;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .person-arrow-button:first-of-type {
@@ -141,16 +142,23 @@ body::after {
 }
 
 .person-image-container {
-    width: 15%;
-    height: 100%; /* Fill up the container height */
-    position: relative; /* For absolute positioning of overlay text */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .person-arrow-button img {
-    width: 100%; /* Fill the container */
-    height: 100%; /* Fill the container */
+    max-width: 100%; /* Take full width */
+    max-height: 100%; /* Take full height */
+    width: auto;
+    height: auto;
     object-fit: cover;
-    object-position: 50% 33.333%;
+    object-position: center;
     border-radius: 0.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
