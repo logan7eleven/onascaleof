@@ -156,7 +156,7 @@ body::after {
 
 #button-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Keep column layout */
     justify-content: center;
     align-items: center;
     gap: 0.625rem;
@@ -168,6 +168,7 @@ body::after {
     display: flex;
     width: 70%;
     justify-content: center;
+    margin-bottom: 0.625rem; /* Add some space below arrows */
 }
 
 #arrow-container button {
