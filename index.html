@@ -5,46 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>onascaleof.com</title>
     <link rel="stylesheet" href="style.css">
-    
-    <!-- ✅ Firebase SDK (Restored to Correct Format) -->
     <script defer src="https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js"></script>
-    
-    <!-- ✅ Your Main Script -->
     <script defer src="script.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>onascaleof.com</h1>
-        
-        <div class="screen">
-            <img id="album-image" src="" alt="Album Cover">
-            <div id="album-tooltip" class="tooltip"></div>
-        </div>
+    <h1 id="site-title">onascaleof.com</h1>
 
-        <div class="scale">
-            <img id="scale-image" src="images/scale.png" alt="Scale">
-        </div>
+    <div id="album-container">
+        <img id="album-image" src="" alt="Album Cover">
+        <div id="album-tooltip"></div> <!-- Tooltip here -->
+    </div>
 
-        <div class="people">
-            <div class="person">
-                <img id="person-left" src="" alt="Person Left">
-                <p id="person-left-name"></p>
-            </div>
-            <div class="person">
-                <img id="person-right" src="" alt="Person Right">
-                <p id="person-right-name"></p>
-            </div>
-        </div>
+    <div id="scale-container">
+        <img id="scale-image" src="images/scale.png" alt="Scale">
+    </div>
 
-        <div id="button-container">
-            <div id = "arrow-container">
-                <button id="arrow-left"><img src="images/arrow_L.png"></button>
-                <button id="arrow-right"><img src="images/arrow_R.png"></button>
-            </div>
-            <button id="button-enter"><img src="images/button_enter.png"></button>
-            <button id="button-next"><img src="images/button_next.png"></button>
+    <div id="people-container">
+        <div id="person-left-container">
+            <img id="person-left" src="" alt="Person Left">
+            <div id="person-left-name"></div>
         </div>
+        <div id="person-right-container">
+            <img id="person-right" src="" alt="Person Right">
+            <div id="person-right-name"></div>
+        </div>
+    </div>
 
+    <div id="button-container">
+        <div id="arrow-container">
+            <button id="arrow-left"><img src="images/arrow_L.png"></button>
+            <button id="arrow-right"><img src="images/arrow_R.png"></button>
+        </div>
+        <button id="button-enter"><img src="images/button_enter.png"></button>
+        <button id="button-next"><img src="images/button_next.png"></button>
+    </div>
 </body>
 </html>
