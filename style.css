@@ -118,17 +118,17 @@ body::after {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 50%;
-    height: 16vh; /* 4 times the height of app-button */
     border: none;
-    padding: 0;
+    padding: 0.5rem; /* Padding around image and arrow */
     cursor: pointer;
+    border-radius: 0.5rem; /* Rounded edges like other buttons */
+    width: calc(50% - 0.25rem); /* Account for gap between buttons */
+    height: 21vw; /* Image height (20vw) + 2 * padding (0.5rem) */
 }
 
 .person-arrow-button:first-of-type {
     background-color: #BAA0FA;
-    flex-direction: row;  /* Image on the left, arrow on the right */
+    flex-direction: row; /* Image on the left, arrow on the right */
 }
 
 .person-arrow-button:last-of-type {
@@ -143,13 +143,13 @@ body::after {
     object-position: 50% 33.333%;
     border-radius: 0.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    margin: 0 0.5rem; /* Margin between image and button edge */
 }
 
 .arrow-left,
 .arrow-right {
     font-size: 8vh; /* Large arrow size */
     color: rgba(0, 0, 0, 0.3); /* Adjust color as needed */
-    padding: 0 1rem; /* Space between image and arrow */
 }
 
 #button-row {
