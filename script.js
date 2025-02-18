@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const buttonEnter = document.getElementById('button-enter');
     const buttonNext = document.getElementById('button-next');
     const albumTooltip = document.getElementById('album-tooltip');
+    const buttonPersonLeft = document.getElementById('button-person-left');
+    const buttonPersonRight = document.getElementById('button-person-right');
 
     let albums = [];
     let people = { left: {}, right: {} };
@@ -163,8 +165,9 @@ function fetchPeople(url) {
             albums = albumData;
             loadPeople(peopleData);
 
-            arrowLeft.addEventListener('click', () => moveScale('left'));
-            arrowRight.addEventListener('click', () => moveScale('right'));
+            buttonPersonLeft.addEventListener('click', () => moveScale('left'));
+            buttonPersonRight.addEventListener('click', () => moveScale('right'));
+            buttonEnter.addEventListener('click', submitVote);
 
             document.addEventListener('keydown', (event) => {
                 if (event.key === 'ArrowLeft') {
@@ -173,15 +176,12 @@ function fetchPeople(url) {
                     moveScale('right');
                 }
             });
-
-            buttonEnter.addEventListener('click', submitVote);
             albumImage.addEventListener('click', () => {
                 const album = albums[currentAlbumIndex];
                 albumTooltip.textContent = `${album.name} by ${album.artist}`;
                 albumTooltip.style.display = albumTooltip.style.display === 'none' ? 'block' : 'none';
             });
 
-            updateDisplay();
             getRandomAlbum();
         })
         .catch(error => console.error('Error loading data:', error));
