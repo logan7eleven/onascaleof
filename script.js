@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
             buttonEnter.disabled = true;
             voteSubmitted = true;
 
+            const albumID = currentAlbumIndex +1;
             db.collection("votes").add({
                 albumID: currentAlbumIndex, 
                 peopleID: peopleID, 
