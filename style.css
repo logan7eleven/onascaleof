@@ -109,64 +109,58 @@ body::after {
 }
 
 #person-arrow-container {
-    width: 80%;
+    width: 80%; /* Match album container width */
     display: flex;
-    justify-content: space-between; /* Distribute buttons evenly */
-    margin-bottom: 0.625%;
+    justify-content: space-between;
+    margin-bottom: 1%; /* Spacing similar to the button row below */
     box-sizing: border-box;
 }
 
 .person-arrow-button {
-    position: relative;
+    position: relative; /* For absolute positioning */
     display: flex;
     align-items: center;
     border: none;
-    padding: 0; /* Remove padding */
     cursor: pointer;
     border-radius: 0.5rem;
-    width: calc(50% - 0.25rem);
-    height: calc(25% - 1% - 0.25rem); /* 25% of container height, minus margin and a bit more*/
-    transition: filter 0.3s ease;
+    width: calc(50% - 0.25rem); /* Account for the space between buttons */
+    height: auto;           /* Adjust automatically based on content */
+    padding: 0.5%;          /* Provide some margin around the content */
     box-sizing: border-box;
-    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.05); /* Subtle background */
 }
 
 .person-arrow-button:first-of-type {
-    background-color: #BAA0FA;
-    flex-direction: row; /* Image on the left, arrow on the right */
+    flex-direction: row;     /* Image on left, arrow on right */
 }
 
 .person-arrow-button:last-of-type {
-    background-color: #F7B73D;
-    flex-direction: row-reverse; /* Image on the right, arrow on the left */
+    flex-direction: row-reverse; /* Image on right, arrow on left */
 }
 
 .person-image-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: calc(25% * (3/4)); /* Based on height, but maintain 3:4 ratio */
+    height: 25%; /* 1/4 of the main container height */
+    position: relative; /* For absolutely positioning the image within */
 }
 
 .person-arrow-button img {
-    max-width: 100%; /* Take full width */
-    max-height: 100%; /* Take full height */
-    width: auto;
-    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;    /* Make the image fill the container */
+    height: 100%;   /* Make the image fill the container */
     object-fit: cover;
-    object-position: center;
+    object-position: 50% 33.333%;
     border-radius: 0.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 
 .arrow-left,
 .arrow-right {
-    font-size: 8%; /* Large arrow size */
+    font-size: 8%;       /* Large arrow size, adjust as needed */
     color: rgba(0, 0, 0, 0.3); /* Adjust color as needed */
+    padding: 0 2%;         /* Add some horizontal padding */
 }
 
 #button-row {
