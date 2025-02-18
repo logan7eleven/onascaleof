@@ -202,12 +202,7 @@ body::after {
     line-height: 1; /* Ensure text fits within container */
 }
 
-#album-info-text {
-    font-size: 15vw; /* Relative to image width */
-}
-
 #person-left-info-text,
 #person-right-info-text {
-    font-size: 15vw; /* Relative to image width */
     word-break: break-word; /* Prevent word splitting */
 }
