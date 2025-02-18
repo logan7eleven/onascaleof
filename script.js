@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const personRightInfoText = document.getElementById('person-right-info-text');
     const albumContainer = document.getElementById('album-container');
     const personArrowContainer = document.getElementById('person-arrow-container');
+    const personImageContainer = document.getElementsByClassName('person-image-container');
 
     let albums = [];
     let people = { left: {}, right: {} };
@@ -30,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
         authDomain: "onascaleof-2e3b4.firebaseapp.com",
         projectId: "onascaleof-2e3b4",
-        storageBucket: "onascaleof-2e3b4.appspot.com",
+        storageBucket: "onascaleof-2e3b4",
         messagingSenderId: "96599540311",
         appId: "1:96599540311:web:47c86e4e6fce30e3065912"
     };
@@ -196,12 +197,12 @@ function loadPeople(data) {
 
             // Person Left
             personLeft.classList.toggle('image-faded', infoMode);
-            personLeftInfoText.textContent = infoMode ? personLeftName.textContent : '';
-            personLeftInfoText.style.display = infoMode ? 'block' : 'none';
+            personLeftInfoText.textContent = infoMode ? people.left.name : '';
+            personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
 
             // Person Right
             personRight.classList.toggle('image-faded', infoMode);
-            personRightInfoText.textContent = infoMode ? personRightName.textContent : '';
-            personRightInfoText.style.display = infoMode ? 'block' : 'none';
+            personRightInfoText.textContent = infoMode ? people.right.name : '';
+            personRightInfoText.style.display = infoMode ? 'flex' : 'none';
         });
 });
