@@ -80,13 +80,11 @@ function loadPeople(data) {
         if (leftPerson) {
             people.left = leftPerson;
             personLeft.src = leftPerson.url;
-            personLeftName.textContent = leftPerson.name;
         }
         
         if (rightPerson) {
             people.right = rightPerson;
             personRight.src = rightPerson.url;
-            personRightName.textContent = rightPerson.name;
         }
     }
 
@@ -166,11 +164,10 @@ function loadPeople(data) {
     Promise.all([fetchAlbums(albumsCSV), fetchPeople(peopleCSV)])
         .then(([albumData, peopleData]) => {
             albums = albumData;
-            loadPeople(peopleData);
-
-            buttonPersonLeft.addEventListener('click', () => moveScale('left'));
-            buttonPersonRight.addEventListener('click', () => moveScale('right'));
-            buttonEnter.addEventListener('click', submitVote);
+             loadPeople(peopleData);
+             buttonPersonLeft.addEventListener('click', () => moveScale('left'));
+             buttonPersonRight.addEventListener('click', () => moveScale('right'));
+             buttonEnter.addEventListener('click', submitVote);
 
             document.addEventListener('keydown', (event) => {
                 if (event.key === 'ArrowLeft') {
@@ -189,49 +186,22 @@ function loadPeople(data) {
         })
         .catch(error => console.error('Error loading data:', error));
 
-    buttonInfo.addEventListener('click', () => {
-        infoMode = !infoMode;
+        buttonInfo.addEventListener('click', () => {
+            infoMode = !infoMode;
 
-        // Album
-        albumImage.classList.toggle('image-faded', infoMode);
-        albumInfoText.textContent = infoMode ? `${albums[currentAlbumIndex].name} by ${albums[currentAlbumIndex].artist}` : '';
-        albumInfoText.style.display = infoMode ? 'block' : 'none';
-        adjustTextSize(albumInfoText, albumContainer);
+            // Album
+            albumImage.classList.toggle('image-faded', infoMode);
+            albumInfoText.textContent = infoMode ? `${albums[currentAlbumIndex].name} by ${albums[currentAlbumIndex].artist}` : '';
+            albumInfoText.style.display = infoMode ? 'block' : 'none';
 
-        // Person Left
-        personLeft.classList.toggle('image-faded', infoMode);
-        personLeftInfoText.textContent = infoMode ? personLeftName.textContent : '';
-        personLeftInfoText.style.display = infoMode ? 'block' : 'none';
-        adjustTextSize(personLeftInfoText, buttonPersonLeft);
-        // Person Right
-        personRight.classList.toggle('image-faded', infoMode);
-        personRightInfoText.textContent = infoMode ? personRightName.textContent : '';
-        personRightInfoText.style.display = infoMode ? 'block' : 'none';
-        adjustTextSize(personRightInfoText, buttonPersonRight);
-    });
+            // Person Left
+            personLeft.classList.toggle('image-faded', infoMode);
+            personLeftInfoText.textContent = infoMode ? personLeftName.textContent : '';
+            personLeftInfoText.style.display = infoMode ? 'block' : 'none';
 
-        function adjustTextSize(textElement, containerElement) {
-            if (infoMode) {
-                const containerWidth = containerElement.offsetWidth;
-                const containerHeight = containerElement.offsetHeight;
-
-                // Start with a large font size and reduce it until it fits
-                let fontSize = 15; // Initial large size (in vw)
-                textElement.style.fontSize = fontSize + "vw";
-
-                // Check if the text overflows the container
-                while (textElement.scrollWidth > containerWidth || textElement.scrollHeight > containerHeight) {
-                    fontSize -= 0.5; // Reduce font size
-                    textElement.style.fontSize = fontSize + "vw";
-
-                    // Safety check to prevent infinite loop
-                    if (fontSize <= 0) {
-                        textElement.style.fontSize = "1vw"; // Minimum size
-                        break;
-                    }
-                }
-            } else {
-                textElement.style.fontSize = ""; // Reset to default
-            }
-        }
+            // Person Right
+            personRight.classList.toggle('image-faded', infoMode);
+            personRightInfoText.textContent = infoMode ? personRightName.textContent : '';
+            personRightInfoText.style.display = infoMode ? 'block' : 'none';
+        });
 });
