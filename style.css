@@ -97,63 +97,6 @@ body::after {
     margin: 0 auto;
 }
 
-#people-container {
-    position: relative;
-    width: 80vw;
-    margin-bottom: 1.25rem;
-    display: flex;
-    justify-content: space-between;
-}
-
-#people-container div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-}
-
-#person-left {
-    width: 15vw;
-    height: 20vw;
-    object-fit: cover;
-    object-position: 50% 33.333%;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-    outline: 0.3rem solid #BAA0FA;
-    margin-bottom: 1.0rem;
-}
-
-#person-right {
-    width: 15vw;
-    height: 20vw;
-    object-fit: cover;
-    object-position: 50% 33.333%;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-    outline: 0.3rem solid #F7B73D;
-    margin-bottom: 1.0rem;
-}
-
-#person-left-name,
-#person-right-name {
-    font-size: 1.0rem;
-    width: 12vw;
-    word-wrap: break-word;
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-#person-left-container {
-    text-align: center;
-    padding-top: 1.25rem;
-}
-
-#person-right-container {
-    text-align: center;
-    padding-top: 1.25rem;
-}
-
 #button-container {
     display: flex;
     flex-direction: column; /* Keep column layout */
@@ -164,18 +107,49 @@ body::after {
     width: 100%;
 }
 
-#arrow-container {
+#person-arrow-container {
+    width: 80vw;
     display: flex;
-    width: 70%;
-    justify-content: center;
-    margin-bottom: 0.625rem; /* Add some space below arrows */
+    justify-content: space-between; /* Distribute buttons evenly */
+    margin-bottom: 0.625rem;
 }
 
-#arrow-container button {
+.person-arrow-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 50%;
+    height: 16vh; /* 4 times the height of app-button */
     border: none;
+    padding: 0;
     cursor: pointer;
-    border-radius: 0 rem;
-    height: 3.75rem;
+}
+
+.person-arrow-button:first-of-type {
+    background-color: #BAA0FA;
+    flex-direction: row;  /* Image on the left, arrow on the right */
+}
+
+.person-arrow-button:last-of-type {
+    background-color: #F7B73D;
+    flex-direction: row-reverse; /* Image on the right, arrow on the left */
+}
+
+.person-arrow-button img {
+    width: 15vw;
+    height: 20vw;
+    object-fit: cover;
+    object-position: 50% 33.333%;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.arrow-left,
+.arrow-right {
+    font-size: 8vh; /* Large arrow size */
+    color: rgba(0, 0, 0, 0.3); /* Adjust color as needed */
+    padding: 0 1rem; /* Space between image and arrow */
 }
 
 #button-row {
