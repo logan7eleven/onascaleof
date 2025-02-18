@@ -47,7 +47,7 @@ body::after {
 }
 
 #site-title {
-    font-size: 10%; /* 1/10 of container height */
+    font-size: calc(var(--container-height) / 10); /* 1/10 of container height */
     margin-bottom: 1.5%;
     color: black;
     margin-top: 0.25%;
@@ -114,7 +114,7 @@ body::after {
     justify-content: space-between;
     margin-bottom: 1%; /* Spacing similar to the button row below */
     box-sizing: border-box;
-    height: 25%; /* NEW: Explicitly set height as 25% of the main container */
+    height: calc(var(--container-height) / 4); /* 1/4 of the container height */
 }
 
 .person-arrow-button {
@@ -140,9 +140,9 @@ body::after {
 }
 
 .person-image-container {
-    position: absolute;
-    height: 100%;
+    position: relative;
     width: calc(height * (3/4));
+    height: 100%;
     box-sizing: border-box;
 }
 
