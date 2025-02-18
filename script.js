@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const albumInfoText = document.getElementById('album-info-text');
     const personLeftInfoText = document.getElementById('person-left-info-text');
     const personRightInfoText = document.getElementById('person-right-info-text');
+    const albumContainer = document.getElementById('album-container');
+    const personArrowContainer = document.getElementById('person-arrow-container');
 
     let albums = [];
     let people = { left: {}, right: {} };
@@ -69,7 +71,7 @@ function fetchPeople(url) {
         });
 }
 
-    function loadPeople(data) {
+function loadPeople(data) {
         const filteredPeople = data.filter(person => person.peopleID === peopleID);
         
         const leftPerson = filteredPeople.find(person => person.side === 'L');
@@ -78,11 +80,13 @@ function fetchPeople(url) {
         if (leftPerson) {
             people.left = leftPerson;
             personLeft.src = leftPerson.url;
+            personLeftName.textContent = leftPerson.name;
         }
         
         if (rightPerson) {
             people.right = rightPerson;
             personRight.src = rightPerson.url;
+            personRightName.textContent = rightPerson.name;
         }
     }
 
@@ -192,15 +196,42 @@ function fetchPeople(url) {
         albumImage.classList.toggle('image-faded', infoMode);
         albumInfoText.textContent = infoMode ? `${albums[currentAlbumIndex].name} by ${albums[currentAlbumIndex].artist}` : '';
         albumInfoText.style.display = infoMode ? 'block' : 'none';
+        adjustTextSize(albumInfoText, albumContainer);
 
         // Person Left
         personLeft.classList.toggle('image-faded', infoMode);
         personLeftInfoText.textContent = infoMode ? personLeftName.textContent : '';
         personLeftInfoText.style.display = infoMode ? 'block' : 'none';
-
+        adjustTextSize(personLeftInfoText, buttonPersonLeft);
         // Person Right
         personRight.classList.toggle('image-faded', infoMode);
         personRightInfoText.textContent = infoMode ? personRightName.textContent : '';
         personRightInfoText.style.display = infoMode ? 'block' : 'none';
+        adjustTextSize(personRightInfoText, buttonPersonRight);
     });
+
+        function adjustTextSize(textElement, containerElement) {
+            if (infoMode) {
+                const containerWidth = containerElement.offsetWidth;
+                const containerHeight = containerElement.offsetHeight;
+
+                // Start with a large font size and reduce it until it fits
+                let fontSize = 15; // Initial large size (in vw)
+                textElement.style.fontSize = fontSize + "vw";
+
+                // Check if the text overflows the container
+                while (textElement.scrollWidth > containerWidth || textElement.scrollHeight > containerHeight) {
+                    fontSize -= 0.5; // Reduce font size
+                    textElement.style.fontSize = fontSize + "vw";
+
+                    // Safety check to prevent infinite loop
+                    if (fontSize <= 0) {
+                        textElement.style.fontSize = "1vw"; // Minimum size
+                        break;
+                    }
+                }
+            } else {
+                textElement.style.fontSize = ""; // Reset to default
+            }
+        }
 });
