@@ -1,10 +1,23 @@
-const currentPeopleID = "1"; // Change manually when needed
+const currentPeopleID = 1; // Change manually when needed
 let currentVote = 0;
 let albums = [];
 let people = {};
-let albumQueue = [];
 let currentAlbumIndex = 0;
 let voteSubmitted = false;
+let shuffledAlbumIndexes = [];
+
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 document.addEventListener('DOMContentLoaded', function() {
     const albumImage = document.getElementById('album-image');
@@ -30,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         name: name.trim(),
                         artist: artist.trim(),
                         url: url.trim(),
-                        albumID: albumID.trim()
+                        albumID: parseInt(albumID.trim(), 10)
                     };
                 });
             });
@@ -46,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     return {
                         name: name.trim(),
                         imgUrl: imgUrl.trim(),
-                        peopleID: peopleID.trim(),
+                        peopleID: parseInt(peopleID.trim(), 10),
                         side: side.trim()
                     };
                 });
@@ -57,23 +70,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function shuffleAlbums() {
-        albumQueue = [...albums];
-        for (let i = albumQueue.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [albumQueue[i], albumQueue[j]] = [albumQueue[j], albumQueue[i]];
-        }
-    }
-
-    function getNextAlbum() {
-        if (albumQueue.length === 0) {
-            shuffleAlbums();
-        }
+        shuffledAlbumIndexes = [...Array(albums.length).keys()].sort(() => Math.random() - 0.5);
         currentAlbumIndex = 0;
-        updateDisplay();
     }
 
     function updateDisplay() {
-        const album = albumQueue[currentAlbumIndex];
+        const album = albums[shuffledAlbumIndexes[currentAlbumIndex]];
         albumImage.src = album.url;
         albumTooltip.textContent = `${album.name} by ${album.artist}`;
         scaleImage.src = `images/scale.png`;
@@ -109,27 +111,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function submitVote() {
         if (!voteSubmitted) {
-            const album = albumQueue[currentAlbumIndex];
-            submitVoteToDatabase(album.albumID, currentVote, currentPeopleID);
+            const album = albums[shuffledAlbumIndexes[currentAlbumIndex]];
+            submitToDatabase(album.albumID, currentVote, currentPeopleID, 0);
             voteSubmitted = true;
             buttonEnter.disabled = true;
         }
     }
 
-    function submitVoteToDatabase(albumID, voteValue, peopleID) {
-        const voteData = {
-            albumID,
-            vote_value: voteValue,
-            peopleID
-        };
-        console.log("Submitting vote:", voteData);
-        // Firestore submission logic here
+    function skipAlbum() {
+        const album = albums[shuffledAlbumIndexes[currentAlbumIndex]];
+        submitToDatabase(album.albumID, 0, currentPeopleID, 1);
     }
 
-    function skipAlbum() {
-        const album = albumQueue[currentAlbumIndex];
-        console.log("Skipping album:", album.albumID);
-        // Firestore submission logic for skips
+    function submitToDatabase(albumID, voteValue, peopleID, skipValue) {
+        db.collection("votes").add({
+            albumID,
+            vote_value: voteValue,
+            peopleID,
+            skip: skipValue,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => console.log("Vote recorded"))
+          .catch(error => console.error("Error saving vote: ", error));
+    }
+
+    function nextAlbum() {
+        if (currentAlbumIndex < shuffledAlbumIndexes.length - 1) {
+            currentAlbumIndex++;
+        } else {
+            shuffleAlbums();
+            currentAlbumIndex = 0;
+        }
+        currentVote = 0;
+        updateDisplay();
     }
 
     arrowLeft.addEventListener("click", () => moveScale('left'));
@@ -137,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
     buttonEnter.addEventListener("click", submitVote);
     buttonNext.addEventListener("click", () => {
         skipAlbum();
-        getNextAlbum();
+        nextAlbum();
     });
     albumImage.addEventListener("click", () => {
         albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
@@ -156,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
             albums = albumData;
             people = peopleData;
             shuffleAlbums();
-            getNextAlbum();
+            updateDisplay();
         })
         .catch(error => console.error("Error loading data:", error));
 });
