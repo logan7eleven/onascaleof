@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentAlbumIndex = 0;
     let currentVote = 0;
     let voteSubmitted = false;
+    const peopleID = "set-your-peopleID-here"; // Replace with the correct peopleID
 
     // Firebase setup
     const firebaseConfig = {
@@ -31,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchCSV(url) {
         return fetch(url)
-          .then(response => response.text())
-          .then(csv => {
+            .then(response => response.text())
+            .then(csv => {
                 const lines = csv.split('\n');
                 return lines.slice(1).map(line => {
                     const [name, artist, url] = line.split(',');
@@ -72,43 +73,57 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function moveScale(direction) {
-      if (!voteSubmitted) {
-        if (direction === "right") {
-          currentVote = Math.min(100, currentVote + 5);
-        } else if (direction === "left") {
-          currentVote = Math.max(-100, currentVote - 5);
-        }
+        if (!voteSubmitted) {
+            if (direction === "right") {
+                currentVote = Math.min(100, currentVote + 5);
+            } else if (direction === "left") {
+                currentVote = Math.max(-100, currentVote - 5);
+            }
 
-        let scaleName = currentVote !== 0 ? `scale_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
-        scaleImage.src = `images/${scaleName}`;
-      }
+            let scaleName = currentVote !== 0 ? `scale_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
+            scaleImage.src = `images/${scaleName}`;
+        }
     }
 
     function submitVote() {
-      if (!voteSubmitted) {
-        let pickName = currentVote !== 0 ? `pick_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
-        let outlineColor = currentVote > 0 ? '#F7B73D' : currentVote < 0 ? '#BAA0FA' : '';
-        scaleImage.src = `images/${pickName}`;
-        albumImage.style.outline = outlineColor ? `0.3rem solid ${outlineColor}` : '';
-        buttonEnter.disabled = true;
-        voteSubmitted = true;
+        if (!voteSubmitted) {
+            let pickName = currentVote !== 0 ? `pick_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
+            let outlineColor = currentVote > 0 ? '#F7B73D' : currentVote < 0 ? '#BAA0FA' : '';
+            scaleImage.src = `images/${pickName}`;
+            albumImage.style.outline = outlineColor ? `0.3rem solid ${outlineColor}` : '';
+            buttonEnter.disabled = true;
+            voteSubmitted = true;
 
-        const album = albums[currentAlbumIndex];
-        db.collection("votes").add({
-            albumID: currentAlbumIndex,
-            vote_value: currentVote,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }
+            const album = albums[currentAlbumIndex];
+
+            db.collection("votes").add({
+                albumID: currentAlbumIndex,  // Ensure this is stored correctly
+                vote_value: currentVote,  // Ensure this is stored correctly
+                peopleID: peopleID, // Ensure this is stored correctly
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                console.log("Vote successfully submitted:", { albumID: currentAlbumIndex, vote_value: currentVote, peopleID });
+            })
+            .catch(error => {
+                console.error("Error submitting vote:", error);
+            });
+        }
     }
 
     buttonNext.addEventListener('click', async () => {
-        const album = albums[currentAlbumIndex];
-        db.collection("album_tracking").add({
-            albumID: currentAlbumIndex,
-            skip: 1,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        if (!voteSubmitted) {  
+            try {
+                await db.collection("album_tracking").add({
+                    albumID: currentAlbumIndex, 
+                    skip: 1, 
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                console.log("Skip recorded for album:", currentAlbumIndex);
+            } catch (error) {
+                console.error("Error logging skip:", error);
+            }
+        }
         getRandomAlbum();
     });
 
