@@ -206,8 +206,10 @@ body::after {
     word-wrap: break-word;
     font-weight: bold;
     font-family: monospace;
+    white-space: pre-wrap;
     line-height: 1; /* Ensure text fits within container */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
+    font-size: 5vmin;
 }
 
 #album-info-text {
