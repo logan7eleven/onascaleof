@@ -211,10 +211,8 @@ function loadPeople(data) {
                     moveScale('right');
                 }
             });
-            albumImage.addEventListener('click', () => {
+             albumImage.addEventListener('click', () => {
                 const album = albums[currentAlbumIndex];
-                albumTooltip.textContent = `${album.name} by ${album.artist}`;
-                albumTooltip.style.display = albumTooltip.style.display === 'none' ? 'block' : 'none';
             });
 
             getRandomAlbum();
