@@ -192,7 +192,6 @@ body::after {
     left: 50%;
     transform: translate(-50%, -50%);
     color: black;
-    font-size: 15vh;
     text-align: center;
     z-index: 10;
     display: none;
@@ -200,4 +199,14 @@ body::after {
     word-wrap: break-word;
     font-weight: bold;
     font-family: monospace;
+    line-height: 1; /* Ensure text fits within container */
+}
+
+#album-info-text {
+    font-size: 15vw; /* Relative to image width */
+}
+
+#person-left-info-text,
+#person-right-info-text {
+    font-size: 15vw; /* Relative to image width */
 }
