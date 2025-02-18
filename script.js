@@ -2,6 +2,7 @@ const currentPeopleID = "1"; // Change manually when needed
 let currentVote = 0;
 let albums = [];
 let people = {};
+let albumQueue = [];
 let currentAlbumIndex = 0;
 let voteSubmitted = false;
 
@@ -55,8 +56,24 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    function shuffleAlbums() {
+        albumQueue = [...albums];
+        for (let i = albumQueue.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [albumQueue[i], albumQueue[j]] = [albumQueue[j], albumQueue[i]];
+        }
+    }
+
+    function getNextAlbum() {
+        if (albumQueue.length === 0) {
+            shuffleAlbums();
+        }
+        currentAlbumIndex = 0;
+        updateDisplay();
+    }
+
     function updateDisplay() {
-        const album = albums[currentAlbumIndex];
+        const album = albumQueue[currentAlbumIndex];
         albumImage.src = album.url;
         albumTooltip.textContent = `${album.name} by ${album.artist}`;
         scaleImage.src = `images/scale.png`;
@@ -92,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function submitVote() {
         if (!voteSubmitted) {
-            const album = albums[currentAlbumIndex];
+            const album = albumQueue[currentAlbumIndex];
             submitVoteToDatabase(album.albumID, currentVote, currentPeopleID);
             voteSubmitted = true;
             buttonEnter.disabled = true;
@@ -110,15 +127,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function skipAlbum() {
-        const album = albums[currentAlbumIndex];
+        const album = albumQueue[currentAlbumIndex];
         console.log("Skipping album:", album.albumID);
         // Firestore submission logic for skips
-    }
-
-    function getRandomAlbum() {
-        currentAlbumIndex = Math.floor(Math.random() * albums.length);
-        currentVote = 0;
-        updateDisplay();
     }
 
     arrowLeft.addEventListener("click", () => moveScale('left'));
@@ -126,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
     buttonEnter.addEventListener("click", submitVote);
     buttonNext.addEventListener("click", () => {
         skipAlbum();
-        getRandomAlbum();
+        getNextAlbum();
     });
     albumImage.addEventListener("click", () => {
         albumTooltip.style.display = (albumTooltip.style.display === 'none') ? 'block' : 'none';
@@ -144,7 +155,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(([albumData, peopleData]) => {
             albums = albumData;
             people = peopleData;
-            getRandomAlbum();
+            shuffleAlbums();
+            getNextAlbum();
         })
         .catch(error => console.error("Error loading data:", error));
 });
