@@ -60,14 +60,25 @@ function fetchPeople(url) {
         .then(csv => {
             const lines = csv.split('\n');
             return lines.map(line => {
-                const [name, url, id, side] = line.split(',');
+                const parts = line.split(',');
+                if (parts.length !== 4) {
+                    console.warn("Skipping malformed line in people.csv:", line);
+                    return null; // Skip this line
+                }
+                const [name, url, id, side] = parts.map(part => part.trim()); // Trim whitespace
+                const peopleID = parseInt(id); // Parse the ID
+                if (isNaN(peopleID)) {
+                    console.warn("Invalid peopleID in line:", line);
+                    return null; // Skip this line
+                }
+
                 return { 
-                    name: name.trim(), 
-                    url: url.trim(), 
-                    peopleID: parseInt(id.trim()), 
-                    side: side.trim()
+                    name: name, 
+                    url: url, 
+                    peopleID: peopleID, 
+                    side: side
                 };
-            });
+            }).filter(person => person !== null); // Remove skipped lines
         });
 }
 
