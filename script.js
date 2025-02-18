@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const albumTooltip = document.getElementById('album-tooltip');
 
     let albums = [];
-    let people = {};
+    let people = [];
     let currentAlbumIndex = 0;
     let currentVote = 0;
     let voteSubmitted = false;
-    let peopleID = 0; // Will be set dynamically from people.csv
+    let peopleID = 1; // Manually set peopleID
 
     // Firebase setup
     const firebaseConfig = {
@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return fetch(url)
             .then(response => response.text())
             .then(csv => {
-                const lines = csv.split('\n');
-                return lines.slice(1).map(line => {
+                const lines = csv.split('\n').slice(1);
+                return lines.map(line => {
                     const [name, artist, url] = line.split(',');
                     return { name: name.trim(), artist: artist.trim(), url: url.trim() };
                 });
@@ -46,14 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return fetch(url)
             .then(response => response.text())
             .then(csv => {
-                const lines = csv.split('\n');
-                const firstPerson = lines[1].split(','); // Assuming first row is a header
-
-                return {
-                    left: firstPerson[0].trim(),
-                    right: firstPerson[1].trim(),
-                    peopleID: firstPerson[2].trim() // Extract peopleID
-                };
+                const lines = csv.split('\n').slice(1);
+                return lines.map(line => {
+                    const [name, url, id, side] = line.split(',').map(item => item.trim());
+                    return { name, url, peopleID: parseInt(id), side };
+                });
             });
     }
 
@@ -62,15 +59,22 @@ document.addEventListener('DOMContentLoaded', function() {
         albumImage.src = album.url;
         albumTooltip.textContent = `${album.name} by ${album.artist}`;
         scaleImage.src = `images/scale.png`;
-        personLeft.src = `images/person1.png`;
-        personRight.src = `images/person2.png`;
-        personLeftName.textContent = people.left;
-        personRightName.textContent = people.right;
-        peopleID = people.peopleID; // Set peopleID from CSV
         albumTooltip.style.display = 'none';
         albumImage.style.outline = '';
         voteSubmitted = false;
         buttonEnter.disabled = false;
+
+        const leftPerson = people.find(p => p.peopleID === peopleID && p.side === 'L');
+        const rightPerson = people.find(p => p.peopleID === peopleID && p.side === 'R');
+
+        if (leftPerson) {
+            personLeft.src = leftPerson.url;
+            personLeftName.textContent = leftPerson.name;
+        }
+        if (rightPerson) {
+            personRight.src = rightPerson.url;
+            personRightName.textContent = rightPerson.name;
+        }
     }
 
     function getRandomAlbum() {
@@ -86,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (direction === "left") {
                 currentVote = Math.max(-100, currentVote - 5);
             }
-
             let scaleName = currentVote !== 0 ? `scale_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
             scaleImage.src = `images/${scaleName}`;
         }
@@ -100,8 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
             albumImage.style.outline = outlineColor ? `0.3rem solid ${outlineColor}` : '';
             buttonEnter.disabled = true;
             voteSubmitted = true;
-
-            const album = albums[currentAlbumIndex];
 
             db.collection("votes").add({
                 albumID: currentAlbumIndex, 
@@ -122,8 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 await db.collection("votes").add({
                     albumID: currentAlbumIndex, 
-                    skip: 1, 
                     peopleID: peopleID,
+                    skips: 1
                 });
                 console.log("Skip recorded for album:", currentAlbumIndex);
             } catch (error) {
@@ -133,29 +134,20 @@ document.addEventListener('DOMContentLoaded', function() {
         getRandomAlbum();
     });
 
-    personLeft.src = `images/person1.png`;
-    personRight.src = `images/person2.png`;
-
     Promise.all([fetchCSV('albums.csv'), fetchPeople('people.csv')])
         .then(([albumData, peopleData]) => {
             albums = albumData;
             people = peopleData;
-
             arrowLeft.addEventListener('click', () => moveScale('left'));
             arrowRight.addEventListener('click', () => moveScale('right'));
 
             document.addEventListener('keydown', (event) => {
-                if (event.key === 'ArrowLeft') {
-                    moveScale('left');
-                } else if (event.key === 'ArrowRight') {
-                    moveScale('right');
-                }
+                if (event.key === 'ArrowLeft') moveScale('left');
+                else if (event.key === 'ArrowRight') moveScale('right');
             });
 
             buttonEnter.addEventListener('click', submitVote);
             albumImage.addEventListener('click', () => {
-                const album = albums[currentAlbumIndex];
-                albumTooltip.textContent = `${album.name} by ${album.artist}`;
                 albumTooltip.style.display = albumTooltip.style.display === 'none' ? 'block' : 'none';
             });
 
