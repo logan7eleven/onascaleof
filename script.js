@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const albumTooltip = document.getElementById('album-tooltip');
 
     let albums = [];
-    let people = [];
+    let people = { left: {}, right: {} };
     let currentAlbumIndex = 0;
     let currentVote = 0;
     let voteSubmitted = false;
-    let peopleID = 1; // Manually set peopleID
+    let peopleID = 1; // Manually set the active peopleID
 
     // Firebase setup
     const firebaseConfig = {
@@ -35,23 +35,36 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.text())
             .then(csv => {
                 const lines = csv.split('\n');
-                return lines.map(line => {
-                    const [name, artist, url] = line.split(',');
-                    return { name: name.trim(), artist: artist.trim(), url: url.trim() };
+                return lines.map((line, index) => {
+                    const [name, url, id, side] = line.split(',');
+                    return { 
+                        name: name.trim(), 
+                        url: url.trim(), 
+                        peopleID: parseInt(id.trim()), 
+                        side: side.trim(),
+                        albumID: index + 1 // Ensure correct albumID assignment
+                    };
                 });
             });
     }
 
-    function fetchPeople(url) {
-        return fetch(url)
-            .then(response => response.text())
-            .then(csv => {
-                const lines = csv.split('\n');
-                return lines.map(line => {
-                    const [name, url, id, side] = line.split(',').map(item => item.trim());
-                    return { name, url, peopleID: parseInt(id), side };
-                });
-            });
+    function loadPeople(data) {
+        const filteredPeople = data.filter(person => person.peopleID === peopleID);
+        
+        const leftPerson = filteredPeople.find(person => person.side === 'L');
+        const rightPerson = filteredPeople.find(person => person.side === 'R');
+
+        if (leftPerson) {
+            people.left = leftPerson;
+            personLeft.src = leftPerson.url;
+            personLeftName.textContent = leftPerson.name;
+        }
+        
+        if (rightPerson) {
+            people.right = rightPerson;
+            personRight.src = rightPerson.url;
+            personRightName.textContent = rightPerson.name;
+        }
     }
 
     function updateDisplay() {
@@ -63,18 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
         albumImage.style.outline = '';
         voteSubmitted = false;
         buttonEnter.disabled = false;
-
-        const leftPerson = people.find(p => p.peopleID === peopleID && p.side === 'L');
-        const rightPerson = people.find(p => p.peopleID === peopleID && p.side === 'R');
-
-        if (leftPerson) {
-            personLeft.src = leftPerson.url;
-            personLeftName.textContent = leftPerson.name;
-        }
-        if (rightPerson) {
-            personRight.src = rightPerson.url;
-            personRightName.textContent = rightPerson.name;
-        }
     }
 
     function getRandomAlbum() {
@@ -90,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (direction === "left") {
                 currentVote = Math.max(-100, currentVote - 5);
             }
+
             let scaleName = currentVote !== 0 ? `scale_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
             scaleImage.src = `images/${scaleName}`;
         }
@@ -104,14 +106,15 @@ document.addEventListener('DOMContentLoaded', function() {
             buttonEnter.disabled = true;
             voteSubmitted = true;
 
-            const albumID = currentAlbumIndex +1;
+            const albumID = albums[currentAlbumIndex].albumID;
+
             db.collection("votes").add({
-                albumID: currentAlbumIndex, 
-                peopleID: peopleID, 
+                albumID: albumID, 
                 vote_value: currentVote, 
+                peopleID: peopleID, 
             })
             .then(() => {
-                console.log("Vote submitted:", { albumID: currentAlbumIndex, vote_value: currentVote, peopleID });
+                console.log("Vote submitted:", { albumID: albumID, vote_value: currentVote, peopleID });
             })
             .catch(error => {
                 console.error("Error submitting vote:", error);
@@ -122,12 +125,13 @@ document.addEventListener('DOMContentLoaded', function() {
     buttonNext.addEventListener('click', async () => {
         if (!voteSubmitted) {  
             try {
+                const albumID = albums[currentAlbumIndex].albumID;
                 await db.collection("votes").add({
-                    albumID: currentAlbumIndex, 
-                    peopleID: peopleID,
+                    albumID: albumID, 
+                    peopleID: peopleID, 
                     skips: 1
                 });
-                console.log("Skip recorded for album:", currentAlbumIndex);
+                console.log("Skip recorded for album:", albumID);
             } catch (error) {
                 console.error("Error logging skip:", error);
             }
@@ -135,20 +139,26 @@ document.addEventListener('DOMContentLoaded', function() {
         getRandomAlbum();
     });
 
-    Promise.all([fetchCSV('albums.csv'), fetchPeople('people.csv')])
+    Promise.all([fetchCSV('albums.csv'), fetchCSV('people.csv')])
         .then(([albumData, peopleData]) => {
             albums = albumData;
-            people = peopleData;
+            loadPeople(peopleData);
+
             arrowLeft.addEventListener('click', () => moveScale('left'));
             arrowRight.addEventListener('click', () => moveScale('right'));
 
             document.addEventListener('keydown', (event) => {
-                if (event.key === 'ArrowLeft') moveScale('left');
-                else if (event.key === 'ArrowRight') moveScale('right');
+                if (event.key === 'ArrowLeft') {
+                    moveScale('left');
+                } else if (event.key === 'ArrowRight') {
+                    moveScale('right');
+                }
             });
 
             buttonEnter.addEventListener('click', submitVote);
             albumImage.addEventListener('click', () => {
+                const album = albums[currentAlbumIndex];
+                albumTooltip.textContent = `${album.name} by ${album.artist}`;
                 albumTooltip.style.display = albumTooltip.style.display === 'none' ? 'block' : 'none';
             });
 
