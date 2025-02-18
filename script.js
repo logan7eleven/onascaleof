@@ -84,6 +84,7 @@ function fetchPeople(url) {
         .then(csv => {
             const lines = csv.split('\n');
             return lines.map(line => {
+                console.log("Processing line:", line);/*Add this line*/
                 const parts = line.split(',');
                 if (parts.length !== 4) {
                     console.warn("Skipping malformed line in people.csv:", line);
@@ -115,11 +116,13 @@ function loadPeople(data) {
         if (leftPerson) {
             people.left = leftPerson;
             personLeft.src = leftPerson.url;
+            console.log("Left person's URL:", leftPerson.url);/*Add this line*/
         }
         
         if (rightPerson) {
             people.right = rightPerson;
             personRight.src = rightPerson.url;
+            console.log("Right person's URL:", rightPerson.url);/*Add this line*/
         }
     }
 
