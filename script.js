@@ -155,7 +155,7 @@ function fetchPeople(url) {
         getRandomAlbum();
     });
 
-    Promise.all([fetchCSV('albums.csv'), fetchCSV('people.csv')])
+    Promise.all([fetchAlbums(url), fetchPeople(url)])
         .then(([albumData, peopleData]) => {
             albums = albumData;
             loadPeople(peopleData);
