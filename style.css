@@ -183,7 +183,7 @@ body::after {
 }
 
 .image-faded {
-    filter: grayscale(100%) brightness(1.75);
+    filter: grayscale(100%) brightness(1.75) blur(5px);
 }
 
 .overlay-text {
@@ -192,10 +192,12 @@ body::after {
     left: 50%;
     transform: translate(-50%, -50%);
     color: black;
-    font-size: 3vh;
+    font-size: 15vh;
     text-align: center;
     z-index: 10;
     display: none;
     width: 100%;
     word-wrap: break-word;
+    font-weight: bold;
+    font-family: monospace;
 }
