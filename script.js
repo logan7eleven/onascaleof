@@ -1,3 +1,15 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
+    authDomain: "onascaleof-2e3b4.firebaseapp.com",
+    projectId: "onascaleof-2e3b4",
+    storageBucket: "onascaleof-2e3b4.firebasestorage.app",
+    messagingSenderId: "96599540311",
+    appId: "1:96599540311:web:47c86e4e6fce30e3065912"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 const currentPeopleID = 1; // Change manually when needed
 let currentVote = 0;
 let albums = [];
@@ -6,10 +18,7 @@ let currentAlbumIndex = 0;
 let voteSubmitted = false;
 let shuffledAlbumIndexes = [];
 
-// Firestore reference (No need for imports now)
-const db = firebase.firestore();
-
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const albumImage = document.getElementById('album-image');
     const scaleImage = document.getElementById('scale-image');
     const personLeft = document.getElementById('person-left');
@@ -116,9 +125,9 @@ document.addEventListener('DOMContentLoaded', function () {
     async function submitToDatabase(albumID, voteValue, peopleID, skipValue) {
         try {
             await db.collection("votes").add({
-                albumID: albumID,
+                albumID,
                 vote_value: voteValue,
-                peopleID: peopleID,
+                peopleID,
                 skip: skipValue,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
