@@ -66,22 +66,7 @@ body::after {
     border-radius: 0.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition: border 0.3s ease-in-out;
-}
-
-#album-tooltip {
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid #ccc;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
-    z-index: 100;
-    top: -1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: none;
-    white-space: nowrap;
+    transition: filter 0.3s ease; /* Transition for the filter */
 }
 
 #scale-container {
@@ -124,6 +109,7 @@ body::after {
     border-radius: 0.5rem; /* Rounded edges like other buttons */
     width: calc(50% - 0.25rem); /* Account for gap between buttons */
     height: 21vw; /* Image height (20vw) + 2 * padding (0.5rem) */
+    transition: filter 0.3s ease; /* Transition for the filter */
 }
 
 .person-arrow-button:first-of-type {
@@ -194,4 +180,22 @@ body::after {
 
 #button-next img {
     max-height: 2.375rem;
+}
+
+.image-faded {
+    filter: grayscale(100%) brightness(1.75);
+}
+
+.overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    font-size: 3vh;
+    text-align: center;
+    z-index: 10;
+    display: none;
+    width: 100%;
+    word-wrap: break-word;
 }
