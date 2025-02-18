@@ -106,8 +106,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             db.collection("votes").add({
                 albumID: currentAlbumIndex, 
-                vote_value: currentVote, 
                 peopleID: peopleID, 
+                vote_value: currentVote, 
             })
             .then(() => {
                 console.log("Vote submitted:", { albumID: currentAlbumIndex, vote_value: currentVote, peopleID });
