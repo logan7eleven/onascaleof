@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const personRightInfoText = document.getElementById('person-right-info-text');
     const albumContainer = document.getElementById('album-container');
     const personArrowContainer = document.getElementById('person-arrow-container');
-    const personImageContainer = document.getElementsByClassName('person-image-container');
 
     let albums = [];
     let people = { left: {}, right: {} };
@@ -193,7 +192,7 @@ function loadPeople(data) {
             // Album
             albumImage.classList.toggle('image-faded', infoMode);
             albumInfoText.textContent = infoMode ? `${albums[currentAlbumIndex].name} by ${albums[currentAlbumIndex].artist}` : '';
-            albumInfoText.style.display = infoMode ? 'block' : 'none';
+            albumInfoText.style.display = infoMode ? 'flex' : 'none';
 
             // Person Left
             personLeft.classList.toggle('image-faded', infoMode);
