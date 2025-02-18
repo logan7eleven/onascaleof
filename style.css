@@ -126,7 +126,7 @@ body::after {
     border-radius: 0.5rem;
     width: calc(50% - 0.25rem); /* Account for the space between buttons */
     height: 100%;           /* NEW: Fill the height of the parent container */
-    padding: 0.5%;          /* Provide some margin around the content */
+    padding: 1%;          /* Provide some margin around the content */
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0.05); /* Subtle background */
 }
@@ -140,10 +140,10 @@ body::after {
 }
 
 .person-image-container {
-    position: relative; /* NO ABSOLUTE */
+    position: absolute;
     height: 100%;
-    width: calc(height * (3/4))
-    /*Position relative so the image takes up correct space*/
+    width: calc(height * (3/4));
+    box-sizing: border-box;
 }
 
 .person-arrow-button img {
