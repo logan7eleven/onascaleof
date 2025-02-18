@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>On a Scale Of...</title>
-    <link rel="stylesheet" href="style.css"> <!-- Ensure this file exists and is named correctly -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -43,11 +43,11 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- ✅ Firebase SDK from CDN (corrected) -->
     <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js"></script>
 
-    <!-- Firebase Initialization -->
+    <!-- ✅ Firebase Initialization -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
@@ -61,9 +61,12 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+
+        // Make Firestore accessible globally
+        window.db = db;
     </script>
 
-    <!-- Load JavaScript -->
+    <!-- ✅ Load main JavaScript AFTER Firebase initializes -->
     <script src="script.js"></script>
 
 </body>
