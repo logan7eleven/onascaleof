@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return fetch(url)
             .then(response => response.text())
             .then(csv => {
-                const lines = csv.split('\n').slice(1);
+                const lines = csv.split('\n');
                 return lines.map(line => {
                     const [name, artist, url] = line.split(',');
                     return { name: name.trim(), artist: artist.trim(), url: url.trim() };
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return fetch(url)
             .then(response => response.text())
             .then(csv => {
-                const lines = csv.split('\n').slice(1);
+                const lines = csv.split('\n');
                 return lines.map(line => {
                     const [name, url, id, side] = line.split(',').map(item => item.trim());
                     return { name, url, peopleID: parseInt(id), side };
