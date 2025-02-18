@@ -214,9 +214,16 @@ body::after {
 #person-left-info-text,
 #person-right-info-text {
     word-break: break-word; /* Prevent word splitting */
-    width: 100%;
     font-size: 5vw;
     top: 50%; /* Center vertically */
     left: 50%; /* Center horizontally */
     transform: translate(-50%, -50%);
+    position: absolute; /* Use absolute positioning */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
