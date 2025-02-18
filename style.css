@@ -116,7 +116,7 @@ body::after {
     justify-content: space-between;
     margin-bottom: 1%;
     box-sizing: border-box;
-    height: 25em; /* set height here*/
+    height: 5em; /* set height here*/
 }
 
 .person-arrow-button {
