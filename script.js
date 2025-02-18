@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const mainContainer = document.getElementById('main-container');
     const albumImage = document.getElementById('album-image');
     const scaleImage = document.getElementById('scale-image');
     const personLeft = document.getElementById('person-left');
@@ -36,6 +37,29 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
+    function resizeMainContainer() {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        let containerWidth = viewportHeight * 0.6 * 0.9; // 90% height * aspect ratio (2:3)
+        let containerHeight = viewportHeight * 0.9;
+
+        if (containerWidth > viewportWidth * 0.9) {
+            containerWidth = viewportWidth * 0.9;
+            containerHeight = containerWidth * 1.5;
+        }
+
+        mainContainer.style.width = `${containerWidth}px`;
+        mainContainer.style.height = `${containerHeight}px`;
+    }
+
+    // Call it initially
+    resizeMainContainer();
+
+    // And on window resize
+    window.addEventListener('resize', resizeMainContainer);
+
 
     function fetchAlbums(url) {
     return fetch(url)
