@@ -112,7 +112,7 @@ function loadPeople(data) {
             }
 
             let scaleName = currentVote !== 0 ? `scale_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
-            scaleImage.src = `images/${scaleName}`;
+            scaleImage.src = `images/scale.png`;
         }
     }
 
@@ -164,10 +164,10 @@ function loadPeople(data) {
     Promise.all([fetchAlbums(albumsCSV), fetchPeople(peopleCSV)])
         .then(([albumData, peopleData]) => {
             albums = albumData;
-             loadPeople(peopleData);
-             buttonPersonLeft.addEventListener('click', () => moveScale('left'));
-             buttonPersonRight.addEventListener('click', () => moveScale('right'));
-             buttonEnter.addEventListener('click', submitVote);
+            loadPeople(peopleData);
+            buttonPersonLeft.addEventListener('click', () => moveScale('left'));
+            buttonPersonRight.addEventListener('click', () => moveScale('right'));
+            buttonEnter.addEventListener('click', submitVote);
 
             document.addEventListener('keydown', (event) => {
                 if (event.key === 'ArrowLeft') {
@@ -193,15 +193,39 @@ function loadPeople(data) {
             albumImage.classList.toggle('image-faded', infoMode);
             albumInfoText.textContent = infoMode ? `${albums[currentAlbumIndex].name} by ${albums[currentAlbumIndex].artist}` : '';
             albumInfoText.style.display = infoMode ? 'flex' : 'none';
+            adjustTextSize(albumInfoText, albumContainer);
 
             // Person Left
             personLeft.classList.toggle('image-faded', infoMode);
             personLeftInfoText.textContent = infoMode ? people.left.name : '';
             personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
+            adjustTextSize(personLeftInfoText, buttonPersonLeft);
 
             // Person Right
             personRight.classList.toggle('image-faded', infoMode);
             personRightInfoText.textContent = infoMode ? people.right.name : '';
             personRightInfoText.style.display = infoMode ? 'flex' : 'none';
+            adjustTextSize(personRightInfoText, buttonPersonRight);
         });
+
+        function adjustTextSize(textElement, containerElement) {
+            if (infoMode) {
+                let fontSize = 1; // Initial font size in vmin
+                textElement.style.fontSize = fontSize + "vmin";
+
+                // Check if the text overflows the container
+                while (textElement.scrollWidth > containerElement.offsetWidth || textElement.scrollHeight > containerElement.offsetHeight) {
+                    fontSize -= 0.1; // Reduce font size
+                    textElement.style.fontSize = fontSize + "vmin";
+
+                    // Safety check to prevent infinite loop
+                    if (fontSize <= 0.1) {
+                        textElement.style.fontSize = "0.1vmin"; // Minimum size
+                        break;
+                    }
+                }
+            } else {
+                textElement.style.fontSize = ""; // Reset to default
+            }
+        }
 });
