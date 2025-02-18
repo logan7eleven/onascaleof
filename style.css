@@ -34,7 +34,7 @@ body::after {
     pointer-events: none;
     background-image:
         radial-gradient(circle, #A1887F 40%, transparent 40%),
-        radial_gradient(circle, #A1887F 40%, transparent 40%);
+        radial-gradient(circle, #A1887F 40%, transparent 40%);
     background-position: 0 0, 50vw 50vh;
 }
 
@@ -215,6 +215,7 @@ body::after {
 #album-info-text {
     max-width: 100%;
     max-height: 100%;
+    font-size: 10vmin;
 }
 
 #person-left-info-text,
@@ -222,4 +223,5 @@ body::after {
     word-break: break-word;
     max-width: 100%;
     max-height: 100%;
+    font-size: 10vmin;
 }
