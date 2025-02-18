@@ -141,8 +141,8 @@ body::after {
 
 .person-image-container {
     position: relative; /* NO ABSOLUTE */
-    width: calc(25% * (3/4)); /* Based on height, but maintain 3:4 ratio */
     height: 100%;
+    width: calc(height * (3/4))
     /*Position relative so the image takes up correct space*/
 }
 
