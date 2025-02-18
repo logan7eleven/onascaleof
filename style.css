@@ -122,14 +122,19 @@ body::after {
     flex-direction: row-reverse; /* Image on the right, arrow on the left */
 }
 
-.person-arrow-button img {
+.person-image-container {
     width: 15vw;
     height: 20vw;
+    position: relative; /* For absolute positioning of overlay text */
+}
+
+.person-arrow-button img {
+    width: 100%; /* Fill the container */
+    height: 100%; /* Fill the container */
     object-fit: cover;
     object-position: 50% 33.333%;
     border-radius: 0.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-    margin: 0 0.5rem; /* Margin between image and button edge */
 }
 
 .arrow-left,
@@ -202,7 +207,12 @@ body::after {
     line-height: 1; /* Ensure text fits within container */
 }
 
+#album-info-text {
+    font-size: 15vw; /* Relative to image width */
+}
+
 #person-left-info-text,
 #person-right-info-text {
     word-break: break-word; /* Prevent word splitting */
+    font-size: 15vw;
 }
