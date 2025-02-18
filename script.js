@@ -84,7 +84,7 @@ function loadPeople(data) {
         
         if (rightPerson) {
             people.right = rightPerson;
-            personRight.src = personRight.url;
+            personRight.src = rightPerson.url;
         }
     }
 
