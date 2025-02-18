@@ -16,14 +16,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const personRightInfoText = document.getElementById('person-right-info-text');
     const albumContainer = document.getElementById('album-container');
     const personArrowContainer = document.getElementById('person-arrow-container');
-    const personImageContainers = document.getElementsByClassName('person-image-container');
 
     let albums = [];
     let people = { left: {}, right: {} };
     let currentAlbumIndex = 0;
     let currentVote = 0;
     let voteSubmitted = false;
-    let peopleID = 1;
+    let peopleID = 1; // Manually set the active peopleID
     let infoMode = false;
 
     // Firebase setup
@@ -85,7 +84,7 @@ function loadPeople(data) {
         
         if (rightPerson) {
             people.right = rightPerson;
-            personRight.src = rightPerson.url;
+            personRight.src = personRight.url;
         }
     }
 
@@ -194,38 +193,15 @@ function loadPeople(data) {
             albumImage.classList.toggle('image-faded', infoMode);
             albumInfoText.textContent = infoMode ? `${albums[currentAlbumIndex].name} by ${albums[currentAlbumIndex].artist}` : '';
             albumInfoText.style.display = infoMode ? 'flex' : 'none';
-            adjustTextSize(albumInfoText, albumContainer);
 
             // Person Left
             personLeft.classList.toggle('image-faded', infoMode);
             personLeftInfoText.textContent = infoMode ? people.left.name : '';
             personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
-            adjustTextSize(personLeftInfoText, personImageContainers[0]);
 
             // Person Right
             personRight.classList.toggle('image-faded', infoMode);
             personRightInfoText.textContent = infoMode ? people.right.name : '';
             personRightInfoText.style.display = infoMode ? 'flex' : 'none';
-            adjustTextSize(personRightInfoText, personImageContainers[1]);
         });
-
-        function adjustTextSize(textElement, containerElement) {
-            if (infoMode) {
-                let fontSize = 25; // Initial font size in vmin
-                textElement.style.fontSize = fontSize + "vmin";
-
-                while (textElement.scrollWidth > containerElement.offsetWidth || textElement.scrollHeight > containerElement.offsetHeight) {
-                    fontSize -= 0.1; // Reduce font size
-                    textElement.style.fontSize = fontSize + "vmin";
-
-                    // Safety check to prevent infinite loop
-                    if (fontSize <= 0.1) {
-                        textElement.style.fontSize = "0.1vmin"; // Minimum size
-                        break;
-                    }
-                }
-            } else {
-                textElement.style.fontSize = ""; // Reset to default
-            }
-        }
 });
