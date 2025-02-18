@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentAlbumIndex = 0;
     let currentVote = 0;
     let voteSubmitted = false;
-    const peopleID = "set-your-peopleID-here"; // Replace with the correct peopleID
+    let peopleID = ""; // Will be set dynamically from people.csv
 
     // Firebase setup
     const firebaseConfig = {
@@ -42,12 +42,18 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    function fetchNames(url) {
+    function fetchPeople(url) {
         return fetch(url)
             .then(response => response.text())
-            .then(text => {
-                const lines = text.split('\n');
-                return { left: lines[0].trim(), right: lines[1].trim() };
+            .then(csv => {
+                const lines = csv.split('\n');
+                const firstPerson = lines[1].split(','); // Assuming first row is a header
+
+                return {
+                    left: firstPerson[0].trim(),
+                    right: firstPerson[1].trim(),
+                    peopleID: firstPerson[2].trim() // Extract peopleID
+                };
             });
     }
 
@@ -60,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
         personRight.src = `images/person2.png`;
         personLeftName.textContent = people.left;
         personRightName.textContent = people.right;
+        peopleID = people.peopleID; // Set peopleID from CSV
         albumTooltip.style.display = 'none';
         albumImage.style.outline = '';
         voteSubmitted = false;
@@ -97,12 +104,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const album = albums[currentAlbumIndex];
 
             db.collection("votes").add({
-                albumID: currentAlbumIndex,  // Ensure this is stored correctly
-                vote_value: currentVote,  // Ensure this is stored correctly
-                peopleID: peopleID, // Ensure this is stored correctly
+                albumID: currentAlbumIndex, 
+                vote_value: currentVote, 
+                peopleID: peopleID, 
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then(() => {
-                console.log("Vote successfully submitted:", { albumID: currentAlbumIndex, vote_value: currentVote, peopleID });
+                console.log("Vote submitted:", { albumID: currentAlbumIndex, vote_value: currentVote, peopleID });
             })
             .catch(error => {
                 console.error("Error submitting vote:", error);
@@ -129,10 +137,10 @@ document.addEventListener('DOMContentLoaded', function() {
     personLeft.src = `images/person1.png`;
     personRight.src = `images/person2.png`;
 
-    Promise.all([fetchCSV('albums.csv'), fetchNames('people.txt')])
-        .then(([albumData, names]) => {
+    Promise.all([fetchCSV('albums.csv'), fetchPeople('people.csv')])
+        .then(([albumData, peopleData]) => {
             albums = albumData;
-            people = names;
+            people = peopleData;
 
             arrowLeft.addEventListener('click', () => moveScale('left'));
             arrowRight.addEventListener('click', () => moveScale('right'));
