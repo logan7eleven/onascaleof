@@ -3,15 +3,16 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 1.25rem;
+    margin: 0; /* Remove body margin */
     text-align: center;
     min-height: 100vh;
     box-sizing: border-box;
     background-color: #826E67;
     position: relative;
+    overflow: hidden; /* Prevent scrollbars */
 }
 
-body::before {
+body::before, body::after {
     content: "";
     position: absolute;
     top: 0;
@@ -22,14 +23,7 @@ body::before {
 }
 
 body::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     background-size: 100vw 100vh;
-    z-index: -1;
     opacity: 1;
     pointer-events: none;
     background-image:
@@ -38,22 +32,37 @@ body::after {
     background-position: 0 0, 50vw 50vh;
 }
 
+#main-container {
+    width: 60vh; /* Initial width, will be overridden by JS */
+    height: 90vh; /* 90% of viewport height */
+    max-width: 90vw; /* Ensures it doesn't exceed 90% of viewport width */
+    margin: 0 auto; /* Center horizontally */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box; /* Important! */
+    background-color: #333; /* Add darkish grey background */
+}
+
 #site-title {
-    font-size: 4vh;
-    margin-bottom: 1.50vh;
+    font-size: 4%;
+    margin-bottom: 1.5%;
     color: black;
-    margin-top: 0.2500vh;
+    margin-top: 0.25%;
+    width: 100%; /* Take full width */
 }
 
 #album-container {
-    width: 80vw;
-    height: 80vw;
-    margin-bottom: 1.75rem;
+    width: 80%; /* 80% of main container width */
+    height: 0;
+    padding-bottom: 80%; /* Maintain 1:1 aspect ratio */
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 1);
+    box-sizing: border-box;
 }
 
 #album-image {
@@ -67,11 +76,15 @@ body::after {
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: filter 0.3s ease; /* Transition for the filter */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #scale-container {
-    width: 90vw;
-    margin-bottom: 1.25rem;
+    width: 90%;
+    margin-bottom: 1.25%;
     position: relative;
 }
 
@@ -87,16 +100,18 @@ body::after {
     flex-direction: column; /* Keep column layout */
     justify-content: center;
     align-items: center;
-    gap: 0.625rem;
-    margin-bottom: 1.25rem;
+    gap: 0.625%;
+    margin-bottom: 1.25%;
     width: 100%;
+    box-sizing: border-box;
 }
 
 #person-arrow-container {
-    width: 80vw;
+    width: 80%;
     display: flex;
     justify-content: space-between; /* Distribute buttons evenly */
-    margin-bottom: 0.625rem;
+    margin-bottom: 0.625%;
+    box-sizing: border-box;
 }
 
 .person-arrow-button {
@@ -104,12 +119,13 @@ body::after {
     display: flex;
     align-items: center;
     border: none;
-    padding: 0.5rem; /* Padding around image and arrow */
+    padding: 0.5%; /* Padding around image and arrow */
     cursor: pointer;
     border-radius: 0.5rem; /* Rounded edges like other buttons */
     width: calc(50% - 0.25rem); /* Account for gap between buttons */
-    height: 21vw; /* Image height (20vw) + 2 * padding (0.5rem) */
+    height: 21%; /* Image height (20vw) + 2 * padding (0.5rem) */
     transition: filter 0.3s ease; /* Transition for the filter */
+    box-sizing: border-box;
 }
 
 .person-arrow-button:first-of-type {
@@ -123,8 +139,8 @@ body::after {
 }
 
 .person-image-container {
-    width: 15vw;
-    height: 20vw;
+    width: 15%;
+    height: 20%;
     position: relative; /* For absolute positioning of overlay text */
 }
 
@@ -139,14 +155,14 @@ body::after {
 
 .arrow-left,
 .arrow-right {
-    font-size: 8vh; /* Large arrow size */
+    font-size: 8%; /* Large arrow size */
     color: rgba(0, 0, 0, 0.3); /* Adjust color as needed */
 }
 
 #button-row {
     display: flex;
     justify-content: space-around; /* Distribute buttons evenly */
-    width: 80vw; /* Same width as album container */
+    width: 80%; /* Same width as album container */
 }
 
 .app-button {
@@ -154,8 +170,8 @@ body::after {
     cursor: pointer;
     border-radius: 0.5rem;
     /* Match title height, adjust font-size */
-    height: 4vh; /* Corrected from rem to vh */
-    font-size: 2.4vh; /* 60% of title's font size */
+    height: 4%; /* Corrected from rem to vh */
+    font-size: 2.4%; /* 60% of title's font size */
     background-color: #ddd;
     color: #333;
     padding: 0.5rem 1rem;
@@ -164,6 +180,7 @@ body::after {
     margin: 0 0.25rem;
     text-align: center;
     line-height: 1; /* Vertically center text */
+    box-sizing: border-box;
 }
 
 .app-button:hover {
