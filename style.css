@@ -114,6 +114,7 @@ body::after {
     justify-content: space-between;
     margin-bottom: 1%; /* Spacing similar to the button row below */
     box-sizing: border-box;
+    height: 25%; /* NEW: Explicitly set height as 25% of the main container */
 }
 
 .person-arrow-button {
@@ -124,7 +125,7 @@ body::after {
     cursor: pointer;
     border-radius: 0.5rem;
     width: calc(50% - 0.25rem); /* Account for the space between buttons */
-    height: auto;           /* Adjust automatically based on content */
+    height: 100%;           /* NEW: Fill the height of the parent container */
     padding: 0.5%;          /* Provide some margin around the content */
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0.05); /* Subtle background */
@@ -139,9 +140,10 @@ body::after {
 }
 
 .person-image-container {
+    position: relative; /* NO ABSOLUTE */
     width: calc(25% * (3/4)); /* Based on height, but maintain 3:4 ratio */
-    height: 25%; /* 1/4 of the main container height */
-    position: relative; /* For absolutely positioning the image within */
+    height: 100%;
+    /*Position relative so the image takes up correct space*/
 }
 
 .person-arrow-button img {
