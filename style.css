@@ -116,7 +116,7 @@ body::after {
     justify-content: space-between;
     margin-bottom: 1%;
     box-sizing: border-box;
-    height: 5em; /* set height here*/
+    height: 8em; /* set height here*/
 }
 
 .person-arrow-button {
@@ -145,7 +145,7 @@ body::after {
 .person-image-container {
     position: relative;
     height: 100%;
-    width: 75%;/* The 3/4 ratio is achieved*/
+    width: 6 em;
     box-sizing: border-box;
     overflow:hidden;
 }
@@ -164,7 +164,7 @@ body::after {
 
 .arrow-left,
 .arrow-right {
-    font-size: 8%;
+    font-size: 200%;
     color: rgba(0, 0, 0, 0.3);
     padding: 0 2%;
 }
