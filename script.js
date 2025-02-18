@@ -120,10 +120,10 @@ document.addEventListener('DOMContentLoaded', function() {
     buttonNext.addEventListener('click', async () => {
         if (!voteSubmitted) {  
             try {
-                await db.collection("album_tracking").add({
+                await db.collection("votes").add({
                     albumID: currentAlbumIndex, 
                     skip: 1, 
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    peopleID: peopleID,
                 });
                 console.log("Skip recorded for album:", currentAlbumIndex);
             } catch (error) {
