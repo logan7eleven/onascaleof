@@ -16,13 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const personRightInfoText = document.getElementById('person-right-info-text');
     const albumContainer = document.getElementById('album-container');
     const personArrowContainer = document.getElementById('person-arrow-container');
+    const personImageContainers = document.getElementsByClassName('person-image-container');
 
     let albums = [];
     let people = { left: {}, right: {} };
     let currentAlbumIndex = 0;
     let currentVote = 0;
     let voteSubmitted = false;
-    let peopleID = 1; // Manually set the active peopleID
+    let peopleID = 1;
     let infoMode = false;
 
     // Firebase setup
@@ -31,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
         authDomain: "onascaleof-2e3b4.firebaseapp.com",
         projectId: "onascaleof-2e3b4",
         storageBucket: "onascaleof-2e3b4",
-        messagingSenderId = "96599540311",
-        appId = "1:96599540311:web:47c86e4e6fce30e3065912"
+        messagingSenderId: "96599540311",
+        appId: "1:96599540311:web:47c86e4e6fce30e3065912"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
@@ -45,10 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return lines.map((line, index) => {
                 const [name, artist, url] = line.split(',');
                 return { 
-                    name = name.trim(), 
-                    artist = artist.trim(), 
-                    url = url.trim(), 
-                    albumID = index + 1
+                    name: name.trim(), 
+                    artist: artist.trim(), 
+                    url: url.trim(), 
+                    albumID: index + 1
                 };
             });
         });
@@ -62,20 +63,20 @@ function fetchPeople(url) {
             return lines.map(line => {
                 const [name, url, id, side] = line.split(',');
                 return { 
-                    name = name.trim(), 
-                    url = url.trim(), 
-                    peopleID = parseInt(id.trim()), 
-                    side = side.trim()
+                    name: name.trim(), 
+                    url: url.trim(), 
+                    peopleID: parseInt(id.trim()), 
+                    side: side.trim()
                 };
             });
         });
 }
 
 function loadPeople(data) {
-        const filteredPeople = data.filter(person => person.peopleID = peopleID);
+        const filteredPeople = data.filter(person => person.peopleID === peopleID);
         
-        const leftPerson = filteredPeople.find(person => person.side = 'L');
-        const rightPerson = filteredPeople.find(person => person.side = 'R');
+        const leftPerson = filteredPeople.find(person => person.side === 'L');
+        const rightPerson = filteredPeople.find(person => person.side === 'R');
 
         if (leftPerson) {
             people.left = leftPerson;
@@ -105,20 +106,20 @@ function loadPeople(data) {
 
     function moveScale(direction) {
         if (!voteSubmitted) {
-            if (direction = "right") {
+            if (direction === "right") {
                 currentVote = Math.min(100, currentVote + 5);
-            } else if (direction = "left") {
+            } else if (direction === "left") {
                 currentVote = Math.max(-100, currentVote - 5);
             }
 
-            let scaleName = currentVote = 0 ? `scale_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
+            let scaleName = currentVote !== 0 ? `scale_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
             scaleImage.src = `images/scale.png`;
         }
     }
 
     function submitVote() {
         if (!voteSubmitted) {
-            let pickName = currentVote = 0 ? `pick_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
+            let pickName = currentVote !== 0 ? `pick_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
             let outlineColor = currentVote > 0 ? '#F7B73D' : currentVote < 0 ? '#BAA0FA' : '';
             scaleImage.src = `images/scale.png`;
             albumImage.style.outline = outlineColor ? `0.3rem solid ${outlineColor}` : '';
@@ -128,12 +129,12 @@ function loadPeople(data) {
             const albumID = albums[currentAlbumIndex].albumID;
 
             db.collection("votes").add({
-                albumID = albumID, 
-                vote_value = currentVote, 
-                peopleID = peopleID, 
+                albumID: albumID, 
+                vote_value: currentVote, 
+                peopleID: peopleID, 
             })
             .then(() => {
-                console.log("Vote submitted:", { albumID = albumID, vote_value = currentVote, peopleID });
+                console.log("Vote submitted:", { albumID: albumID, vote_value: currentVote, peopleID });
             })
             .catch(error => {
                 console.error("Error submitting vote:", error);
@@ -146,9 +147,9 @@ function loadPeople(data) {
             try {
                 const albumID = albums[currentAlbumIndex].albumID;
                 await db.collection("votes").add({
-                    albumID = albumID, 
-                    peopleID = peopleID, 
-                    skips = 1
+                    albumID: albumID, 
+                    peopleID: peopleID, 
+                    skips: 1
                 });
                 console.log("Skip recorded for album:", albumID);
             } catch (error) {
@@ -170,16 +171,16 @@ function loadPeople(data) {
             buttonEnter.addEventListener('click', submitVote);
 
             document.addEventListener('keydown', (event) => {
-                if (event.key = 'ArrowLeft') {
+                if (event.key === 'ArrowLeft') {
                     moveScale('left');
-                } else if (event.key = 'ArrowRight') {
+                } else if (event.key === 'ArrowRight') {
                     moveScale('right');
                 }
             });
             albumImage.addEventListener('click', () => {
                 const album = albums[currentAlbumIndex];
                 albumTooltip.textContent = `${album.name} by ${album.artist}`;
-                albumTooltip.style.display = albumTooltip.style.display = 'none' ? 'block' : 'none';
+                albumTooltip.style.display = albumTooltip.style.display === 'none' ? 'block' : 'none';
             });
 
             getRandomAlbum();
@@ -199,13 +200,13 @@ function loadPeople(data) {
             personLeft.classList.toggle('image-faded', infoMode);
             personLeftInfoText.textContent = infoMode ? people.left.name : '';
             personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
-            adjustTextSize(personLeftInfoText, personImageContainer[0]);
+            adjustTextSize(personLeftInfoText, personImageContainers[0]);
 
             // Person Right
             personRight.classList.toggle('image-faded', infoMode);
             personRightInfoText.textContent = infoMode ? people.right.name : '';
             personRightInfoText.style.display = infoMode ? 'flex' : 'none';
-            adjustTextSize(personRightInfoText, personImageContainer[1]);
+            adjustTextSize(personRightInfoText, personImageContainers[1]);
         });
 
         function adjustTextSize(textElement, containerElement) {
