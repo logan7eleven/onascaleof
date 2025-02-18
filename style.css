@@ -177,15 +177,44 @@ body::after {
     height: 3.75rem;
 }
 
-#button-container button {
-    border: none;
-    cursor: pointer;
-    border-radius: 0 rem;
-    height: 2.75rem;
+#button-row {
+    display: flex;
+    justify-content: space-around; /* Distribute buttons evenly */
+    width: 80vw; /* Same width as album container */
 }
 
-#button-container button img {
-    max-height: 2.75rem;
+.app-button {
+    border: none;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    /* Match title height, adjust font-size */
+    height: 4vh; /* Corrected from rem to vh */
+    font-size: 2.4vh; /* 60% of title's font size */
+    background-color: #ddd;
+    color: #333;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+    flex-grow: 1; /* Allow buttons to expand */
+    margin: 0 0.25rem;
+    text-align: center;
+    line-height: 1; /* Vertically center text */
+}
+
+.app-button:hover {
+    background-color: #ccc;
+}
+
+/* Specific button styles (optional) */
+#button-info {
+    /* Add specific styles if needed */
+}
+
+#button-enter {
+    /* Add specific styles if needed */
+}
+
+#button-next {
+    /* Add specific styles if needed */
 }
 
 #button-next img {
