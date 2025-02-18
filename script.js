@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const albumTooltip = document.getElementById('album-tooltip');
     const buttonPersonLeft = document.getElementById('button-person-left');
     const buttonPersonRight = document.getElementById('button-person-right');
+    const buttonInfo = document.getElementById('button-info');
+    const albumInfoText = document.getElementById('album-info-text');
+    const personLeftInfoText = document.getElementById('person-left-info-text');
+    const personRightInfoText = document.getElementById('person-right-info-text');
 
     let albums = [];
     let people = { left: {}, right: {} };
@@ -17,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentVote = 0;
     let voteSubmitted = false;
     let peopleID = 1; // Manually set the active peopleID
+    let infoMode = false;
 
     // Firebase setup
     const firebaseConfig = {
@@ -84,9 +89,7 @@ function fetchPeople(url) {
     function updateDisplay() {
         const album = albums[currentAlbumIndex];
         albumImage.src = album.url;
-        albumTooltip.textContent = `${album.name} by ${album.artist}`;
         scaleImage.src = `images/scale.png`;
-        albumTooltip.style.display = 'none';
         albumImage.style.outline = '';
         voteSubmitted = false;
         buttonEnter.disabled = false;
@@ -161,8 +164,8 @@ function fetchPeople(url) {
             albums = albumData;
             loadPeople(peopleData);
 
-            buttonPersonLeft.addEventListener('click', () => moveScale('left')); // Line 173: Hook up left button
-            buttonPersonRight.addEventListener('click', () => moveScale('right')); // Line 174: Hook up right button
+            buttonPersonLeft.addEventListener('click', () => moveScale('left'));
+            buttonPersonRight.addEventListener('click', () => moveScale('right'));
             buttonEnter.addEventListener('click', submitVote);
 
             document.addEventListener('keydown', (event) => {
@@ -181,4 +184,23 @@ function fetchPeople(url) {
             getRandomAlbum();
         })
         .catch(error => console.error('Error loading data:', error));
+
+    buttonInfo.addEventListener('click', () => {
+        infoMode = !infoMode;
+
+        // Album
+        albumImage.classList.toggle('image-faded', infoMode);
+        albumInfoText.textContent = infoMode ? `${albums[currentAlbumIndex].name} by ${albums[currentAlbumIndex].artist}` : '';
+        albumInfoText.style.display = infoMode ? 'block' : 'none';
+
+        // Person Left
+        personLeft.classList.toggle('image-faded', infoMode);
+        personLeftInfoText.textContent = infoMode ? personLeftName.textContent : '';
+        personLeftInfoText.style.display = infoMode ? 'block' : 'none';
+
+        // Person Right
+        personRight.classList.toggle('image-faded', infoMode);
+        personRightInfoText.textContent = infoMode ? personRightName.textContent : '';
+        personRightInfoText.style.display = infoMode ? 'block' : 'none';
+    });
 });
