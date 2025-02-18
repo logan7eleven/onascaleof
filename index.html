@@ -1,45 +1,53 @@
-      
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>onascaleof.com</title>
-    <link rel="stylesheet" href="style.css">
+    <title>On a Scale Of</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        // Import Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
+            authDomain: "onascaleof-2e3b4.firebaseapp.com",
+            projectId: "onascaleof-2e3b4",
+            storageBucket: "onascaleof-2e3b4.appspot.com",
+            messagingSenderId: "96599540311",
+            appId: "1:96599540311:web:47c86e4e6fce30e3065912"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make Firestore accessible globally
+        window.db = db;
+        window.firestoreUtils = { collection, addDoc, serverTimestamp };
+    </script>
 </head>
 <body>
-    <h1 id="site-title">onascaleof.com</h1>
-
-    <div id="album-container">
-        <img id="album-image" src="" alt="Album Cover">
-        <div id="album-tooltip"></div> <!-- Tooltip here -->
-    </div>
-
-
-    <div id="scale-container">
+    <div class="container">
+        <h1>On a Scale Of...</h1>
+        <div class="screen">
+            <img id="album-image" src="" alt="Album Cover">
+            <div id="album-tooltip" class="tooltip"></div>
+        </div>
         <img id="scale-image" src="images/scale.png" alt="Scale">
-    </div>
-
-   <div id="people-container">
-        <div id = "person-left-container">
-            <img id="person-left" src="images/person1.png" alt="Person Left">
-            <div id="person-left-name"></div>
+        <div class="controls">
+            <button id="arrow-left">⬅</button>
+            <img id="person-left" src="" alt="Person Left">
+            <span id="person-left-name"></span>
+            <button id="button-enter">ENTER</button>
+            <img id="person-right" src="" alt="Person Right">
+            <span id="person-right-name"></span>
+            <button id="arrow-right">➡</button>
         </div>
-        <div  id = "person-right-container">
-            <img id="person-right" src="images/person2.png" alt="Person Right">
-            <div id="person-right-name"></div>
-        </div>
+        <button id="button-next">NEXT</button>
     </div>
-
-    <div id="button-container">
-        <div id = "arrow-container">
-            <button id="arrow-left"><img src="images/arrow_L.png"></button>
-            <button id="arrow-right"><img src="images/arrow_R.png"></button>
-        </div>
-        <button id="button-enter"><img src="images/button_enter.png"></button>
-        <button id="button-next"><img src="images/button_next.png"></button>
-    </div>
-
     <script src="script.js"></script>
 </body>
 </html>
