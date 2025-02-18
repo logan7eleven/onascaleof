@@ -3,14 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>On a Scale Of</title>
-    <link rel="stylesheet" href="style.css">
-    <script type="module">
-        // Import Firebase
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+    <title>On a Scale Of...</title>
+    <link rel="stylesheet" href="style.css"> <!-- Ensure this file exists and is named correctly -->
+</head>
+<body>
 
-        // Firebase configuration
+    <div id="app">
+        <h1>On a Scale Of...</h1>
+
+        <!-- Album Display -->
+        <div id="album-container">
+            <img id="album-image" src="" alt="Album Cover">
+            <p id="album-tooltip"></p>
+        </div>
+
+        <!-- Scale Display -->
+        <div id="scale-container">
+            <img id="scale-image" src="images/scale.png" alt="Scale">
+        </div>
+
+        <!-- People Voting Section -->
+        <div id="people-container">
+            <div class="person">
+                <img id="person-left" src="" alt="Left Person">
+                <p id="person-left-name"></p>
+            </div>
+            <div class="person">
+                <img id="person-right" src="" alt="Right Person">
+                <p id="person-right-name"></p>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div id="controls">
+            <button id="arrow-left">←</button>
+            <button id="button-enter">ENTER</button>
+            <button id="arrow-right">→</button>
+            <button id="button-next">NEXT</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js"></script>
+
+    <!-- Firebase Initialization -->
+    <script>
         const firebaseConfig = {
             apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
             authDomain: "onascaleof-2e3b4.firebaseapp.com",
@@ -21,33 +59,12 @@
         };
 
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Make Firestore accessible globally
-        window.db = db;
-        window.firestoreUtils = { collection, addDoc, serverTimestamp };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
     </script>
-</head>
-<body>
-    <div class="container">
-        <h1>On a Scale Of...</h1>
-        <div class="screen">
-            <img id="album-image" src="" alt="Album Cover">
-            <div id="album-tooltip" class="tooltip"></div>
-        </div>
-        <img id="scale-image" src="images/scale.png" alt="Scale">
-        <div class="controls">
-            <button id="arrow-left">⬅</button>
-            <img id="person-left" src="" alt="Person Left">
-            <span id="person-left-name"></span>
-            <button id="button-enter">ENTER</button>
-            <img id="person-right" src="" alt="Person Right">
-            <span id="person-right-name"></span>
-            <button id="arrow-right">➡</button>
-        </div>
-        <button id="button-next">NEXT</button>
-    </div>
+
+    <!-- Load JavaScript -->
     <script src="script.js"></script>
+
 </body>
 </html>
