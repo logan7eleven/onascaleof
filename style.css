@@ -1,19 +1,20 @@
 body {
     font-family: sans-serif;
-    display: flex; /* Change to flex */
+    display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Add vertical centering */
-    margin: 0; /* Remove body margin */
+    justify-content: center;
+    margin: 0;
     text-align: center;
-    min-height: 100vh; /* Ensure full viewport height */
+    min-height: 100vh;
     box-sizing: border-box;
     background-color: #826E67;
     position: relative;
-    overflow: hidden; /* Prevent scrollbars */
+    overflow: hidden;
 }
 
-body::before, body::after {
+body::before,
+body::after {
     content: "";
     position: absolute;
     top: 0;
@@ -34,37 +35,38 @@ body::after {
 }
 
 #main-container {
-    width: 60vh; /* Initial width, will be overridden by JS */
-    height: 90vh; /* 90% of viewport height */
-    max-width: 90vw; /* Ensures it doesn't exceed 90% of viewport width */
-    /* Remove margin: 0 auto;  */
+    width: 60vh;
+    height: 90vh;
+    max-width: 90vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    box-sizing: border-box; /* Important! */
-    background-color: #555; /* Add darkish grey background */
+    box-sizing: border-box;
+    background-color: #555;
+    font-size: 1em; /* Base font size for scaling */
 }
 
 #site-title {
-    font-size: calc(var(--container-height) / 10); /* 1/10 of container height */
+    font-size: 2.5em; /* Relative to main-container */
     margin-bottom: 1.5%;
     color: black;
     margin-top: 0.25%;
     width: 100%;
+    text-align: center;
 }
 
 #album-container {
-    width: 80%; /* 80% of main container width */
+    width: 80%;
     height: 0;
-    padding-bottom: 80%; /* Maintain 1:1 aspect ratio */
+    padding-bottom: 80%;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
-    margin-bottom: 2%; /* Add a margin below */
+    margin-bottom: 2%;
 }
 
 #album-image {
@@ -72,12 +74,12 @@ body::after {
     max-height: 95%;
     width: 95%;
     height: 95%;
-    object-fit: contain; /* Key: Contain to show full image */
+    object-fit: contain;
     object-position: center;
     border-radius: 0.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition: filter 0.3s ease; /* Transition for the filter */
+    transition: filter 0.3s ease;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -99,7 +101,7 @@ body::after {
 
 #button-container {
     display: flex;
-    flex-direction: column; /* Keep column layout */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 0.625%;
@@ -109,40 +111,40 @@ body::after {
 }
 
 #person-arrow-container {
-    width: 80%; /* Match album container width */
+    width: 80%;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1%; /* Spacing similar to the button row below */
+    margin-bottom: 1%;
     box-sizing: border-box;
-    height: calc(var(--container-height) / 4); /* 1/4 of the container height */
+    height: 5em; /* Scaled with the font side*/
 }
 
 .person-arrow-button {
-    position: relative; /* For absolute positioning */
+    position: relative;
     display: flex;
     align-items: center;
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    width: calc(50% - 0.25rem); /* Account for the space between buttons */
-    height: 100%;           /* NEW: Fill the height of the parent container */
-    padding: 1%;          /* Provide some margin around the content */
+    width: calc(50% - 0.25rem);
+    height: 100%;
+    padding: 1%;
     box-sizing: border-box;
-    background-color: rgba(0, 0, 0, 0.05); /* Subtle background */
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .person-arrow-button:first-of-type {
-    flex-direction: row;     /* Image on left, arrow on right */
+    flex-direction: row;
 }
 
 .person-arrow-button:last-of-type {
-    flex-direction: row-reverse; /* Image on right, arrow on left */
+    flex-direction: row-reverse;
 }
 
 .person-image-container {
-    position: relative;
-    width: calc(height * (3/4));
+    position: absolute;
     height: 100%;
+    width: 75%;
     box-sizing: border-box;
 }
 
@@ -150,8 +152,8 @@ body::after {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;    /* Make the image fill the container */
-    height: 100%;   /* Make the image fill the container */
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: 50% 33.333%;
     border-radius: 0.5rem;
@@ -160,29 +162,28 @@ body::after {
 
 .arrow-left,
 .arrow-right {
-    font-size: 8%;       /* Large arrow size, adjust as needed */
-    color: rgba(0, 0, 0, 0.3); /* Adjust color as needed */
-    padding: 0 2%;         /* Add some horizontal padding */
+    font-size: 8%;
+    color: rgba(0, 0, 0, 0.3);
+    padding: 0 2%;
 }
 
 #button-row {
     display: flex;
-    justify-content: space-around; /* Distribute buttons evenly */
-    width: 80%; /* Same width as album container */
+    justify-content: space-around;
+    width: 80%;
 }
 
 .app-button {
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    /* Match title height, adjust font-size */
-    height: 4%; /* Corrected from rem to vh */
-    font-size: 2.4%; /* 60% of title's font size */
+    height: 4%;
+    font-size: 2.4%;
     background-color: #ddd;
     color: #333;
     padding: 0.5rem 1rem;
     transition: background-color 0.3s ease;
-    flex-grow: 1; /* Allow buttons to expand */
+    flex-grow: 1;
     margin: 0 0.25rem;
     text-align: center;
     box-sizing: border-box;
@@ -193,23 +194,6 @@ body::after {
 
 .app-button:hover {
     background-color: #ccc;
-}
-
-/* Specific button styles (optional) */
-#button-info {
-    /* Add specific styles if needed */
-}
-
-#button-enter {
-    /* Add specific styles if needed */
-}
-
-#button-next {
-    /* Add specific styles if needed */
-}
-
-#button-next img {
-    max-height: 2.375rem;
 }
 
 .image-faded {
@@ -232,8 +216,8 @@ body::after {
     font-weight: bold;
     font-family: monospace;
     white-space: pre-wrap;
-    line-height: 1; /* Ensure text fits within container */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    line-height: 1;
+    box-sizing: border-box;
     font-size: 5vmin;
 }
 
