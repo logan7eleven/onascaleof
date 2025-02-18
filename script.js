@@ -30,23 +30,39 @@ document.addEventListener('DOMContentLoaded', function() {
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    function fetchCSV(url) {
-        return fetch(url)
-            .then(response => response.text())
-            .then(csv => {
-                const lines = csv.split('\n');
-                return lines.map((line, index) => {
-                    const [name, url, id, side] = line.split(',');
-                    return { 
-                        name: name.trim(), 
-                        url: url.trim(), 
-                        peopleID: parseInt(id.trim()), 
-                        side: side.trim(),
-                        albumID: index + 1 // Ensure correct albumID assignment
-                    };
-                });
+    function fetchAlbums(url) {
+    return fetch(url)
+        .then(response => response.text())
+        .then(csv => {
+            const lines = csv.split('\n');
+            return lines.map((line, index) => {
+                const [name, artist, url] = line.split(',');
+                return { 
+                    name: name.trim(), 
+                    artist: artist.trim(), 
+                    url: url.trim(), 
+                    albumID: index + 1
+                };
             });
-    }
+        });
+}
+
+function fetchPeople(url) {
+    return fetch(url)
+        .then(response => response.text())
+        .then(csv => {
+            const lines = csv.split('\n');
+            return lines.map(line => {
+                const [name, url, id, side] = line.split(',');
+                return { 
+                    name: name.trim(), 
+                    url: url.trim(), 
+                    peopleID: parseInt(id.trim()), 
+                    side: side.trim()
+                };
+            });
+        });
+}
 
     function loadPeople(data) {
         const filteredPeople = data.filter(person => person.peopleID === peopleID);
