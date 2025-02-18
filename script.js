@@ -6,18 +6,21 @@ let currentAlbumIndex = 0;
 let voteSubmitted = false;
 let shuffledAlbumIndexes = [];
 
-// Initialize Firebase
+// Firebase configuration
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
+    authDomain: "onascaleof-2e3b4.firebaseapp.com",
+    projectId: "onascaleof-2e3b4",
+    storageBucket: "onascaleof-2e3b4.firebasestorage.app",
+    messagingSenderId: "96599540311",
+    appId: "1:96599540311:web:47c86e4e6fce30e3065912"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 document.addEventListener('DOMContentLoaded', function() {
     const albumImage = document.getElementById('album-image');
@@ -123,15 +126,19 @@ document.addEventListener('DOMContentLoaded', function() {
         submitToDatabase(album.albumID, 0, currentPeopleID, 1);
     }
 
-    function submitToDatabase(albumID, voteValue, peopleID, skipValue) {
-        db.collection("votes").add({
-            albumID,
-            vote_value: voteValue,
-            peopleID,
-            skip: skipValue,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(() => console.log("Vote recorded"))
-          .catch(error => console.error("Error saving vote: ", error));
+    async function submitToDatabase(albumID, voteValue, peopleID, skipValue) {
+        try {
+            await addDoc(collection(db, "votes"), {
+                albumID,
+                vote_value: voteValue,
+                peopleID,
+                skip: skipValue,
+                timestamp: serverTimestamp()
+            });
+            console.log("Vote recorded");
+        } catch (error) {
+            console.error("Error saving vote: ", error);
+        }
     }
 
     function nextAlbum() {
