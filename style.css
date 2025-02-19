@@ -99,7 +99,7 @@ body::after {
     justify-content: space-between; /* Distribute segments evenly */
     height: 20px; /* Adjust as needed */
     background-color: #eee; /* Light background */
-    border-radius: 5px;
+    border-radius: 3px;
     overflow: hidden;
 }
 
