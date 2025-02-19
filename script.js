@@ -273,7 +273,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const album = albums[currentAlbumIndex];
         document.getElementById('album-name').textContent = infoMode ? album.name : '';
         document.getElementById('album-artist').textContent = infoMode ? album.artist : '';
-        albumInfoText.classList.toggle('show', infoMode);
+        if (infoMode) {
+            albumInfoText.style.display = 'flex';
+            adjustFontSize(document.getElementById('album-name'));
+            adjustFontSize(document.getElementById('album-artist'));
+        } else {
+            albumInfoText.style.display = 'none';
+        }
 
         // Person Left
         personLeft.classList.toggle('image-faded', infoMode);
@@ -284,9 +290,6 @@ document.addEventListener('DOMContentLoaded', function () {
         personRight.classList.toggle('image-faded', infoMode);
         personRightInfoText.textContent = infoMode ? people.right.name : '';
         personRightInfoText.style.display = infoMode ? 'flex' : 'none';
-
-        adjustFontSize(document.getElementById('album-name'));
-        adjustFontSize(document.getElementById('album-artist'));
     });
 
     // Dynamic Text Resizing
