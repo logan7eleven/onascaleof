@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
             getRandomAlbum();
         })
         .catch(error => console.error('Error loading data:', error));
-
+    
     buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
 
@@ -241,17 +241,45 @@ document.addEventListener('DOMContentLoaded', function () {
         const maxHeight = container.offsetHeight;
         let fontSize = parseInt(window.getComputedStyle(element).fontSize);
 
-        // Increase font size until the text no longer fits
-        while (element.scrollWidth <= maxWidth && element.scrollHeight <= maxHeight) {
-            fontSize++;
+        // Track the previous state of the text (too large or too small)
+        let previousState = null; // Can be "tooLarge", "tooSmall", or null
+
+        // Safeguard: Maximum iterations to prevent infinite loops
+        const maxIterations = 100;
+        let iterations = 0;
+
+        while (iterations < maxIterations) {
+            const isTooLarge = element.scrollWidth > maxWidth || element.scrollHeight > maxHeight;
+            const isTooSmall = element.scrollWidth <= maxWidth && element.scrollHeight <= maxHeight;
+
+            // Check for oscillation (tooLarge followed by tooSmall or vice versa)
+            if (
+                (previousState === "tooLarge" && isTooSmall) ||
+                (previousState === "tooSmall" && isTooLarge)
+            ) {
+                // Oscillation detected: use the smaller font size
+                fontSize = Math.min(fontSize, parseInt(window.getComputedStyle(element).fontSize));
+                break;
+            }
+
+            // Update the previous state
+            previousState = isTooLarge ? "tooLarge" : "tooSmall";
+
+            // Adjust the font size
+            if (isTooLarge) {
+                fontSize--;
+            } else if (isTooSmall) {
+                fontSize++;
+            }
+
+            // Apply the new font size
             element.style.fontSize = `${fontSize}px`;
+
+            iterations++;
         }
 
-        // Reduce font size to fit within the container
-        while (element.scrollWidth > maxWidth || element.scrollHeight > maxHeight) {
-            fontSize--;
-            element.style.fontSize = `${fontSize}px`;
-        }
+        // Log the final font size for debugging
+        console.log(`Adjusted font size for ${element.id}: ${fontSize}px`);
     }
 
     // Adjust font size on page load
@@ -265,4 +293,4 @@ document.addEventListener('DOMContentLoaded', function () {
         adjustFontSize(document.getElementById('person-left-info-text'));
         adjustFontSize(document.getElementById('person-right-info-text'));
     });
-}); 
+});
