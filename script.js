@@ -114,8 +114,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (rightPerson) {
-            people.right = rightPerson;
-            personRight.src = rightPerson.url;
+            people.right = personRight;
+            personRight.src = personRight.url;
         }
     }
 
@@ -272,9 +272,6 @@ document.addEventListener('DOMContentLoaded', function () {
         personRightInfoText.textContent = infoMode ? people.right.name : '';
         personRightInfoText.style.display = infoMode ? 'flex' : 'none';
     });
-
-document.addEventListener('DOMContentLoaded', function () {
-    // ... (rest of your code) ...
 
     // Dynamic Text Resizing
     function adjustFontSize(element) {
