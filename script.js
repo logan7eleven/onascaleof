@@ -273,52 +273,70 @@ document.addEventListener('DOMContentLoaded', function () {
         personRightInfoText.style.display = infoMode ? 'flex' : 'none';
     });
 
+document.addEventListener('DOMContentLoaded', function () {
+    // ... (rest of your code) ...
+
     // Dynamic Text Resizing
     function adjustFontSize(element) {
         const container = element.parentElement;
         const maxWidth = container.offsetWidth;
         const maxHeight = container.offsetHeight;
-        let fontSize = parseInt(window.getComputedStyle(element).fontSize);
 
-        // Track the previous state of the text (too large or too small)
-        let previousState = null; // Can be "tooLarge", "tooSmall", or null
+        let fontSize = 1; // Start with a small font size
+        element.style.fontSize = `${fontSize}px`; //Initial font size
 
-        // Safeguard: Maximum iterations to prevent infinite loops
-        const maxIterations = 100;
-        let iterations = 0;
+        // Binary search for the largest possible font size
+        let low = 1;
+        let high = 1000; // Arbitrary upper bound
 
-        while (iterations < maxIterations) {
+        while (low <= high) {
+            const mid = Math.floor((low + high) / 2);
+            element.style.fontSize = `${mid}px`;
+
             const isTooLarge = element.scrollWidth > maxWidth || element.scrollHeight > maxHeight;
-            const isTooSmall = element.scrollWidth <= maxWidth && element.scrollHeight <= maxHeight;
 
-            // Check for oscillation (tooLarge followed by tooSmall or vice versa)
-            if (
-                (previousState === "tooLarge" && isTooSmall) ||
-                (previousState === "tooSmall" && isTooLarge)
-            ) {
-                // Oscillation detected: use the smaller font size
-                fontSize = Math.min(fontSize, parseInt(window.getComputedStyle(element).fontSize));
-                break;
-            }
-
-            // Update the previous state
-            previousState = isTooLarge ? "tooLarge" : "tooSmall";
-
-            // Adjust the font size
             if (isTooLarge) {
-                fontSize--;
-            } else if (isTooSmall) {
-                fontSize++;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+                fontSize = mid; // Update with the largest possible font size so far
             }
-
-            // Apply the new font size
-            element.style.fontSize = `${fontSize}px`;
-
-            iterations++;
         }
-
-        // Log the final font size for debugging
+        element.style.fontSize = `${fontSize}px`; //Final font size.
         console.log(`Adjusted font size for ${element.id}: ${fontSize}px`);
+
+        // Function to split text into multiple lines if necessary
+        function adjustMultilineText(element) {
+            const containerWidth = element.parentElement.offsetWidth; //Width of the container
+            let words = element.textContent.split(" "); // Get all the words
+
+            //Initial text content is empty string
+            element.textContent = "";
+            let line = "";
+
+            //Loop through the words
+            for (let i = 0; i < words.length; i++) {
+                let testLine = line + words[i] + " "; //See how the line would look if the word was included
+                element.textContent = testLine; //Update
+                //See how the line compares to the container
+                if (element.scrollWidth > containerWidth) {
+                    //Scrollwidth means its wider
+                    if (line !== "") {
+                        //If it's not, move the previous line to the current
+                        element.textContent = line;
+                    } else {
+                        element.textContent = words[i]; //If the line doesn't work, you can just display the word
+                    }
+                    line = words[i] + " "; //Update the current word
+                } else {
+                    //If all works well, we just add the word with a space to the current line
+                    line = testLine;
+                }
+            }
+            //Final step is to update the current line in the container
+            element.textContent = line;
+        }
+        adjustMultilineText(element); //Call this method once after the font is properly sized.
     }
 
     // Adjust font size on page load
