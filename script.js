@@ -215,4 +215,54 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Error loading data:', error));
 
-    buttonInfo.addEv
+    buttonInfo.addEventListener('click', () => {
+        infoMode = !infoMode;
+
+        // Album
+        albumImage.classList.toggle('image-faded', infoMode);
+        albumInfoText.textContent = infoMode ? `${albums[currentAlbumIndex].name} by ${albums[currentAlbumIndex].artist}` : '';
+        albumInfoText.style.display = infoMode ? 'flex' : 'none';
+
+        // Person Left
+        personLeft.classList.toggle('image-faded', infoMode);
+        personLeftInfoText.textContent = infoMode ? people.left.name : '';
+        personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
+
+        // Person Right
+        personRight.classList.toggle('image-faded', infoMode);
+        personRightInfoText.textContent = infoMode ? people.right.name : '';
+        personRightInfoText.style.display = infoMode ? 'flex' : 'none';
+    });
+
+    // Dynamic Text Resizing
+    function adjustFontSize(element) {
+        const container = element.parentElement;
+        const maxWidth = container.offsetWidth;
+        const maxHeight = container.offsetHeight;
+        let fontSize = parseInt(window.getComputedStyle(element).fontSize);
+
+        // Increase font size until the text no longer fits
+        while (element.scrollWidth <= maxWidth && element.scrollHeight <= maxHeight) {
+            fontSize++;
+            element.style.fontSize = `${fontSize}px`;
+        }
+
+        // Reduce font size to fit within the container
+        while (element.scrollWidth > maxWidth || element.scrollHeight > maxHeight) {
+            fontSize--;
+            element.style.fontSize = `${fontSize}px`;
+        }
+    }
+
+    // Adjust font size on page load
+    adjustFontSize(document.getElementById('album-info-text'));
+    adjustFontSize(document.getElementById('person-left-info-text'));
+    adjustFontSize(document.getElementById('person-right-info-text'));
+
+    // Adjust font size on window resize
+    window.addEventListener('resize', () => {
+        adjustFontSize(document.getElementById('album-info-text'));
+        adjustFontSize(document.getElementById('person-left-info-text'));
+        adjustFontSize(document.getElementById('person-right-info-text'));
+    });
+}); 
