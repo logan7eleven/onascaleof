@@ -102,20 +102,31 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    function loadPeople(data) {
+   function loadPeople(data) {
+        console.log("loadPeople called with data:", data);
         const filteredPeople = data.filter(person => person.peopleID === peopleID);
+        console.log("filteredPeople:", filteredPeople);
 
         const leftPerson = filteredPeople.find(person => person.side === 'L');
         const rightPerson = filteredPeople.find(person => person.side === 'R');
 
+        console.log("leftPerson:", leftPerson);
+        console.log("rightPerson:", rightPerson);
+
         if (leftPerson) {
             people.left = leftPerson;
             personLeft.src = leftPerson.url;
+            console.log("personLeft.src set to:", personLeft.src);
         }
 
         if (rightPerson) {
-            people.right = personRight;
-            personRight.src = personRight.url;
+            people.right = rightPerson;
+            if (rightPerson.url) {
+                personRight.src = rightPerson.url;
+                console.log("personRight.src set to:", personRight.src);
+            } else {
+                console.warn("rightPerson.url is undefined/empty!");
+            }
         }
     }
 
@@ -279,8 +290,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const maxWidth = container.offsetWidth;
         const maxHeight = container.offsetHeight;
 
-        let fontSize = 1; // Start with a small font size
-        element.style.fontSize = `${fontSize}px`; //Initial font size
+        console.log(`adjustFontSize called for ${element.id}`);
+        console.log(`Container dimensions for ${element.id}: width=${maxWidth}, height=${maxHeight}`);
+
+        let fontSize = 1;
+        element.style.fontSize = `${fontSize}px`;
 
         // Binary search for the largest possible font size
         let low = 1;
@@ -304,33 +318,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Function to split text into multiple lines if necessary
         function adjustMultilineText(element) {
-            const containerWidth = element.parentElement.offsetWidth; //Width of the container
-            let words = element.textContent.split(" "); // Get all the words
-
-            //Initial text content is empty string
+            const containerWidth = element.parentElement.offsetWidth;
+            let words = element.textContent.split(" ");
             element.textContent = "";
-            let line = "";
 
-            //Loop through the words
+            let line = "";
             for (let i = 0; i < words.length; i++) {
-                let testLine = line + words[i] + " "; //See how the line would look if the word was included
-                element.textContent = testLine; //Update
-                //See how the line compares to the container
-                if (element.scrollWidth > containerWidth) {
-                    //Scrollwidth means its wider
-                    if (line !== "") {
-                        //If it's not, move the previous line to the current
-                        element.textContent = line;
-                    } else {
-                        element.textContent = words[i]; //If the line doesn't work, you can just display the word
-                    }
-                    line = words[i] + " "; //Update the current word
-                } else {
-                    //If all works well, we just add the word with a space to the current line
-                    line = testLine;
+                let testLine = line + words[i] + " ";
+                element.textContent = testLine;
+                if (element.scrollWidth > containerWidth && line != "") {
+                  element.textContent = testLine.slice(0,testLine.length - words[i].length - 1);
+                  line = words[i] + " ";
+                  break;
+                }
+                else if (element.scrollWidth > containerWidth && line == "") {
+                  element.textContent = words[i];
+                  break;
+                }
+                 else {
+                  line = testLine;
                 }
             }
-            //Final step is to update the current line in the container
             element.textContent = line;
         }
         adjustMultilineText(element); //Call this method once after the font is properly sized.
