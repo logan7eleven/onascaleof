@@ -122,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateDisplay() {
         const album = albums[currentAlbumIndex];
         albumImage.src = album.url;
-        scaleImage.src = `images/scale.png`;
         albumImage.style.outline = '';
         voteSubmitted = false;
         buttonEnter.disabled = false;
@@ -132,6 +131,46 @@ document.addEventListener('DOMContentLoaded', function () {
         currentAlbumIndex = Math.floor(Math.random() * albums.length);
         currentVote = 0;
         updateDisplay();
+        updateScale(); //Make Sure the scale also resets here
+    }
+
+    //Dynamic Scale
+    const scaleSegmentsLeft = document.getElementById('scale-segments-left');
+    const scaleSegmentsRight = document.getElementById('scale-segments-right');
+    const numSegments = 20; // Segments on each side
+
+    // Function to create scale segments
+    function createScaleSegments() {
+        for (let i = 0; i < numSegments; i++) {
+            const leftSegment = document.createElement('div');
+            leftSegment.classList.add('scale-segment');
+            scaleSegmentsLeft.appendChild(leftSegment);
+
+            const rightSegment = document.createElement('div');
+            rightSegment.classList.add('scale-segment');
+            scaleSegmentsRight.appendChild(rightSegment);
+        }
+    }
+
+    // Function to update the scale based on currentVote
+    function updateScale() {
+        const leftActiveSegments = Math.max(0, Math.min(numSegments, -currentVote / 5)); // Number of active left segments
+        const rightActiveSegments = Math.max(0, Math.min(numSegments, currentVote / 5)); // Number of active right segments
+
+        // Clear all active classes
+        document.querySelectorAll('.scale-segment').forEach(segment => {
+            segment.classList.remove('active-left', 'active-right');
+        });
+
+        // Add active classes to left segments
+        for (let i = 0; i < leftActiveSegments; i++) {
+            scaleSegmentsLeft.children[i].classList.add('active-left');
+        }
+
+        // Add active classes to right segments
+        for (let i = 0; i < rightActiveSegments; i++) {
+            scaleSegmentsRight.children[i].classList.add('active-right');
+        }
     }
 
     function moveScale(direction) {
@@ -141,17 +180,15 @@ document.addEventListener('DOMContentLoaded', function () {
             } else if (direction === "left") {
                 currentVote = Math.max(-100, currentVote - 5);
             }
-
-            let scaleName = currentVote !== 0 ? `scale_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
-            scaleImage.src = `images/scale.png`;
+            updateScale(); // Update the scale visually
         }
     }
 
+    //End Dynamic Scale
+
     function submitVote() {
         if (!voteSubmitted) {
-            let pickName = currentVote !== 0 ? `pick_${Math.abs(currentVote)}${currentVote > 0 ? 'R' : 'L'}.png` : 'scale.png';
             let outlineColor = currentVote > 0 ? '#F7B73D' : currentVote < 0 ? '#BAA0FA' : '';
-            scaleImage.src = `images/scale.png`;
             albumImage.style.outline = outlineColor ? `0.3rem solid ${outlineColor}` : '';
             buttonEnter.disabled = true;
             voteSubmitted = true;
@@ -196,6 +233,8 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(([albumData, peopleData]) => {
             albums = albumData;
             loadPeople(peopleData);
+            createScaleSegments(); // Create scale segments
+            updateScale();  //Initializes the scale
             buttonPersonLeft.addEventListener('click', () => moveScale('left'));
             buttonPersonRight.addEventListener('click', () => moveScale('right'));
             buttonEnter.addEventListener('click', submitVote);
