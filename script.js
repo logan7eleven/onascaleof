@@ -249,23 +249,8 @@ document.addEventListener('DOMContentLoaded', function () {
             buttonPersonLeft.addEventListener('click', () => moveScale('left'));
             buttonPersonRight.addEventListener('click', () => moveScale('right'));
             buttonEnter.addEventListener('click', submitVote);
-
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'ArrowLeft') {
-                    moveScale('left');
-                } else if (event.key === 'ArrowRight') {
-                    moveScale('right');
-                }
-            });
-            albumImage.addEventListener('click', () => {
-                const album = albums[currentAlbumIndex];
-            });
-
-            getRandomAlbum();
-        })
-        .catch(error => console.error('Error loading data:', error));
-
-    buttonInfo.addEventListener('click', () => {
+        });
+   buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
 
         // Album
@@ -291,7 +276,6 @@ document.addEventListener('DOMContentLoaded', function () {
         personRightInfoText.textContent = infoMode ? people.right.name : '';
         personRightInfoText.style.display = infoMode ? 'flex' : 'none';
     });
-
     // Dynamic Text Resizing
     function adjustFontSize(element) {
         const container = element.parentElement;
