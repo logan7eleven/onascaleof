@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-   function loadPeople(data) {
+    function loadPeople(data) {
         console.log("loadPeople called with data:", data);
         const filteredPeople = data.filter(person => person.peopleID === peopleID);
         console.log("filteredPeople:", filteredPeople);
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
             getRandomAlbum();
         })
         .catch(error => console.error('Error loading data:', error));
-    
+
     buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
 
@@ -282,6 +282,10 @@ document.addEventListener('DOMContentLoaded', function () {
         personRight.classList.toggle('image-faded', infoMode);
         personRightInfoText.textContent = infoMode ? people.right.name : '';
         personRightInfoText.style.display = infoMode ? 'flex' : 'none';
+
+        adjustFontSize(document.getElementById('album-info-text'));
+        adjustFontSize(document.getElementById('person-left-info-text'));
+        adjustFontSize(document.getElementById('person-right-info-text'));
     });
 
     // Dynamic Text Resizing
@@ -344,15 +348,15 @@ document.addEventListener('DOMContentLoaded', function () {
         adjustMultilineText(element); //Call this method once after the font is properly sized.
     }
 
-    // Adjust font size on page load
-    adjustFontSize(document.getElementById('album-info-text'));
-    adjustFontSize(document.getElementById('person-left-info-text'));
-    adjustFontSize(document.getElementById('person-right-info-text'));
+      // Adjust font size on page load
+    // adjustFontSize(document.getElementById('album-info-text'));
+    // adjustFontSize(document.getElementById('person-left-info-text'));
+    // adjustFontSize(document.getElementById('person-right-info-text'));
 
     // Adjust font size on window resize
     window.addEventListener('resize', () => {
-        adjustFontSize(document.getElementById('album-info-text'));
-        adjustFontSize(document.getElementById('person-left-info-text'));
-        adjustFontSize(document.getElementById('person-right-info-text'));
+      //  adjustFontSize(document.getElementById('album-info-text'));
+      //  adjustFontSize(document.getElementById('person-left-info-text'));
+      //  adjustFontSize(document.getElementById('person-right-info-text'));
     });
 });
