@@ -118,7 +118,6 @@ body::after {
     width: 5%; /* Adjust for desired number of segments */
     height: 100%;
     background-color: transparent; /* Initially transparent */
-    border-right: 1px solid #ccc; /* Separator */
     box-sizing: border-box;
 }
 
