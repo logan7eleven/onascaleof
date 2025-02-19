@@ -96,22 +96,22 @@ body::after {
 #scale {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Distribute segments evenly */
     height: 20px; /* Adjust as needed */
     background-color: #eee; /* Light background */
-    border-radius: 3px;
+    border-radius: 3px; /* Reduced Bevel */
     overflow: hidden;
 }
 
 #scale-segments-left,
 #scale-segments-right {
     display: flex;
-    width: 48%; /* Take up almost half of the scale */
+    width: 50%;
     height: 100%;
 }
 
 #scale-segments-left {
-    flex-direction: row-reverse; /* Segments grow from center to left */
+    flex-direction: row-reverse;
+    justify-content: flex-end; /* Align to the right edge */
 }
 
 .scale-segment {
@@ -129,13 +129,15 @@ body::after {
     background-color: #F7B73D; /* Gold */
 }
 
-#scale-center {
-    width: 4%; /* Slightly wider to stand out */
-    text-align: center;
-    font-size: 1em;
-    font-weight: bold;
-    color: #555;
-    z-index: 1; /* Ensure it's on top */
+/* Divider */
+#scale-divider {
+    width: 1px; /* Thin divider line */
+    height: 100%;
+    background-color: #ccc;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Center the divider */
+    z-index: 2; /* Ensure it sits above the segments */
 }
 /* End of New Styles */
 
@@ -146,7 +148,7 @@ body::after {
     align-items: center;
     gap: 0.625%;
     margin-bottom: 1.25%;
-    width: 100%;
+    width: 80%;
     box-sizing: border-box;
 }
 
@@ -221,12 +223,12 @@ body::after {
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    height: 8%;
-    font-size: 5%;
+    height: 3rem; /* Button height takes up 20% of #button-container height. */
+    font-size: 2rem; /* Removed the percentage and used a baseline unit */
     background-color: #ddd;
     color: #333;
     padding: 0.5rem 1rem;
-    transition: background-color 0.3s ease;
+    transition: background-color: 0.3s ease;
     flex-grow: 1;
     margin: 0 0.25rem;
     text-align: center;
@@ -236,22 +238,15 @@ body::after {
     align-items: center;
 }
 
-.app-button:hover {
-    background-color: #ccc;
-}
-
-.image-faded {
-    filter: grayscale(100%) brightness(1.75) blur(5px);
-}
-
-.overlay-text {
+#album-info-text {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    justify-content: space-between; /* Distribute space evenly */
     align-items: center;
     color: black;
     text-align: center;
@@ -264,13 +259,30 @@ body::after {
     padding: 1rem;
 }
 
-#album-info-text {
-    max-width: 100%;
-    max-height: 100%;
+#album-info-text.show {
+    display: flex; /* Show when 'infoMode' is active */
 }
 
-#person-left-info-text,
-#person-right-info-text {
-    max-width: 100%;
-    max-height: 100%;
+#album-name {
+    height: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em; /* Adjust as needed */
+}
+
+#album-by {
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em; /* Adjust as needed */
+}
+
+#album-artist {
+    height: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em; /* Adjust as needed */
 }
