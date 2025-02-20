@@ -1,5 +1,5 @@
 html {
-    font-size: 100%; /* Ensure base font size is consistent */
+    font-size: 100%;
 }
 
 body {
@@ -49,9 +49,9 @@ body::after {
     position: relative;
     box-sizing: border-box;
     background-color: #555;
-     padding-top: 1.5%; /* Add padding at the top */
-    padding-bottom: 1.5%; /* Add padding at the bottom */
-    justify-content: space-between; /* Distribute vertical space */
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+    justify-content: space-between;
 }
 
 #site-title {
@@ -59,27 +59,25 @@ body::after {
     color: black;
     width: 100%;
     text-align: center;
-    margin-top: 0; /* Reset default margin */
-    margin-bottom: 0; /* Consistent spacing with justify-content */
-
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 #album-container {
     width: 80%;
     height: 0;
-    padding-bottom: 80%; /* Maintain square aspect ratio */
+    padding-bottom: 80%;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
-    margin-bottom: 0; /* Consistent spacing with justify-content */
-
+    margin-bottom: 0;
 }
 
 #album-image {
-   max-width: 95%;
+    max-width: 95%;
     max-height: 95%;
     width: 95%;
     height: 95%;
@@ -98,17 +96,16 @@ body::after {
 #scale-container {
     width: 90%;
     position: relative;
-    margin-top: 0; /* Consistent spacing with justify-content */
-    margin-bottom: 0; /* Consistent spacing with justify-content */
-
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 #scale {
     display: flex;
     align-items: center;
-    height: 1em; /* Use em for consistent scaling */
+    height: 1em;
     background-color: #eee;
-    border-radius: 0.3em; /* Reduced Bevel - Also using em */
+    border-radius: 0.3em;
     overflow: hidden;
 }
 
@@ -141,7 +138,7 @@ body::after {
 
 /* Divider */
 #scale-divider {
-    width: 0.05em; /* Thin divider line - Use em */
+    width: 0.05em;
     height: 100%;
     background-color: #ccc;
     position: absolute;
@@ -150,36 +147,27 @@ body::after {
     z-index: 2;
 }
 
-#button-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 80%; /* Same as album-container */
-    box-sizing: border-box;
-    margin-top: 0;
-    margin-bottom: 0;
-}
+/* Combined button container removed */
 
 #person-arrow-container {
-    width: 100%;
+    width: 80%; /* Match album container */
     display: flex;
     justify-content: space-between;
     box-sizing: border-box;
-    margin-bottom: 0;
+    margin-bottom: 0; /* Remove bottom margin */
 }
 
 .person-arrow-button {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: center; /* Center items vertically within the button */
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    width: calc(50% - (5% / 2)); /* 5% spacing between, divided by 2 for each side */
-    padding: 1em;  /* Add some padding around the image container */
+     width: calc(50% - (5% / 2)); /*  5% spacing */
+    padding: 0; /* Reset padding */
     box-sizing: border-box;
-    background-color: black; /* Background color of album-container*/
+    background-color: black;
 }
 
 .person-arrow-button:first-of-type {
@@ -196,11 +184,12 @@ body::after {
 
 .person-image-container {
     position: relative;
-    width: 100%; /* Take up the full width available within the button */
+    width: 75%; /*  The width is now 75% of the BUTTON's width */
+    padding-bottom: 100%; /*  Height is 100% of the WIDTH, creating the 3:4 ratio */
     box-sizing: border-box;
     overflow: hidden;
-    padding-bottom: 75%; /* 4:3 aspect ratio */
 }
+
 .person-arrow-button img {
     position: absolute;
     top: 5%;
@@ -216,19 +205,16 @@ body::after {
 .person-arrow-button .arrow {
     font-size: 4em;
     color: rgba(0, 0, 0, 0.5);
-    display: flex;  /* Use flexbox to center the arrow vertically */
-    align-items: center; /* Center vertically */
-    width: 25%;  /* Give the arrow some space, but let the image container dictate the width */
+    display: flex;
+    align-items: center;
+    width: 25%;
 }
 
 #button-row {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    margin-left:auto;
-    margin-right:auto;
-    margin-top: 0;
-    margin-bottom: 0;
+    width: 80%; /* Match album container width */
+    margin: 0 auto; /* Center the button row */
 }
 
 .app-button {
@@ -241,7 +227,7 @@ body::after {
     color: #333;
     padding: 0.5em 1em;
     transition: background-color: 0.3s ease;
-    width: calc(33.333% - 5% * 2 / 3); /* Adjusted for 5% spacing */
+    width: calc(33.333% - 5% * 2 / 3);
     margin: 0;
     text-align: center;
     box-sizing: border-box;
@@ -249,6 +235,8 @@ body::after {
     justify-content: center;
     align-items: center;
 }
+
+/* ... (rest of your CSS for overlay effects, etc.) ... */
 
 .overlay-text {
     display: flex;
