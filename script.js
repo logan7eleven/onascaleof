@@ -51,6 +51,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         mainContainer.style.width = `${containerWidth}px`;
         mainContainer.style.height = `${containerHeight}px`;
+
+        // Calculate and set the font size after resizing the container
+        const containerHeightPx = mainContainer.offsetHeight;
+        const baseFontSize = containerHeightPx * 0.015; // Adjust 0.015 (1.5%) for overall scaling
+        mainContainer.style.fontSize = `${baseFontSize}px`;
     }
 
     // Call it initially
@@ -214,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function submitVote() {
         if (!voteSubmitted) {
             let outlineColor = currentVote > 0 ? '#F7B73D' : currentVote < 0 ? '#BAA0FA' : '';
-            albumImage.style.outline = outlineColor ? `0.3rem solid ${outlineColor}` : '';
+            albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : '';  //Changed to EM
             buttonEnter.disabled = true;
             voteSubmitted = true;
 
@@ -278,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Album
         albumImage.classList.toggle('image-faded', infoMode);
-        const album = albums[currentAlbumIndex];
+        const album = shuffledAlbums[currentAlbumIndex]; // Use shuffledAlbums
         document.getElementById('album-name').textContent = infoMode ? album.name : '';
         document.getElementById('album-artist').textContent = infoMode ? album.artist : '';
         if (infoMode) {
