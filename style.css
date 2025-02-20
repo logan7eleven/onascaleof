@@ -70,7 +70,7 @@ body::after {
 }
 
 #album-container {
-    width: 80%;
+    width: 80%;  /* This is the key width */
     height: 0;
     padding-bottom: 80%;
     position: relative;
@@ -153,7 +153,7 @@ body::after {
     z-index: 2;
 }
 #person-arrow-container {
-    width: 80%;
+    width: 80%; /* Match album container */
     display: flex;
     justify-content: space-between;
     box-sizing: border-box;
@@ -169,8 +169,7 @@ body::after {
     border-radius: 0.5rem;
     width: calc((100% - 5%) / 2); /* Correct: (Total Width - Spacing) / Number of Buttons */
     box-sizing: border-box;
-    /* Remove padding to prevent double-padding */
-     padding: 1em; /* Add padding back to the BUTTON */
+    padding: 1em; /* Add padding back to the BUTTON */
 }
 .person-arrow-button:first-of-type {
     flex-direction: row;
@@ -231,7 +230,7 @@ body::after {
     color: #333;
     padding: 0.5em 1em;
     transition: background-color: 0.3s ease;
-    width: calc((100% - 2 * 5%) / 3); /* Correct spacing calculation */
+     width: calc((100% - (2 * 5%)) / 3); /*  Correct Spacing*/
     margin: 0;
     text-align: center;
     box-sizing: border-box;
