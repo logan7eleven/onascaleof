@@ -49,16 +49,19 @@ body::after {
     position: relative;
     box-sizing: border-box;
     background-color: #555;
-    /* font-size is set dynamically in JavaScript */
+     padding-top: 1.5%; /* Add padding at the top */
+    padding-bottom: 1.5%; /* Add padding at the bottom */
+    justify-content: space-between; /* Distribute vertical space */
 }
 
 #site-title {
-    font-size: 5em; /* Doubled the size (2.5em * 2 = 5em) */
-    margin-bottom: 1.5%; /* Keep this consistent with other spacing */
+    font-size: 5em;
     color: black;
-    margin-top: 0.25%;
     width: 100%;
     text-align: center;
+    margin-top: 0; /* Reset default margin */
+    margin-bottom: 0; /* Consistent spacing with justify-content */
+
 }
 
 #album-container {
@@ -71,11 +74,12 @@ body::after {
     align-items: center;
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
-    margin-bottom: 1.5%; /* Consistent spacing */
+    margin-bottom: 0; /* Consistent spacing with justify-content */
+
 }
 
 #album-image {
-    max-width: 95%;
+   max-width: 95%;
     max-height: 95%;
     width: 95%;
     height: 95%;
@@ -93,9 +97,10 @@ body::after {
 
 #scale-container {
     width: 90%;
-    margin-bottom: 1.5%; /* Consistent spacing */
     position: relative;
-    margin-top: 1.5%; /* Spacing above the scale */
+    margin-top: 0; /* Consistent spacing with justify-content */
+    margin-bottom: 0; /* Consistent spacing with justify-content */
+
 }
 
 #scale {
@@ -150,19 +155,18 @@ body::after {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1.5%; /* Consistent spacing */
     width: 80%; /* Same as album-container */
     box-sizing: border-box;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 #person-arrow-container {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1.5%;
     box-sizing: border-box;
-    /* Remove fixed height */
-    /* height: 8em;  <- Remove this */
+    margin-bottom: 0;
 }
 
 .person-arrow-button {
@@ -173,10 +177,9 @@ body::after {
     cursor: pointer;
     border-radius: 0.5rem;
     width: calc(50% - (5% / 2)); /* 5% spacing between, divided by 2 for each side */
-    /* Remove fixed height, let content dictate height */
-    /* height: 100%; <- Remove this */
-    padding: 1%;
+    padding: 1em;  /* Add some padding around the image container */
     box-sizing: border-box;
+    background-color: black; /* Background color of album-container*/
 }
 
 .person-arrow-button:first-of-type {
@@ -190,15 +193,14 @@ body::after {
     background-color: #F7B73D;
     justify-content: space-between;
 }
+
 .person-image-container {
     position: relative;
-    width: calc(75% - 4em); /* Adjusted width to maintain 4:3 ratio with padding-bottom */
+    width: 100%; /* Take up the full width available within the button */
     box-sizing: border-box;
     overflow: hidden;
-    padding-bottom: 75%; /* 4:3 aspect ratio (height is 75% of width) */
-
+    padding-bottom: 75%; /* 4:3 aspect ratio */
 }
-
 .person-arrow-button img {
     position: absolute;
     top: 5%;
@@ -214,10 +216,9 @@ body::after {
 .person-arrow-button .arrow {
     font-size: 4em;
     color: rgba(0, 0, 0, 0.5);
-    padding: 0;
-    display: flex;
-    align-items: center;
-    width: 25%; /* Give the arrow some space */
+    display: flex;  /* Use flexbox to center the arrow vertically */
+    align-items: center; /* Center vertically */
+    width: 25%;  /* Give the arrow some space, but let the image container dictate the width */
 }
 
 #button-row {
@@ -226,6 +227,8 @@ body::after {
     width: 100%;
     margin-left:auto;
     margin-right:auto;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .app-button {
