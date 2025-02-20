@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const mainContainer = document.getElementById('main-container');
 
     const albumImage = document.getElementById('album-image');
-    const scaleImage = document.getElementById('scale-image');
     const personLeft = document.getElementById('person-left');
     const personRight = document.getElementById('person-right');
     const buttonEnter = document.getElementById('button-enter');
@@ -18,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const personArrowContainer = document.getElementById('person-arrow-container');
 
     let albums = [];
+    let shuffledAlbums = []; // New array to store shuffled albums
     let people = { left: {}, right: {} };
     let currentAlbumIndex = 0;
     let currentVote = 0;
@@ -132,16 +132,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateDisplay() {
-        const album = albums[currentAlbumIndex];
+        const album = shuffledAlbums[currentAlbumIndex];
         albumImage.src = album.url;
         albumImage.style.outline = '';
         voteSubmitted = false;
         buttonEnter.disabled = false;
     }
 
-    function getRandomAlbum() {
-        currentAlbumIndex = Math.floor(Math.random() * albums.length);
+    // Shuffle function (Fisher-Yates algorithm)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function getNextAlbum() {
         currentVote = 0;
+        currentAlbumIndex++;
+
+        if (currentAlbumIndex >= shuffledAlbums.length) {
+            // If we reach the end of the shuffled list, reshuffle and start over
+            shuffleAlbums = shuffleArray([...albums]);
+            currentAlbumIndex = 0;
+        }
         updateDisplay();
         updateScale(); // Make sure the scale also resets here
     }
@@ -203,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
             buttonEnter.disabled = true;
             voteSubmitted = true;
 
-            const albumID = albums[currentAlbumIndex].albumID;
+            const albumID = shuffledAlbums[currentAlbumIndex].albumID;
 
             db.collection("votes").add({
                 albumID: albumID,
@@ -223,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
     buttonNext.addEventListener('click', async () => {
         if (!voteSubmitted) {
             try {
-                const albumID = albums[currentAlbumIndex].albumID;
+                const albumID = shuffledAlbums[currentAlbumIndex].albumID;
                 await db.collection("votes").add({
                     albumID: albumID,
                     peopleID: peopleID,
@@ -234,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error("Error logging skip:", error);
             }
         }
-        getRandomAlbum();
+        getNextAlbum();
     });
 
     const albumsCSV = '/albums.csv';
@@ -243,6 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
     Promise.all([fetchAlbums(albumsCSV), fetchPeople(peopleCSV)])
         .then(([albumData, peopleData]) => {
             albums = albumData;
+            shuffledAlbums = shuffleArray([...albums]); // Create a shuffled copy
             loadPeople(peopleData);
             createScaleSegments(); // Create scale segments
             updateScale();  // Initializes the scale
