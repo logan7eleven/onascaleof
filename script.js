@@ -36,6 +36,16 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+    // Function to set the person image height
+     function setPersonImageHeight() {
+        const albumContainerHeight = albumContainer.offsetHeight;
+        const personImageContainerHeight = albumContainerHeight / 3;
+
+        // Set height for both person image containers
+        document.querySelectorAll('.person-image-container').forEach(container => {
+            container.style.height = `${personImageContainerHeight}px`;
+        });
+    }
 
     function resizeMainContainer() {
         const viewportWidth = window.innerWidth;
@@ -56,6 +66,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const containerHeightPx = mainContainer.offsetHeight;
         const baseFontSize = containerHeightPx * 0.015; // Adjust 0.015 (1.5%) for overall scaling
         mainContainer.style.fontSize = `${baseFontSize}px`;
+        // Set person image heights
+        setPersonImageHeight();
     }
 
     // Call it initially
@@ -267,7 +279,8 @@ document.addEventListener('DOMContentLoaded', function () {
             loadPeople(peopleData);
             createScaleSegments(); // Create scale segments
             updateScale();  // Initializes the scale
-
+            // Set initial person image heights
+            setPersonImageHeight();
             // Show the first album immediately
             currentAlbumIndex = 0;
             updateDisplay();
