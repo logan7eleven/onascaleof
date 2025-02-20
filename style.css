@@ -156,12 +156,13 @@ body::after {
 }
 
 #person-arrow-container {
-    width: 100%; /* Take up full width of button-container */
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1.5%; /*Consistent spacing*/
+    margin-bottom: 1.5%;
     box-sizing: border-box;
-    height: 8em; /* set height here*/
+    /* Remove fixed height */
+    /* height: 8em;  <- Remove this */
 }
 
 .person-arrow-button {
@@ -171,55 +172,58 @@ body::after {
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-     width: calc(50% - 2.5% * 2); /* Adjusted for 5% spacing on each side */
-    height: 100%;
+    width: calc(50% - (5% / 2)); /* 5% spacing between, divided by 2 for each side */
+    /* Remove fixed height, let content dictate height */
+    /* height: 100%; <- Remove this */
     padding: 1%;
     box-sizing: border-box;
 }
+
 .person-arrow-button:first-of-type {
     flex-direction: row;
-    background-color: #BAA0FA; /* Purple for left side */
-    justify-content: space-between; /* Added to position arrow correctly */
+    background-color: #BAA0FA;
+    justify-content: space-between;
 }
 
 .person-arrow-button:last-of-type {
     flex-direction: row-reverse;
-    background-color: #F7B73D; /* Gold for right side */
-    justify-content: space-between; /* Added to position arrow correctly */
+    background-color: #F7B73D;
+    justify-content: space-between;
 }
-
 .person-image-container {
-  position: relative;
-  width: calc(100% - 4em); /*Adjusted Width */
-  box-sizing: border-box;
-  overflow: hidden;
+    position: relative;
+    width: calc(75% - 4em); /* Adjusted width to maintain 4:3 ratio with padding-bottom */
+    box-sizing: border-box;
+    overflow: hidden;
     padding-bottom: 75%; /* 4:3 aspect ratio (height is 75% of width) */
 
 }
 
 .person-arrow-button img {
     position: absolute;
-    top: 5%;  /* Center vertically within the 90% */
-    left: 5%; /* Center horizontally within the 90% */
-    width: 90%;  /* Fill 90% of the container */
-    height: 90%; /* Fill 90% of the container */
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
     object-fit: cover;
-    object-position: 50% 33.333%; /* 1/3 from the top, which is the same as 1/6 from the center */
+    object-position: 50% 33.333%;
     border-radius: 0.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
-.person-arrow-button .arrow { /* Added class for arrows */
-    font-size: 4em;  /*Large arrow*/
+
+.person-arrow-button .arrow {
+    font-size: 4em;
     color: rgba(0, 0, 0, 0.5);
-    padding: 0; /*Padding added by main container*/
-    display: flex;/*Flex*/
-    align-items: center;/*Center*/
+    padding: 0;
+    display: flex;
+    align-items: center;
+    width: 25%; /* Give the arrow some space */
 }
 
 #button-row {
     display: flex;
-    justify-content: space-between; /* Use space-between for consistent spacing */
-    width: 100%; /* Take up full width of button-container */
+    justify-content: space-between;
+    width: 100%;
     margin-left:auto;
     margin-right:auto;
 }
@@ -234,7 +238,7 @@ body::after {
     color: #333;
     padding: 0.5em 1em;
     transition: background-color: 0.3s ease;
-     width: calc(33.333% - 5% * 2 / 3); /* Adjusted for 5% spacing on each side */
+    width: calc(33.333% - 5% * 2 / 3); /* Adjusted for 5% spacing */
     margin: 0;
     text-align: center;
     box-sizing: border-box;
@@ -243,7 +247,7 @@ body::after {
     align-items: center;
 }
 
-.overlay-text { /* General overlay text styles */
+.overlay-text {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -253,7 +257,6 @@ body::after {
     height: 100%;
     box-sizing: border-box;
 }
-
 
 #album-image.image-faded {
     filter: grayscale(80%) blur(3px);
@@ -313,7 +316,7 @@ body::after {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    /* font-size set dynamically */
+
 }
 
 #album-by {
@@ -321,7 +324,7 @@ body::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5em; /* Relative to main-container font-size */
+    font-size: 1.5em;
     overflow: hidden;
 }
 
@@ -331,5 +334,4 @@ body::after {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    /* font-size set dynamically */
 }
