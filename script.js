@@ -277,7 +277,6 @@ document.addEventListener('DOMContentLoaded', function () {
             buttonPersonRight.addEventListener('click', () => moveScale('right'));
             buttonEnter.addEventListener('click', submitVote);
         });
-
     buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
 
@@ -286,10 +285,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const album = shuffledAlbums[currentAlbumIndex]; // Use shuffledAlbums
         document.getElementById('album-name').textContent = infoMode ? album.name : '';
         document.getElementById('album-artist').textContent = infoMode ? album.artist : '';
+
         if (infoMode) {
             albumInfoText.style.display = 'flex';
-            adjustFontSize(document.getElementById('album-name'));
-            adjustFontSize(document.getElementById('album-artist'));
+             // Call the sizing function *after* making elements visible:
+            adjustAlbumInfoFontSize();
         } else {
             albumInfoText.style.display = 'none';
         }
@@ -305,62 +305,51 @@ document.addEventListener('DOMContentLoaded', function () {
         personRightInfoText.style.display = infoMode ? 'flex' : 'none';
     });
 
-    // Dynamic Text Resizing
-    function adjustFontSize(element) {
-        const container = element.parentElement;
-        const maxWidth = container.offsetWidth;
-        const maxHeight = container.offsetHeight;
+    function adjustAlbumInfoFontSize() {
+        const albumNameElement = document.getElementById('album-name');
+        const albumArtistElement = document.getElementById('album-artist');
 
-        console.log(`adjustFontSize called for ${element.id}`);
-        console.log(`Container dimensions for ${element.id}: width=${maxWidth}, height=${maxHeight}`);
+        // Reset font sizes
+        albumNameElement.style.fontSize = '';
+        albumArtistElement.style.fontSize = '';
+
+        // Get maximum allowed font size for each, keeping words intact
+        const nameFontSize = getMaxFontSize(albumNameElement);
+        const artistFontSize = getMaxFontSize(albumArtistElement);
+
+
+        // Find minimum of the two maximums
+        const minFontSize = Math.min(nameFontSize, artistFontSize);
+
+        // Apply the minimum font size to both
+        albumNameElement.style.fontSize = `${minFontSize}px`;
+        albumArtistElement.style.fontSize = `${minFontSize}px`;
+    }
+    function getMaxFontSize(element) {
+        const container = element.parentElement;  // This should be #album-info-text
+        const maxWidth = container.offsetWidth;
+        const maxHeight = element.offsetHeight; // Use the *element's* allocated height (40%)
 
         let fontSize = 1;
-        element.style.fontSize = `${fontSize}px`; // Initial font size
+        element.style.fontSize = `${fontSize}px`;
 
-        // Binary search for the largest possible font size
+        // Binary search
         let low = 1;
-        let high = 1000; // Arbitrary upper bound
+        let high = 1000;
 
         while (low <= high) {
             const mid = Math.floor((low + high) / 2);
             element.style.fontSize = `${mid}px`;
 
             const isTooLarge = element.scrollWidth > maxWidth || element.scrollHeight > maxHeight;
-
-            if (isTooLarge) {
+             if (isTooLarge) {
                 high = mid - 1;
             } else {
                 low = mid + 1;
-                fontSize = mid; // The largest working font size so far
+                fontSize = mid;
             }
+
         }
-        element.style.fontSize = `${fontSize}px`;
-        console.log(`Adjusted font size for ${element.id}: ${fontSize}px`);
-
-        // Attempt to split text into multiple lines if needed
-        adjustMultilineText(element);
-    }
-
-    function adjustMultilineText(element) {
-        const containerWidth = element.parentElement.offsetWidth;
-        let words = element.textContent.split(" ");
-        element.textContent = "";
-
-        let line = "";
-        for (let i = 0; i < words.length; i++) {
-            let testLine = line + words[i] + " ";
-            element.textContent = testLine;
-            if (element.scrollWidth > containerWidth && line !== "") {
-                element.textContent = testLine.slice(0, testLine.length - words[i].length - 1);
-                line = words[i] + " ";
-                break;
-            } else if (element.scrollWidth > containerWidth && line === "") {
-                element.textContent = words[i];
-                break;
-            } else {
-                line = testLine;
-            }
-        }
-        element.textContent = line;
+        return fontSize;
     }
 });
