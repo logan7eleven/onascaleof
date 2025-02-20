@@ -15,18 +15,18 @@
 
         <div id="album-container">
             <img id="album-image" src="" alt="Album Cover">
-            <div id="album-info-text" class="overlay-text"></div>
+            <div id="album-info-text" class="overlay-text">
+                <!-- Make sure these exist if you want to avoid null errors -->
+                <div id="album-name"></div>
+                <div id="album-artist"></div>
+            </div>
         </div>
 
         <div id="scale-container">
             <div id="scale">
-                <div id="scale-segments-left">
-                    <!-- Left segments will be added here by JavaScript -->
-                </div>
+                <div id="scale-segments-left"></div>
                 <div id="scale-divider"></div>
-                <div id="scale-segments-right">
-                    <!-- Right segments will be added here by JavaScript -->
-                </div>
+                <div id="scale-segments-right"></div>
             </div>
         </div>
 
