@@ -53,8 +53,8 @@ body::after {
 }
 
 #site-title {
-    font-size: 2.5em; /* Relative to main-container */
-    margin-bottom: 1.5%;
+    font-size: 5em; /* Doubled the size (2.5em * 2 = 5em) */
+    margin-bottom: 1.5%; /* Keep this consistent with other spacing */
     color: black;
     margin-top: 0.25%;
     width: 100%;
@@ -71,21 +71,21 @@ body::after {
     align-items: center;
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
-    margin-bottom: 2%;
+    margin-bottom: 1.5%; /* Consistent spacing */
 }
 
 #album-image {
     max-width: 95%;
     max-height: 95%;
-    width: 95%; /* Allow for some padding within container */
-    height: 95%; /* Allow for some padding within container */
+    width: 95%;
+    height: 95%;
     object-fit: contain;
     object-position: center;
     border-radius: 0.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: filter 0.3s ease;
-    position: absolute; /* Position relative to #album-container */
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -93,16 +93,17 @@ body::after {
 
 #scale-container {
     width: 90%;
-    margin-bottom: 1.25%;
+    margin-bottom: 1.5%; /* Consistent spacing */
     position: relative;
+    margin-top: 1.5%; /* Spacing above the scale */
 }
 
 #scale {
     display: flex;
     align-items: center;
-    height: 20px; /* Adjust as needed */
-    background-color: #eee; /* Light background */
-    border-radius: 3px; /* Reduced Bevel */
+    height: 1em; /* Use em for consistent scaling */
+    background-color: #eee;
+    border-radius: 0.3em; /* Reduced Bevel - Also using em */
     overflow: hidden;
 }
 
@@ -115,33 +116,33 @@ body::after {
 
 #scale-segments-left {
     flex-direction: row-reverse;
-    justify-content: flex-end; /* Align to the right edge */
+    justify-content: flex-end;
 }
 
 .scale-segment {
     width: 5%;
     height: 100%;
-    background-color: transparent; /* Initially transparent */
+    background-color: transparent;
     box-sizing: border-box;
 }
 
 .scale-segment.active-left {
-    background-color: #BAA0FA; /* Purple */
+    background-color: #BAA0FA;
 }
 
 .scale-segment.active-right {
-    background-color: #F7B73D; /* Gold */
+    background-color: #F7B73D;
 }
 
 /* Divider */
 #scale-divider {
-    width: 1px; /* Thin divider line */
+    width: 0.05em; /* Thin divider line - Use em */
     height: 100%;
     background-color: #ccc;
     position: absolute;
     left: 50%;
-    transform: translateX(-50%); /* Center the divider */
-    z-index: 2; /* Ensure it sits above the segments */
+    transform: translateX(-50%);
+    z-index: 2;
 }
 
 #button-container {
@@ -149,17 +150,16 @@ body::after {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.625%;
-    margin-bottom: 1.25%;
-    width: 80%;
+    margin-bottom: 1.5%; /* Consistent spacing */
+    width: 80%; /* Same as album-container */
     box-sizing: border-box;
 }
 
 #person-arrow-container {
-    width: 80%;
+    width: 100%; /* Take up full width of button-container */
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1%;
+    margin-bottom: 1.5%; /*Consistent spacing*/
     box-sizing: border-box;
     height: 8em; /* set height here*/
 }
@@ -171,53 +171,55 @@ body::after {
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    width: calc(50% - 0.25rem); /* Account for margin */
+     width: calc(50% - 2.5% * 2); /* Adjusted for 5% spacing on each side */
     height: 100%;
     padding: 1%;
     box-sizing: border-box;
 }
-
 .person-arrow-button:first-of-type {
     flex-direction: row;
     background-color: #BAA0FA; /* Purple for left side */
+    justify-content: space-between; /* Added to position arrow correctly */
 }
 
 .person-arrow-button:last-of-type {
     flex-direction: row-reverse;
     background-color: #F7B73D; /* Gold for right side */
+    justify-content: space-between; /* Added to position arrow correctly */
 }
 
 .person-image-container {
-    position: relative;
-    height: 100%;
-    width: 6em; /* Fixed width */
-    box-sizing: border-box;
-    overflow: hidden;
+  position: relative;
+  width: calc(100% - 4em); /*Adjusted Width */
+  box-sizing: border-box;
+  overflow: hidden;
+    padding-bottom: 75%; /* 4:3 aspect ratio (height is 75% of width) */
+
 }
 
 .person-arrow-button img {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 5%;  /* Center vertically within the 90% */
+    left: 5%; /* Center horizontally within the 90% */
+    width: 90%;  /* Fill 90% of the container */
+    height: 90%; /* Fill 90% of the container */
     object-fit: cover;
-    object-position: 50% 33.333%;
+    object-position: 50% 33.333%; /* 1/3 from the top, which is the same as 1/6 from the center */
     border-radius: 0.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
-
-.arrow-left,
-.arrow-right {
-    font-size: 2em; /* Use em relative to container */
-    color: rgba(0, 0, 0, 0.3);
-    padding: 0 2%;
+.person-arrow-button .arrow { /* Added class for arrows */
+    font-size: 4em;  /*Large arrow*/
+    color: rgba(0, 0, 0, 0.5);
+    padding: 0; /*Padding added by main container*/
+    display: flex;/*Flex*/
+    align-items: center;/*Center*/
 }
 
 #button-row {
     display: flex;
-    justify-content: space-around;
-    width: 80%;
+    justify-content: space-between; /* Use space-between for consistent spacing */
+    width: 100%; /* Take up full width of button-container */
     margin-left:auto;
     margin-right:auto;
 }
@@ -226,14 +228,14 @@ body::after {
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    height: 3em; /* Use em relative to container font-size */
-    font-size: 2em; /* Use em relative to container */
+    height: 3em;
+    font-size: 2em;
     background-color: #ddd;
     color: #333;
-    padding: 0.5em 1em; /* Use em for padding */
+    padding: 0.5em 1em;
     transition: background-color: 0.3s ease;
-    flex-grow: 1;
-    margin: 0 0.25rem;
+     width: calc(33.333% - 5% * 2 / 3); /* Adjusted for 5% spacing on each side */
+    margin: 0;
     text-align: center;
     box-sizing: border-box;
     display: flex;
@@ -243,19 +245,19 @@ body::after {
 
 .overlay-text { /* General overlay text styles */
     display: flex;
-    flex-direction: column; /* Stack text elements */
-    justify-content: space-between; /* For album info */
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     text-align: center;
-    width: 100%; /* Full width of parent */
+    width: 100%;
     height: 100%;
-    box-sizing: border-box; /* Important for sizing */
+    box-sizing: border-box;
 }
 
 
 #album-image.image-faded {
-    filter: grayscale(80%) blur(3px); /* Gray and blur */
-    opacity: 0.7; /* Make it slightly transparent */
+    filter: grayscale(80%) blur(3px);
+    opacity: 0.7;
 }
 
 .person-arrow-button img.image-faded {
@@ -264,23 +266,23 @@ body::after {
 }
 
 .person-image-container .overlay-text {
-    position: absolute; /* Absolute positioning */
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    display: none; /* Hidden by default */
+    display: none;
     justify-content: center;
     align-items: center;
     color: black;
-    z-index: 10; /* Ensure text is on top */
+    z-index: 10;
     font-weight: bold;
     font-family: monospace;
-    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
-    border-radius: 0.5rem; /* Match image rounding */
-    box-sizing: border-box; /* Include padding/border in size */
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 0.5rem;
+    box-sizing: border-box;
     padding: 0.5em;
-    overflow: hidden; /* Prevent overflow */
+    overflow: hidden;
 }
 
 #album-info-text {
@@ -301,21 +303,21 @@ body::after {
     font-weight: bold;
     font-family: monospace;
     box-sizing: border-box;
-    padding: 0.5em; /* Reduced padding to fit better */
-    background-color: rgba(255, 255, 255, 0.7); /*Whitish Grey*/
+    padding: 0.5em;
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 #album-name {
-    height: 40%; /* 40% of album-info-text height */
+    height: 40%;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Important for text resizing */
+    overflow: hidden;
     /* font-size set dynamically */
 }
 
 #album-by {
-    height: 10%; /* 10% of album-info-text height */
+    height: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -324,10 +326,10 @@ body::after {
 }
 
 #album-artist {
-    height: 40%; /* 40% of album-info-text height */
+    height: 40%;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Important for text resizing */
+    overflow: hidden;
     /* font-size set dynamically */
 }
