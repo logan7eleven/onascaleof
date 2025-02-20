@@ -1,3 +1,7 @@
+html {
+    font-size: 100%; /* Ensure base font size is consistent */
+}
+
 body {
     font-family: sans-serif;
     display: flex;
@@ -11,6 +15,7 @@ body {
     background-color: #826E67;
     position: relative;
     overflow: hidden;
+    font-size: 100%;
 }
 
 body::before,
@@ -44,7 +49,7 @@ body::after {
     position: relative;
     box-sizing: border-box;
     background-color: #555;
-    font-size: 1em; /* Base font size for scaling */
+    /* font-size is set dynamically in JavaScript */
 }
 
 #site-title {
@@ -59,7 +64,7 @@ body::after {
 #album-container {
     width: 80%;
     height: 0;
-    padding-bottom: 80%;
+    padding-bottom: 80%; /* Maintain square aspect ratio */
     position: relative;
     display: flex;
     justify-content: center;
@@ -72,21 +77,20 @@ body::after {
 #album-image {
     max-width: 95%;
     max-height: 95%;
-    width: 95%;
-    height: 95%;
+    width: 95%; /* Allow for some padding within container */
+    height: 95%; /* Allow for some padding within container */
     object-fit: contain;
     object-position: center;
     border-radius: 0.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: filter 0.3s ease;
-    position: absolute;
+    position: absolute; /* Position relative to #album-container */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-/* New Styles For Dynamic Scale */
 #scale-container {
     width: 90%;
     margin-bottom: 1.25%;
@@ -115,7 +119,7 @@ body::after {
 }
 
 .scale-segment {
-    width: 5%; /* Adjust for desired number of segments */
+    width: 5%;
     height: 100%;
     background-color: transparent; /* Initially transparent */
     box-sizing: border-box;
@@ -139,7 +143,6 @@ body::after {
     transform: translateX(-50%); /* Center the divider */
     z-index: 2; /* Ensure it sits above the segments */
 }
-/* End of New Styles */
 
 #button-container {
     display: flex;
@@ -168,8 +171,8 @@ body::after {
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    width: calc(50% - 0.25rem);
-    height: 100%;/*Take all space*/
+    width: calc(50% - 0.25rem); /* Account for margin */
+    height: 100%;
     padding: 1%;
     box-sizing: border-box;
 }
@@ -193,7 +196,7 @@ body::after {
 }
 
 .person-arrow-button img {
-    position: absolute;/*Allows for proper fit*/
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -206,7 +209,7 @@ body::after {
 
 .arrow-left,
 .arrow-right {
-    font-size: 200%;
+    font-size: 2em; /* Use em relative to container */
     color: rgba(0, 0, 0, 0.3);
     padding: 0 2%;
 }
@@ -223,11 +226,11 @@ body::after {
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    height: 3rem; /* Button height takes up 20% of #button-container height. */
-    font-size: 2rem; /* Removed the percentage and used a baseline unit */
+    height: 3em; /* Use em relative to container font-size */
+    font-size: 2em; /* Use em relative to container */
     background-color: #ddd;
     color: #333;
-    padding: 0.5rem 1rem;
+    padding: 0.5em 1em; /* Use em for padding */
     transition: background-color: 0.3s ease;
     flex-grow: 1;
     margin: 0 0.25rem;
@@ -251,8 +254,8 @@ body::after {
     color: black;
     text-align: center;
     z-index: 10;
-    word-wrap: break-word;
-    white-space: pre-wrap;
+    word-wrap: break-word; /* For long words */
+    white-space: pre-wrap; /* Preserve line breaks */
     font-weight: bold;
     font-family: monospace;
     box-sizing: border-box;
@@ -262,7 +265,6 @@ body::after {
 #album-info-text.show {
     display: flex; /* Show when 'infoMode' is active */
 }
-
 #album-name {
     height: 40%;
     display: flex;
