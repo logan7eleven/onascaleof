@@ -241,50 +241,93 @@ body::after {
     align-items: center;
 }
 
+.overlay-text { /* General overlay text styles */
+    display: flex;
+    flex-direction: column; /* Stack text elements */
+    justify-content: space-between; /* For album info */
+    align-items: center;
+    text-align: center;
+    width: 100%; /* Full width of parent */
+    height: 100%;
+    box-sizing: border-box; /* Important for sizing */
+}
+
+
+#album-image.image-faded {
+    filter: grayscale(80%) blur(3px); /* Gray and blur */
+    opacity: 0.7; /* Make it slightly transparent */
+}
+
+.person-arrow-button img.image-faded {
+    filter: grayscale(80%) blur(3px);
+    opacity: 0.7;
+}
+
+.person-image-container .overlay-text {
+    position: absolute; /* Absolute positioning */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    color: black;
+    z-index: 10; /* Ensure text is on top */
+    font-weight: bold;
+    font-family: monospace;
+    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+    border-radius: 0.5rem; /* Match image rounding */
+    box-sizing: border-box; /* Include padding/border in size */
+    padding: 0.5em;
+    overflow: hidden; /* Prevent overflow */
+}
+
 #album-info-text {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    display: none; /* Hidden by default */
+    display: none;
     flex-direction: column;
-    justify-content: space-between; /* Distribute space evenly */
+    justify-content: space-between;
     align-items: center;
     color: black;
     text-align: center;
     z-index: 10;
-    word-wrap: break-word; /* For long words */
-    white-space: pre-wrap; /* Preserve line breaks */
+    word-wrap: break-word;
+    white-space: pre-wrap;
     font-weight: bold;
     font-family: monospace;
     box-sizing: border-box;
-    padding: 1rem;
+    padding: 0.5em; /* Reduced padding to fit better */
+    background-color: rgba(255, 255, 255, 0.7); /*Whitish Grey*/
 }
 
-#album-info-text.show {
-    display: flex; /* Show when 'infoMode' is active */
-}
 #album-name {
-    height: 40%;
+    height: 40%; /* 40% of album-info-text height */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2em; /* Adjust as needed */
+    overflow: hidden; /* Important for text resizing */
+    /* font-size set dynamically */
 }
 
 #album-by {
-    height: 10%;
+    height: 10%; /* 10% of album-info-text height */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5em; /* Adjust as needed */
+    font-size: 1.5em; /* Relative to main-container font-size */
+    overflow: hidden;
 }
 
 #album-artist {
-    height: 40%;
+    height: 40%; /* 40% of album-info-text height */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2em; /* Adjust as needed */
+    overflow: hidden; /* Important for text resizing */
+    /* font-size set dynamically */
 }
