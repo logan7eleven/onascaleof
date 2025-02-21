@@ -12,31 +12,10 @@ body {
     text-align: center;
     min-height: 100vh;
     box-sizing: border-box;
-    background-color: #826E67;
+    background-color: #FFFBE6;
     position: relative;
     overflow: hidden;
     font-size: 100%;
-}
-
-body::before,
-body::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
-body::after {
-    background-size: 100vw 100vh;
-    opacity: 1;
-    pointer-events: none;
-    background-image:
-        radial-gradient(circle, #A1887F 40%, transparent 40%),
-        radial-gradient(circle, #A1887F 40%, transparent 40%);
-    background-position: 0 0, 50vw 50vh;
 }
 
 #main-container {
@@ -75,6 +54,7 @@ body::after {
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
     margin-bottom: 1.5%;
+    transition: background-color 0.3s ease;
 }
 
 #album-image {
@@ -146,7 +126,6 @@ body::after {
     z-index: 2;
 }
 
-/* Person Arrow Container */
 #person-arrow-container {
     width: 80%;
     display: flex;
@@ -165,16 +144,12 @@ body::after {
     border-radius: 0.5rem;
     padding: 0.5em;
     box-sizing: border-box;
+    background-color: #333;
+    transition: background-color 0.3s ease;
 }
 
-.person-arrow-button:first-of-type {
-    flex-direction: row;
-    background-color: #BAA0FA;
-}
-
-.person-arrow-button:last-of-type {
-    flex-direction: row-reverse;
-    background-color: #F7B73D;
+.person-arrow-button:hover {
+    background-color: #444;
 }
 
 .person-image-container {
@@ -204,7 +179,7 @@ body::after {
 
 .arrow::before {
     content: '';
-    border: solid rgba(0, 0, 0, 0.5);
+    border: solid rgba(255, 255, 255, 0.7);
     border-width: 0 0.3em 0.3em 0;
     display: inline-block;
     padding: 0.5em;
@@ -218,7 +193,6 @@ body::after {
     transform: rotate(-45deg);
 }
 
-/* Button Row */
 #button-row {
     width: 80%;
     display: flex;
