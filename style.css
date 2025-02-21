@@ -8,6 +8,10 @@ body {
     background-color: black;
     font-family: Arial, sans-serif;
     color: white;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 #main-container {
@@ -72,6 +76,10 @@ body {
     cursor: pointer;
     padding: 0;
     width: 45%;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .person-image-container {
