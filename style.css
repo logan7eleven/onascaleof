@@ -170,20 +170,19 @@ body::after {
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    width: calc(40% - 2.5%); /* 40% of container width minus half of the spacing */
+    width: calc(50% - 2.5%); /* 50% of container width minus half of the spacing */
     box-sizing: border-box;
     padding: 1em; /* Add padding back to the BUTTON */
+    justify-content: center; /* Center content */
 }
 .person-arrow-button:first-of-type {
     flex-direction: row;
     background-color: #BAA0FA;
-    justify-content: space-between; /* Arrow on the right */
 }
 
 .person-arrow-button:last-of-type {
     flex-direction: row-reverse;
     background-color: #F7B73D;
-    justify-content: space-between; /* Arrow on the left */
 }
 
 .person-image-container {
