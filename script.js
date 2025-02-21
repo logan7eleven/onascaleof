@@ -26,15 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let peopleID = 2;
     let infoMode = false;
 
-    // Button control variables
-    let holdTimeout = null;
-    let holdInterval = null;
-    let isHolding = false;
-    const holdDelay = 500;    // ms before hold starts registering repeats
-    const holdRate = 50;      // ms between repeats while holding
-    let lastMoveTime = 0;
-    const moveDebounceTime = 10; // ms minimum between moves
-
     const firebaseConfig = {
         apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
         authDomain: "onascaleof-2e3b4.firebaseapp.com",
@@ -147,58 +138,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function startHold(direction) {
-        if (isHolding) return;
-        isHolding = true;
-        
-        // Immediate move
-        moveScale(direction);
-        
-        // Setup hold timeout
-        holdTimeout = setTimeout(() => {
-            holdInterval = setInterval(() => {
-                moveScale(direction);
-            }, holdRate);
-        }, holdDelay);
-    }
-
-    function stopHold() {
-        isHolding = false;
-        if (holdTimeout) {
-            clearTimeout(holdTimeout);
-            holdTimeout = null;
-        }
-        if (holdInterval) {
-            clearInterval(holdInterval);
-            holdInterval = null;
-        }
-    }
-
     function moveScale(direction) {
         if (!voteSubmitted) {
-            const currentTime = Date.now();
-            if (currentTime - lastMoveTime < moveDebounceTime) {
-                return;
-            }
-            lastMoveTime = currentTime;
-
             let color = direction === "right" ? RIGHT_COLOR : LEFT_COLOR;
             let personContainer = direction === "right" ? 
                 buttonPersonRight.querySelector('.person-image-container') : 
                 buttonPersonLeft.querySelector('.person-image-container');
 
-            // Update vote value
             if (direction === "right") {
                 currentVote = Math.min(100, currentVote + 5);
             } else {
                 currentVote = Math.max(-100, currentVote - 5);
             }
 
-            // Flash the colors
             albumContainer.style.backgroundColor = color;
             personContainer.style.backgroundColor = color;
 
-            // Reset colors after 200ms if not submitted
             setTimeout(() => {
                 if (!voteSubmitted) {
                     albumContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)';
@@ -225,10 +180,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 containerColor = 'rgba(0, 0, 0, 1)';
                 personContainer = null;
             }
-            // Set the album container color
+            
             albumContainer.style.backgroundColor = containerColor;
             
-            // Set the person container color if there is one
             if (personContainer) {
                 personContainer.style.backgroundColor = containerColor;
             }
@@ -320,27 +274,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function initializeButtonListeners() {
-        // Left button listeners
-        buttonPersonLeft.addEventListener('mousedown', () => startHold('left'));
-        buttonPersonLeft.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            startHold('left');
-        });
-
-        // Right button listeners
-        buttonPersonRight.addEventListener('mousedown', () => startHold('right'));
-        buttonPersonRight.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            startHold('right');
-        });
-
-        // Global listeners to handle release
-        document.addEventListener('mouseup', stopHold);
-        document.addEventListener('touchend', stopHold);
-        document.addEventListener('touchcancel', stopHold);
-    }
-
     const albumsCSV = '/albums.csv';
     const peopleCSV = '/people.csv';
 
@@ -355,7 +288,8 @@ document.addEventListener('DOMContentLoaded', function () {
             currentAlbumIndex = 0;
             updateDisplay();
 
-            initializeButtonListeners();
+            buttonPersonLeft.addEventListener('click', () => moveScale('left'));
+            buttonPersonRight.addEventListener('click', () => moveScale('right'));
             buttonEnter.addEventListener('click', submitVote);
         });
 
