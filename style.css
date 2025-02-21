@@ -55,12 +55,6 @@ body::after {
     aspect-ratio: 2 / 3;
 }
 
-/* Vertical Spacing */
-.vertical-spacer {
-    height: 1.5%;
-    width: 100%;
-}
-
 #site-title {
     font-size: 5em;
     color: black;
@@ -103,7 +97,6 @@ body::after {
 #scale-container {
     width: 80%;
     position: relative;
-    margin-top: 0;
     margin-bottom: 1.5%;
 }
 
@@ -158,22 +151,20 @@ body::after {
     width: 80%;
     display: flex;
     justify-content: space-between;
-    gap: 5%;
-    box-sizing: border-box;
+    gap: calc(5% * 1.25);
     margin-bottom: 1.5%;
+    box-sizing: border-box;
 }
 
 .person-arrow-button {
-    position: relative;
+    flex: 1;
     display: flex;
     align-items: center;
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    width: 47.5%;
+    padding: 0.5em;
     box-sizing: border-box;
-    padding: 1em;
-    justify-content: center;
 }
 
 .person-arrow-button:first-of-type {
@@ -188,39 +179,51 @@ body::after {
 
 .person-image-container {
     position: relative;
-    width: 75%;
-    box-sizing: border-box;
-    overflow: hidden;
     background-color: rgba(0, 0, 0, 1);
     border-radius: 0.5rem;
+    overflow: hidden;
 }
 
 .person-arrow-button img {
-    position: absolute;
-    top: 5%;
-    left: 5%;
     width: 90%;
     height: 90%;
     object-fit: cover;
-    object-position: 50% 33.333%;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    object-position: center 33.333%;
+    position: absolute;
+    top: 5%;
+    left: 5%;
 }
 
-.person-arrow-button .arrow {
-    font-size: 4em;
-    color: rgba(0, 0, 0, 0.5);
+.arrow {
+    flex: 1;
+    height: 100%;
     display: flex;
     align-items: center;
-    width: 25%;
+    justify-content: center;
+}
+
+.arrow::before {
+    content: '';
+    border: solid rgba(0, 0, 0, 0.5);
+    border-width: 0 0.3em 0.3em 0;
+    display: inline-block;
+    padding: 0.5em;
+}
+
+.left-arrow::before {
+    transform: rotate(135deg);
+}
+
+.right-arrow::before {
+    transform: rotate(-45deg);
 }
 
 /* Button Row */
 #button-row {
+    width: 80%;
     display: flex;
     justify-content: space-between;
     gap: 5%;
-    width: 80%;
     margin: 0 auto;
     margin-bottom: 1.5%;
 }
@@ -245,69 +248,31 @@ body::after {
 }
 
 .overlay-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-}
-
-#album-image.image-faded {
-    filter: grayscale(80%) blur(3px);
-    opacity: 0.7;
-}
-
-.person-arrow-button img.image-faded {
-    filter: grayscale(80%) blur(3px);
-    opacity: 0.7;
-}
-
-.person-image-container .overlay-text {
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    display: none;
+    background-color: rgba(255, 255, 255, 0.7);
     justify-content: center;
     align-items: center;
     color: black;
     z-index: 10;
     font-weight: bold;
     font-family: monospace;
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 0.5rem;
-    box-sizing: border-box;
-    padding: 0.5em;
-    overflow: hidden;
 }
 
 #album-info-text {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: none;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    color: black;
-    text-align: center;
-    z-index: 10;
+    padding: 0.5em;
     word-wrap: break-word;
     white-space: pre-wrap;
-    font-weight: bold;
-    font-family: monospace;
-    box-sizing: border-box;
-    padding: 0.5em;
-    background-color: rgba(255, 255, 255, 0.7);
 }
 
-#album-name {
+#album-name,
+#album-artist {
     height: 40%;
     display: flex;
     align-items: center;
@@ -324,10 +289,7 @@ body::after {
     overflow: hidden;
 }
 
-#album-artist {
-    height: 40%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+.image-faded {
+    filter: grayscale(80%) blur(3px);
+    opacity: 0.7;
 }
