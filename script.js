@@ -26,13 +26,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let peopleID = 2;
     let infoMode = false;
 
-    // New button control variables
+    // Button control variables
     let holdTimeout = null;
     let holdInterval = null;
     let isHolding = false;
     const holdDelay = 500;    // ms before hold starts registering repeats
     const holdRate = 50;      // ms between repeats while holding
-    const scaleTraversalTime = 2500; // ms to go from one end to other
     let lastMoveTime = 0;
     const moveDebounceTime = 10; // ms minimum between moves
 
@@ -183,21 +182,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             lastMoveTime = currentTime;
 
-            // Set the color based on direction
-            let color;
-            if (direction === "right") {
-                color = RIGHT_COLOR;
-            } else {
-                color = LEFT_COLOR;
-            }
-
-            // Get the correct person container based on direction
-            let personContainer;
-            if (direction === "right") {
-                personContainer = buttonPersonRight.querySelector('.person-image-container');
-            } else {
-                personContainer = buttonPersonLeft.querySelector('.person-image-container');
-            }
+            let color = direction === "right" ? RIGHT_COLOR : LEFT_COLOR;
+            let personContainer = direction === "right" ? 
+                buttonPersonRight.querySelector('.person-image-container') : 
+                buttonPersonLeft.querySelector('.person-image-container');
 
             // Update vote value
             if (direction === "right") {
@@ -237,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 containerColor = 'rgba(0, 0, 0, 1)';
                 personContainer = null;
             }
-            
             // Set the album container color
             albumContainer.style.backgroundColor = containerColor;
             
