@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentAlbumIndex = 0;
     let currentVote = 0;
     let voteSubmitted = false;
-    let peopleID = 1; // Manually set the active peopleID
+    let peopleID = 2; // Manually set the active peopleID
     let infoMode = false;
 
     // Firebase setup
