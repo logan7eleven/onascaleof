@@ -26,6 +26,16 @@ document.addEventListener('DOMContentLoaded', function () {
     let peopleID = 2;
     let infoMode = false;
 
+    // New button control variables
+    let holdTimeout = null;
+    let holdInterval = null;
+    let isHolding = false;
+    const holdDelay = 500;    // ms before hold starts registering repeats
+    const holdRate = 50;      // ms between repeats while holding
+    const scaleTraversalTime = 2500; // ms to go from one end to other
+    let lastMoveTime = 0;
+    const moveDebounceTime = 10; // ms minimum between moves
+
     const firebaseConfig = {
         apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
         authDomain: "onascaleof-2e3b4.firebaseapp.com",
@@ -138,8 +148,41 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function startHold(direction) {
+        if (isHolding) return;
+        isHolding = true;
+        
+        // Immediate move
+        moveScale(direction);
+        
+        // Setup hold timeout
+        holdTimeout = setTimeout(() => {
+            holdInterval = setInterval(() => {
+                moveScale(direction);
+            }, holdRate);
+        }, holdDelay);
+    }
+
+    function stopHold() {
+        isHolding = false;
+        if (holdTimeout) {
+            clearTimeout(holdTimeout);
+            holdTimeout = null;
+        }
+        if (holdInterval) {
+            clearInterval(holdInterval);
+            holdInterval = null;
+        }
+    }
+
     function moveScale(direction) {
         if (!voteSubmitted) {
+            const currentTime = Date.now();
+            if (currentTime - lastMoveTime < moveDebounceTime) {
+                return;
+            }
+            lastMoveTime = currentTime;
+
             // Set the color based on direction
             let color;
             if (direction === "right") {
@@ -290,6 +333,45 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function initializeButtonListeners() {
+        // Left button listeners
+        buttonPersonLeft.addEventListener('mousedown', () => startHold('left'));
+        buttonPersonLeft.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startHold('left');
+        });
+
+        // Right button listeners
+        buttonPersonRight.addEventListener('mousedown', () => startHold('right'));
+        buttonPersonRight.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startHold('right');
+        });
+
+        // Global listeners to handle release
+        document.addEventListener('mouseup', stopHold);
+        document.addEventListener('touchend', stopHold);
+        document.addEventListener('touchcancel', stopHold);
+    }
+
+    const albumsCSV = '/albums.csv';
+    const peopleCSV = '/people.csv';
+
+    Promise.all([fetchAlbums(albumsCSV), fetchPeople(peopleCSV)])
+        .then(([albumData, peopleData]) => {
+            albums = albumData;
+            shuffledAlbums = shuffleArray([...albums]);
+            loadPeople(peopleData);
+            createScaleSegments();
+            updateScale();
+
+            currentAlbumIndex = 0;
+            updateDisplay();
+
+            initializeButtonListeners();
+            buttonEnter.addEventListener('click', submitVote);
+        });
+
     buttonNext.addEventListener('click', async () => {
         if (!voteSubmitted) {
             try {
@@ -307,25 +389,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         getNextAlbum();
     });
-
-    const albumsCSV = '/albums.csv';
-    const peopleCSV = '/people.csv';
-
-    Promise.all([fetchAlbums(albumsCSV), fetchPeople(peopleCSV)])
-        .then(([albumData, peopleData]) => {
-            albums = albumData;
-            shuffledAlbums = shuffleArray([...albums]);
-            loadPeople(peopleData);
-            createScaleSegments();
-            updateScale();
-
-            currentAlbumIndex = 0;
-            updateDisplay();
-
-            buttonPersonLeft.addEventListener('click', () => moveScale('left'));
-            buttonPersonRight.addEventListener('click', () => moveScale('right'));
-            buttonEnter.addEventListener('click', submitVote);
-        });
 
     buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
