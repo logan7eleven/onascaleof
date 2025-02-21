@@ -64,7 +64,7 @@ body {
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
     margin-bottom: 1.5%;
-    transition: background-color 0.05s ease;
+    transition: background-color 0.01s ease;
 }
 
 #album-image {
@@ -155,7 +155,7 @@ body {
     padding: 0.5em;
     box-sizing: border-box;
     background-color: #333;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.1s ease;
 }
 
 .person-arrow-button:hover {
