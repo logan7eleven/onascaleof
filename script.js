@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const albumContainer = document.getElementById('album-container');
     const personArrowContainer = document.getElementById('person-arrow-container');
 
+    const LEFT_COLOR = '#BAA0FA';
+    const RIGHT_COLOR = '#F7B73D';
+
     let albums = [];
     let shuffledAlbums = [];
     let people = { left: {}, right: {} };
@@ -37,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function setPersonImageContainerSize() {
         const albumContainerHeight = albumContainer.offsetHeight;
         const personImageContainerHeight = albumContainerHeight / 3;
-        const personImageContainerWidth = personImageContainerHeight * 0.75; // 3:4 ratio
+        const personImageContainerWidth = personImageContainerHeight * 0.75;
 
         document.querySelectorAll('.person-image-container').forEach(container => {
             container.style.height = `${personImageContainerHeight}px`;
@@ -116,25 +119,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function loadPeople(data) {
         console.log("loadPeople called with data:", data);
         const filteredPeople = data.filter(person => person.peopleID === peopleID);
-        console.log("filteredPeople:", filteredPeople);
 
         const leftPerson = filteredPeople.find(person => person.side === 'L');
         const rightPerson = filteredPeople.find(person => person.side === 'R');
 
-        console.log("leftPerson:", leftPerson);
-        console.log("rightPerson:", rightPerson);
-
         if (leftPerson) {
             people.left = leftPerson;
             personLeft.src = leftPerson.url;
-            console.log("personLeft.src set to:", personLeft.src);
         }
 
         if (rightPerson) {
             people.right = rightPerson;
             if (rightPerson.url) {
                 personRight.src = rightPerson.url;
-                console.log("personRight.src set to:", personRight.src);
             } else {
                 console.warn("rightPerson.url is undefined/empty!");
             }
@@ -144,7 +141,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateDisplay() {
         const album = shuffledAlbums[currentAlbumIndex];
         albumImage.src = album.url;
-        albumImage.style.outline = '';
         voteSubmitted = false;
         buttonEnter.disabled = false;
     }
@@ -157,6 +153,12 @@ document.addEventListener('DOMContentLoaded', function () {
         return array;
     }
 
+    function resetContainerColor() {
+        if (!voteSubmitted) {
+            albumContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+        }
+    }
+
     function getNextAlbum() {
         currentVote = 0;
         currentAlbumIndex++;
@@ -165,6 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
             shuffledAlbums = shuffleArray([...albums]);
             currentAlbumIndex = 0;
         }
+        albumContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)';
         updateDisplay();
         updateScale();
     }
@@ -206,8 +209,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!voteSubmitted) {
             if (direction === "right") {
                 currentVote = Math.min(100, currentVote + 5);
+                albumContainer.style.backgroundColor = RIGHT_COLOR;
             } else if (direction === "left") {
                 currentVote = Math.max(-100, currentVote - 5);
+                albumContainer.style.backgroundColor = LEFT_COLOR;
             }
             updateScale();
         }
@@ -215,8 +220,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function submitVote() {
         if (!voteSubmitted) {
-            let outlineColor = currentVote > 0 ? '#F7B73D' : currentVote < 0 ? '#BAA0FA' : '';
-            albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : '';
+            let containerColor = currentVote > 0 ? RIGHT_COLOR : 
+                               currentVote < 0 ? LEFT_COLOR : 
+                               'rgba(0, 0, 0, 1)';
+            albumContainer.style.backgroundColor = containerColor;
             buttonEnter.disabled = true;
             voteSubmitted = true;
 
@@ -268,7 +275,17 @@ document.addEventListener('DOMContentLoaded', function () {
             updateDisplay();
 
             buttonPersonLeft.addEventListener('click', () => moveScale('left'));
+            buttonPersonLeft.addEventListener('mouseup', resetContainerColor);
+            buttonPersonLeft.addEventListener('mouseleave', resetContainerColor);
+            buttonPersonLeft.addEventListener('touchend', resetContainerColor);
+            buttonPersonLeft.addEventListener('touchcancel', resetContainerColor);
+
             buttonPersonRight.addEventListener('click', () => moveScale('right'));
+            buttonPersonRight.addEventListener('mouseup', resetContainerColor);
+            buttonPersonRight.addEventListener('mouseleave', resetContainerColor);
+            buttonPersonRight.addEventListener('touchend', resetContainerColor);
+            buttonPersonRight.addEventListener('touchcancel', resetContainerColor);
+
             buttonEnter.addEventListener('click', submitVote);
         });
 
