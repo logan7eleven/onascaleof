@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Ensure mainContainer is defined so resizeMainContainer() works
     const mainContainer = document.getElementById('main-container');
-
     const albumImage = document.getElementById('album-image');
     const personLeft = document.getElementById('person-left');
     const personRight = document.getElementById('person-right');
@@ -17,15 +15,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const personArrowContainer = document.getElementById('person-arrow-container');
 
     let albums = [];
-    let shuffledAlbums = []; // New array to store shuffled albums
+    let shuffledAlbums = [];
     let people = { left: {}, right: {} };
     let currentAlbumIndex = 0;
     let currentVote = 0;
     let voteSubmitted = false;
-    let peopleID = 2; // Manually set the active peopleID
+    let peopleID = 2;
     let infoMode = false;
 
-    // Firebase setup
     const firebaseConfig = {
         apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
         authDomain: "onascaleof-2e3b4.firebaseapp.com",
@@ -47,11 +44,12 @@ document.addEventListener('DOMContentLoaded', function () {
             container.style.width = `${personImageContainerWidth}px`;
         });
     }
+
     function resizeMainContainer() {
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
 
-        let containerWidth = viewportHeight * 0.6 * 0.9; // 90% height * aspect ratio (2:3)
+        let containerWidth = viewportHeight * 0.6 * 0.9;
         let containerHeight = viewportHeight * 0.9;
 
         if (containerWidth > viewportWidth * 0.9) {
@@ -62,18 +60,13 @@ document.addEventListener('DOMContentLoaded', function () {
         mainContainer.style.width = `${containerWidth}px`;
         mainContainer.style.height = `${containerHeight}px`;
 
-        // Calculate and set the font size after resizing the container
         const containerHeightPx = mainContainer.offsetHeight;
-        const baseFontSize = containerHeightPx * 0.015; // Adjust 0.015 (1.5%) for overall scaling
+        const baseFontSize = containerHeightPx * 0.015;
         mainContainer.style.fontSize = `${baseFontSize}px`;
-        // Set person image heights
-        setPersonImageContainerSize(); // Call the corrected function
+        setPersonImageContainerSize();
     }
 
-    // Call it initially
     resizeMainContainer();
-
-    // And on window resize
     window.addEventListener('resize', resizeMainContainer);
 
     function fetchAlbums(url) {
@@ -156,7 +149,6 @@ document.addEventListener('DOMContentLoaded', function () {
         buttonEnter.disabled = false;
     }
 
-    // Shuffle function (Fisher-Yates algorithm)
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -170,20 +162,17 @@ document.addEventListener('DOMContentLoaded', function () {
         currentAlbumIndex++;
 
         if (currentAlbumIndex >= shuffledAlbums.length) {
-            // If we reach the end of the shuffled list, reshuffle and start over
             shuffledAlbums = shuffleArray([...albums]);
             currentAlbumIndex = 0;
         }
         updateDisplay();
-        updateScale(); // Make sure the scale also resets here
+        updateScale();
     }
 
-    // Dynamic Scale
     const scaleSegmentsLeft = document.getElementById('scale-segments-left');
     const scaleSegmentsRight = document.getElementById('scale-segments-right');
-    const numSegments = 20; // Segments on each side
+    const numSegments = 20;
 
-    // Function to create scale segments
     function createScaleSegments() {
         for (let i = 0; i < numSegments; i++) {
             const leftSegment = document.createElement('div');
@@ -196,22 +185,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Function to update the scale based on currentVote
     function updateScale() {
         const leftActiveSegments = Math.max(0, Math.min(numSegments, -currentVote / 5));
         const rightActiveSegments = Math.max(0, Math.min(numSegments, currentVote / 5));
 
-        // Clear all active classes
         document.querySelectorAll('.scale-segment').forEach(segment => {
             segment.classList.remove('active-left', 'active-right');
         });
 
-        // Add active classes to left segments
         for (let i = 0; i < leftActiveSegments; i++) {
             scaleSegmentsLeft.children[i].classList.add('active-left');
         }
 
-        // Add active classes to right segments
         for (let i = 0; i < rightActiveSegments; i++) {
             scaleSegmentsRight.children[i].classList.add('active-right');
         }
@@ -224,14 +209,14 @@ document.addEventListener('DOMContentLoaded', function () {
             } else if (direction === "left") {
                 currentVote = Math.max(-100, currentVote - 5);
             }
-            updateScale(); // Update the scale visually
+            updateScale();
         }
     }
 
     function submitVote() {
         if (!voteSubmitted) {
             let outlineColor = currentVote > 0 ? '#F7B73D' : currentVote < 0 ? '#BAA0FA' : '';
-            albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : '';  //Changed to EM
+            albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : '';
             buttonEnter.disabled = true;
             voteSubmitted = true;
 
@@ -251,7 +236,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Skip / Next button
     buttonNext.addEventListener('click', async () => {
         if (!voteSubmitted) {
             try {
@@ -275,43 +259,38 @@ document.addEventListener('DOMContentLoaded', function () {
     Promise.all([fetchAlbums(albumsCSV), fetchPeople(peopleCSV)])
         .then(([albumData, peopleData]) => {
             albums = albumData;
-            shuffledAlbums = shuffleArray([...albums]); // Create a shuffled copy
+            shuffledAlbums = shuffleArray([...albums]);
             loadPeople(peopleData);
-            createScaleSegments(); // Create scale segments
-            updateScale();  // Initializes the scale
+            createScaleSegments();
+            updateScale();
 
-            // Show the first album immediately
             currentAlbumIndex = 0;
             updateDisplay();
 
-            // Hook up your listeners
             buttonPersonLeft.addEventListener('click', () => moveScale('left'));
             buttonPersonRight.addEventListener('click', () => moveScale('right'));
             buttonEnter.addEventListener('click', submitVote);
         });
+
     buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
 
-        // Album
         albumImage.classList.toggle('image-faded', infoMode);
-        const album = shuffledAlbums[currentAlbumIndex]; // Use shuffledAlbums
+        const album = shuffledAlbums[currentAlbumIndex];
         document.getElementById('album-name').textContent = infoMode ? album.name : '';
         document.getElementById('album-artist').textContent = infoMode ? album.artist : '';
 
         if (infoMode) {
             albumInfoText.style.display = 'flex';
-             // Call the sizing function *after* making elements visible:
             adjustAlbumInfoFontSize();
         } else {
             albumInfoText.style.display = 'none';
         }
 
-        // Person Left
         personLeft.classList.toggle('image-faded', infoMode);
         personLeftInfoText.textContent = infoMode ? people.left.name : '';
         personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
 
-        // Person Right
         personRight.classList.toggle('image-faded', infoMode);
         personRightInfoText.textContent = infoMode ? people.right.name : '';
         personRightInfoText.style.display = infoMode ? 'flex' : 'none';
@@ -321,31 +300,26 @@ document.addEventListener('DOMContentLoaded', function () {
         const albumNameElement = document.getElementById('album-name');
         const albumArtistElement = document.getElementById('album-artist');
 
-        // Reset font sizes
         albumNameElement.style.fontSize = '';
         albumArtistElement.style.fontSize = '';
 
-        // Get maximum allowed font size for each, keeping words intact
         const nameFontSize = getMaxFontSize(albumNameElement);
         const artistFontSize = getMaxFontSize(albumArtistElement);
 
-
-        // Find minimum of the two maximums
         const minFontSize = Math.min(nameFontSize, artistFontSize);
 
-        // Apply the minimum font size to both
         albumNameElement.style.fontSize = `${minFontSize}px`;
         albumArtistElement.style.fontSize = `${minFontSize}px`;
     }
+
     function getMaxFontSize(element) {
-        const container = element.parentElement;  // This should be #album-info-text
+        const container = element.parentElement;
         const maxWidth = container.offsetWidth;
-        const maxHeight = element.offsetHeight; // Use the *element's* allocated height (40%)
+        const maxHeight = element.offsetHeight;
 
         let fontSize = 1;
         element.style.fontSize = `${fontSize}px`;
 
-        // Binary search
         let low = 1;
         let high = 1000;
 
@@ -354,13 +328,12 @@ document.addEventListener('DOMContentLoaded', function () {
             element.style.fontSize = `${mid}px`;
 
             const isTooLarge = element.scrollWidth > maxWidth || element.scrollHeight > maxHeight;
-             if (isTooLarge) {
+            if (isTooLarge) {
                 high = mid - 1;
             } else {
                 low = mid + 1;
                 fontSize = mid;
             }
-
         }
         return fontSize;
     }
