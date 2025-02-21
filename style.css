@@ -54,7 +54,7 @@ body {
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
     margin-bottom: 1.5%;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.05s ease;
 }
 
 #album-image {
@@ -157,7 +157,7 @@ body {
     background-color: rgba(0, 0, 0, 1);
     border-radius: 0.5rem;
     overflow: hidden;
-    transition: background-color 0.2s ease;
+    transition: background-color 0..05s ease;
 }
 
 .person-arrow-button img {
