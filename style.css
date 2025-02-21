@@ -40,9 +40,6 @@ body::after {
 }
 
 #main-container {
-    width: 60vh;
-    height: 90vh;
-    max-width: 90vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -51,7 +48,11 @@ body::after {
     background-color: #555;
     padding-top: 1.5%;
     padding-bottom: 1.5%;
-    /* Removed justify-content */
+    width: min(60vh, 40vw);
+    height: calc(1.5 * min(60vh, 40vw));
+    max-width: 90vw;
+    max-height: 90vh;
+    aspect-ratio: 2 / 3;
 }
 
 /* Vertical Spacing */
@@ -66,7 +67,7 @@ body::after {
     width: 100%;
     text-align: center;
     margin-top: 1.5%;  /* Initial spacing from top */
-    margin-bottom: 0;
+    margin-bottom: 1.5%; /* Add vertical spacing */
 }
 
 #album-container {
@@ -79,7 +80,7 @@ body::after {
     align-items: center;
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
-    margin-bottom: 0;
+    margin-bottom: 1.5%; /* Add vertical spacing */
 }
 
 #album-image {
@@ -103,7 +104,7 @@ body::after {
     width: 90%;
     position: relative;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 1.5%; /* Add vertical spacing */
 }
 
 #scale {
@@ -152,12 +153,14 @@ body::after {
     transform: translateX(-50%);
     z-index: 2;
 }
+
+/* Person Arrow Container */
 #person-arrow-container {
     width: 80%; /* Match album container */
     display: flex;
     justify-content: space-between;
     box-sizing: border-box;
-    margin-bottom: 0;
+    margin-bottom: 1.5%; /* Add vertical spacing */
 }
 
 .person-arrow-button {
@@ -167,7 +170,7 @@ body::after {
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    width: calc((100% - 5%) / 2); /* Correct: (Total Width - Spacing) / Number of Buttons */
+    width: calc(40% - 2.5%); /* 40% of container width minus half of the spacing */
     box-sizing: border-box;
     padding: 1em; /* Add padding back to the BUTTON */
 }
@@ -213,11 +216,13 @@ body::after {
     width: 25%;
 }
 
+/* Button Row */
 #button-row {
     display: flex;
     justify-content: space-between;
     width: 80%; /* Match album and person containers */
     margin: 0 auto; /* Center horizontally */
+    margin-bottom: 1.5%; /* Add vertical spacing */
 }
 
 .app-button {
@@ -230,7 +235,7 @@ body::after {
     color: #333;
     padding: 0.5em 1em;
     transition: background-color: 0.3s ease;
-     width: calc((100% - (2 * 5%)) / 3); /*  Correct Spacing*/
+    width: calc(30% - 3.33%); /* 30% of container width minus one-third of the spacing */
     margin: 0;
     text-align: center;
     box-sizing: border-box;
