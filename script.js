@@ -138,11 +138,89 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function updateDisplay() {
-        const album = shuffledAlbums[currentAlbumIndex];
-        albumImage.src = album.url;
-        voteSubmitted = false;
-        buttonEnter.disabled = false;
+    function moveScale(direction) {
+        if (!voteSubmitted) {
+            // Set the color based on direction
+            let color;
+            if (direction === "right") {
+                color = RIGHT_COLOR;
+            } else {
+                color = LEFT_COLOR;
+            }
+
+            // Get the correct person container based on direction
+            let personContainer;
+            if (direction === "right") {
+                personContainer = buttonPersonRight.querySelector('.person-image-container');
+            } else {
+                personContainer = buttonPersonLeft.querySelector('.person-image-container');
+            }
+
+            // Update vote value
+            if (direction === "right") {
+                currentVote = Math.min(100, currentVote + 5);
+            } else {
+                currentVote = Math.max(-100, currentVote - 5);
+            }
+
+            // Flash the colors
+            albumContainer.style.backgroundColor = color;
+            personContainer.style.backgroundColor = color;
+
+            // Reset colors after 200ms if not submitted
+            setTimeout(() => {
+                if (!voteSubmitted) {
+                    albumContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+                    personContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+                }
+            }, 200);
+
+            updateScale();
+        }
+    }
+
+    function submitVote() {
+        if (!voteSubmitted) {
+            let containerColor;
+            let personContainer;
+
+            if (currentVote > 0) {
+                containerColor = RIGHT_COLOR;
+                personContainer = buttonPersonRight.querySelector('.person-image-container');
+            } else if (currentVote < 0) {
+                containerColor = LEFT_COLOR;
+                personContainer = buttonPersonLeft.querySelector('.person-image-container');
+            } else {
+                containerColor = 'rgba(0, 0, 0, 1)';
+                personContainer = null;
+            }
+            
+            // Set the album container color
+            albumContainer.style.backgroundColor = containerColor;
+            
+            // Set the person container color if there is one
+            if (personContainer) {
+                personContainer.style.backgroundColor = containerColor;
+            }
+
+            buttonEnter.disabled = true;
+            voteSubmitted = true;
+
+            const albumID = shuffledAlbums[currentAlbumIndex].albumID;
+
+            db.collection("votes").add({
+                albumID: albumID,
+                vote_value: currentVote,
+                peopleID: peopleID,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                console.log("Vote submitted:", { albumID, vote_value: currentVote, peopleID });
+            })
+            .catch(error => {
+                console.error("Error submitting vote:", error);
+            });
+        }
     }
 
     function shuffleArray(array) {
@@ -153,12 +231,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return array;
     }
 
-    function resetContainerColor() {
-        if (!voteSubmitted) {
-            albumContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)';
-        }
-    }
-
     function getNextAlbum() {
         currentVote = 0;
         currentAlbumIndex++;
@@ -167,9 +239,22 @@ document.addEventListener('DOMContentLoaded', function () {
             shuffledAlbums = shuffleArray([...albums]);
             currentAlbumIndex = 0;
         }
+
+        // Reset all container colors
         albumContainer.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+        document.querySelectorAll('.person-image-container').forEach(container => {
+            container.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+        });
+
         updateDisplay();
         updateScale();
+    }
+
+    function updateDisplay() {
+        const album = shuffledAlbums[currentAlbumIndex];
+        albumImage.src = album.url;
+        voteSubmitted = false;
+        buttonEnter.disabled = false;
     }
 
     const scaleSegmentsLeft = document.getElementById('scale-segments-left');
@@ -205,44 +290,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function moveScale(direction) {
-        if (!voteSubmitted) {
-            if (direction === "right") {
-                currentVote = Math.min(100, currentVote + 5);
-                albumContainer.style.backgroundColor = RIGHT_COLOR;
-            } else if (direction === "left") {
-                currentVote = Math.max(-100, currentVote - 5);
-                albumContainer.style.backgroundColor = LEFT_COLOR;
-            }
-            updateScale();
-        }
-    }
-
-    function submitVote() {
-        if (!voteSubmitted) {
-            let containerColor = currentVote > 0 ? RIGHT_COLOR : 
-                               currentVote < 0 ? LEFT_COLOR : 
-                               'rgba(0, 0, 0, 1)';
-            albumContainer.style.backgroundColor = containerColor;
-            buttonEnter.disabled = true;
-            voteSubmitted = true;
-
-            const albumID = shuffledAlbums[currentAlbumIndex].albumID;
-
-            db.collection("votes").add({
-                albumID: albumID,
-                vote_value: currentVote,
-                peopleID: peopleID,
-            })
-            .then(() => {
-                console.log("Vote submitted:", { albumID, vote_value: currentVote, peopleID });
-            })
-            .catch(error => {
-                console.error("Error submitting vote:", error);
-            });
-        }
-    }
-
     buttonNext.addEventListener('click', async () => {
         if (!voteSubmitted) {
             try {
@@ -250,7 +297,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 await db.collection("votes").add({
                     albumID: albumID,
                     peopleID: peopleID,
-                    skips: 1
+                    skips: 1,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 console.log("Skip recorded for album:", albumID);
             } catch (error) {
@@ -275,17 +323,7 @@ document.addEventListener('DOMContentLoaded', function () {
             updateDisplay();
 
             buttonPersonLeft.addEventListener('click', () => moveScale('left'));
-            buttonPersonLeft.addEventListener('mouseup', resetContainerColor);
-            buttonPersonLeft.addEventListener('mouseleave', resetContainerColor);
-            buttonPersonLeft.addEventListener('touchend', resetContainerColor);
-            buttonPersonLeft.addEventListener('touchcancel', resetContainerColor);
-
             buttonPersonRight.addEventListener('click', () => moveScale('right'));
-            buttonPersonRight.addEventListener('mouseup', resetContainerColor);
-            buttonPersonRight.addEventListener('mouseleave', resetContainerColor);
-            buttonPersonRight.addEventListener('touchend', resetContainerColor);
-            buttonPersonRight.addEventListener('touchcancel', resetContainerColor);
-
             buttonEnter.addEventListener('click', submitVote);
         });
 
