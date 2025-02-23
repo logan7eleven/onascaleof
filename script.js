@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Elements from the HTML
+    // -------------------------------
+    // DOM Element References
+    // -------------------------------
     const mainContainer = document.getElementById('main-container');
     const albumContainer = document.getElementById('album-container');
     const albumImage = document.getElementById('album-image');
+    const siteTitle = document.getElementById('site-title');
     const personLeft = document.getElementById('person-left');
     const personRight = document.getElementById('person-right');
     const buttonEnter = document.getElementById('button-enter');
@@ -15,21 +18,30 @@ document.addEventListener('DOMContentLoaded', function () {
     const albumArtistElement = document.getElementById('album-artist');
     const personLeftInfoText = document.getElementById('person-left-info-text');
     const personRightInfoText = document.getElementById('person-right-info-text');
+    const scaleContainer = document.getElementById('scale-container');
+    const scale = document.getElementById('scale');
     const scaleSegmentsLeft = document.getElementById('scale-segments-left');
+    const scaleDivider = document.getElementById('scale-divider');
     const scaleSegmentsRight = document.getElementById('scale-segments-right');
+    const personArrowContainer = document.getElementById('person-arrow-container');
+    const buttonRow = document.getElementById('button-row');
 
-    // Variables related to albums, votes, scale, and people
+    // -------------------------------
+    // Global Variables
+    // -------------------------------
     let albums = [];
     let shuffledAlbums = [];
     let people = { left: {}, right: {} };
     let currentAlbumIndex = 0;
-    let currentVote = 0;
+    let currentVote = 0; // Ranges from -100 to 100, increments of 5
     let voteSubmitted = false;
-    let peopleID = 2; // Active peopleID to filter people data
+    let peopleID = 2; // Current active people ID for filtering people data
     let infoMode = false;
-    const numSegments = 20; // Total segments on each side
+    const totalScaleSegments = 40; // 40 segments total (20 left, 20 right)
 
-    // Firebase initialization
+    // -------------------------------
+    // Firebase Setup
+    // -------------------------------
     const firebaseConfig = {
         apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
         authDomain: "onascaleof-2e3b4.firebaseapp.com",
@@ -42,41 +54,74 @@ document.addEventListener('DOMContentLoaded', function () {
     const db = firebase.firestore();
 
     // -------------------------------
-    // 1. Main Container Resizing
+    // 1. Resize Main Container & Related Elements
     // -------------------------------
     function resizeMainContainer() {
-        // Calculate 90% of viewport dimensions
-        let viewHeight = window.innerHeight * 0.9;
-        let viewWidth = window.innerWidth * 0.9;
-        // Choose smallest value as base dimension
-        let baseSize = Math.min(viewHeight, viewWidth);
-        // Set main container height as baseSize, and width to 2/3 of that (to maintain 2:3 ratio)
+        // Determine base dimension from 90% of viewport height and width (pick the smaller)
+        const viewHeight = window.innerHeight * 0.9;
+        const viewWidth = window.innerWidth * 0.9;
+        const baseSize = Math.min(viewHeight, viewWidth);
+        // Main container: height = baseSize, width to follow a 2:3 ratio (width = 2/3 * height)
         mainContainer.style.height = `${baseSize}px`;
         mainContainer.style.width = `${(baseSize * 2) / 3}px`;
-        // Set base font size as 1.5% of main container height
         mainContainer.style.fontSize = `${baseSize * 0.015}px`;
 
-        // Update person image container sizes based on album container dimensions
+        // Update scale container: 90% width of main container, 7.5% height of main container
+        const mainRect = mainContainer.getBoundingClientRect();
+        scaleContainer.style.width = `${mainRect.width * 0.9}px`;
+        scaleContainer.style.height = `${mainRect.height * 0.075}px`;
+
+        // Update person arrow container and button row: should take 80% of main container width
+        personArrowContainer.style.width = `${mainRect.width * 0.80}px`;
+        buttonRow.style.width = `${mainRect.width * 0.80}px`;
+
+        // Update person arrow button widths: gap equals 5% of main container width
+        const gapForArrows = mainRect.width * 0.05;
+        const totalArrowWidth = mainRect.width * 0.80;
+        const personButtonWidth = (totalArrowWidth - gapForArrows) / 2;
+        buttonPersonLeft.style.width = `${personButtonWidth}px`;
+        buttonPersonRight.style.width = `${personButtonWidth}px`;
+        // Set their background to light grey
+        buttonPersonLeft.style.backgroundColor = "#d3d3d3";
+        buttonPersonRight.style.backgroundColor = "#d3d3d3";
+
+        // Update three-button row widths: gaps equal to 5% of main container width
+        const gapForButtons = mainRect.width * 0.05;
+        const totalButtonsWidth = mainRect.width * 0.80;
+        const numButtons = 3;
+        const buttonWidth = (totalButtonsWidth - (numButtons - 1) * gapForButtons) / numButtons;
+        document.querySelectorAll("#button-row .app-button").forEach(btn => {
+            btn.style.width = `${buttonWidth}px`;
+            btn.style.backgroundColor = "#d3d3d3";
+        });
+
+        // Update person image container sizes based on album container dimensions.
         setPersonImageContainerSize();
+
+        // Ensure album image fills 90% of album container.
+        albumImage.style.width = "90%";
+        albumImage.style.height = "90%";
     }
 
     // -------------------------------
-    // 2. Person Image Container Sizing
+    // 2. Person Image Container Sizing (4:3 Ratio)
     // -------------------------------
     function setPersonImageContainerSize() {
-        let albumHeight = albumContainer.offsetHeight;
-        // Each person image container should be 1/3 the height of the album container
-        const personContainerHeight = albumHeight / 3;
-        const personContainerWidth = personContainerHeight * 0.75; // 3:4 ratio
-
+        const albumHeight = albumContainer.offsetHeight;
+        // Each person image container's height = 1/3 of album container height.
+        const containerHeight = albumHeight / 3;
+        // For a 4:3 (width:height) ratio, width = (4/3) * height.
+        const containerWidth = containerHeight * (4 / 3);
         document.querySelectorAll('.person-image-container').forEach(container => {
-            container.style.height = `${personContainerHeight}px`;
-            container.style.width = `${personContainerWidth}px`;
+            container.style.height = `${containerHeight}px`;
+            container.style.width = `${containerWidth}px`;
+            // Ensure container background remains black unless changed by vote action.
+            container.style.backgroundColor = "black";
         });
     }
 
     // -------------------------------
-    // 3. Fetch Albums & People CSV Data
+    // 3. Fetch Albums & People Data from CSVs
     // -------------------------------
     function fetchAlbums(url) {
         return fetch(url)
@@ -123,43 +168,41 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // 4. Load People Data into UI
+    // 4. Load People Data
     // -------------------------------
     function loadPeople(data) {
-        const filteredPeople = data.filter(person => person.peopleID === peopleID);
-        const leftPerson = filteredPeople.find(person => person.side === 'L');
-        const rightPerson = filteredPeople.find(person => person.side === 'R');
-
-        if (leftPerson) {
-            people.left = leftPerson;
-            personLeft.src = leftPerson.url;
-            personLeftInfoText.textContent = leftPerson.name;
+        const filtered = data.filter(person => person.peopleID === peopleID);
+        const left = filtered.find(person => person.side === 'L');
+        const right = filtered.find(person => person.side === 'R');
+        if (left) {
+            people.left = left;
+            personLeft.src = left.url;
+            personLeftInfoText.textContent = left.name;
         }
-        if (rightPerson) {
-            people.right = rightPerson;
-            personRight.src = rightPerson.url;
-            personRightInfoText.textContent = rightPerson.name;
+        if (right) {
+            people.right = right;
+            personRight.src = right.url;
+            personRightInfoText.textContent = right.name;
         }
     }
 
     // -------------------------------
-    // 5. Album Display and Navigation
+    // 5. Album Display & Navigation
     // -------------------------------
     function updateDisplay() {
         let album = shuffledAlbums[currentAlbumIndex];
         albumImage.src = album.url;
-        // Reset albumImage outline and vote state
-        albumImage.style.outline = "";
+        // Reset outlines on album image container (not album image) and person containers.
+        albumContainer.style.outline = "";
+        [personLeft, personRight].forEach(img => img.style.outline = "");
+        // Reset vote variables.
         voteSubmitted = false;
         buttonEnter.disabled = false;
         currentVote = 0;
         updateScale();
-        // Reset person outlines
-        personLeft.style.outline = "";
-        personRight.style.outline = "";
     }
 
-    // Fisher-Yates Shuffle
+    // Fisher-Yates shuffle for random album order.
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -168,63 +211,75 @@ document.addEventListener('DOMContentLoaded', function () {
         return array;
     }
 
-    // Move to Next Album
     function getNextAlbum() {
         currentAlbumIndex++;
         if (currentAlbumIndex >= shuffledAlbums.length) {
             shuffledAlbums = shuffleArray([...albums]);
             currentAlbumIndex = 0;
         }
+        // Reset outlines to default (none)
+        albumContainer.style.outline = "";
+        [personLeft, personRight].forEach(img => img.style.outline = "");
         updateDisplay();
     }
 
     // -------------------------------
-    // 6. Dynamic Scale
+    // 6. Create and Update Scale Bar
     // -------------------------------
     function createScaleSegments() {
-        for (let i = 0; i < numSegments; i++) {
-            const leftSegment = document.createElement('div');
-            leftSegment.classList.add('scale-segment');
-            scaleSegmentsLeft.appendChild(leftSegment);
-            const rightSegment = document.createElement('div');
-            rightSegment.classList.add('scale-segment');
-            scaleSegmentsRight.appendChild(rightSegment);
+        // Clear any existing segments.
+        scaleSegmentsLeft.innerHTML = "";
+        scaleSegmentsRight.innerHTML = "";
+
+        // For total 40 segments, split evenly.
+        const segmentsPerSide = totalScaleSegments / 2; // 20 on each side.
+        for (let i = 0; i < segmentsPerSide; i++) {
+            const segLeft = document.createElement('div');
+            segLeft.classList.add('scale-segment');
+            scaleSegmentsLeft.appendChild(segLeft);
+
+            const segRight = document.createElement('div');
+            segRight.classList.add('scale-segment');
+            scaleSegmentsRight.appendChild(segRight);
         }
+        // Ensure the center divider (scale-divider) is styled as a darker center line.
+        scaleDivider.style.backgroundColor = "#333";
     }
 
     function updateScale() {
-        // Calculate number of active segments
-        const leftActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(-currentVote / 5)));
-        const rightActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(currentVote / 5)));
+        // Calculate active segments: each segment represents 5 vote points.
+        const segmentsPerSide = totalScaleSegments / 2;
+        const leftActive = Math.max(0, Math.min(segmentsPerSide, Math.floor(-currentVote / 5)));
+        const rightActive = Math.max(0, Math.min(segmentsPerSide, Math.floor(currentVote / 5)));
 
-        // Clear all segments
-        document.querySelectorAll('.scale-segment').forEach(segment => {
-            segment.classList.remove('active-left', 'active-right');
+        // Clear active classes.
+        document.querySelectorAll('.scale-segment').forEach(seg => {
+            seg.classList.remove('active-left', 'active-right');
         });
-
-        // Mark segments as active
-        for (let i = 0; i < leftActiveSegments; i++) {
+        // Update left segments.
+        for (let i = 0; i < leftActive; i++) {
             scaleSegmentsLeft.children[i].classList.add('active-left');
         }
-        for (let i = 0; i < rightActiveSegments; i++) {
+        // Update right segments.
+        for (let i = 0; i < rightActive; i++) {
             scaleSegmentsRight.children[i].classList.add('active-right');
         }
     }
 
     // -------------------------------
-    // 7. Outline Update Helper
+    // 7. Outline/Color Updates on Vote Input
     // -------------------------------
+    // When a person arrow button is clicked, update outlines immediately.
     function updateVoteOutline(clickedSide) {
-        // Determine color based on currentVote value, not necessarily the button pressed.
         let outlineColor = "";
         if (currentVote > 0) {
             outlineColor = "#F7B73D";
         } else if (currentVote < 0) {
             outlineColor = "#BAA0FA";
         }
-        // Immediately update outlines on album image container
-        albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
-        // Update clicked person's container outline
+        // Update album image container outline (not album image itself)
+        albumContainer.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
+        // Update clicked person’s image container outline.
         if (clickedSide === 'left') {
             personLeft.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
         } else if (clickedSide === 'right') {
@@ -233,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // 8. Move Scale on Arrow Button Click
+    // 8. Adjust Vote Value
     // -------------------------------
     function moveScale(direction, clickedSide) {
         if (!voteSubmitted) {
@@ -252,27 +307,25 @@ document.addEventListener('DOMContentLoaded', function () {
     // -------------------------------
     function submitVote() {
         if (!voteSubmitted) {
-            // Set album outline persist based on currentVote
             let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
-            albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
-            // Persist outline on winning person container
+            // Persist outline on album container.
+            albumContainer.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
+            // Persist outline on the winning person container.
             if (currentVote > 0) {
                 personRight.style.outline = `0.3em solid ${outlineColor}`;
             } else if (currentVote < 0) {
                 personLeft.style.outline = `0.3em solid ${outlineColor}`;
             }
-            buttonEnter.disabled = true;
             voteSubmitted = true;
+            buttonEnter.disabled = true;
             const albumID = shuffledAlbums[currentAlbumIndex].albumID;
             db.collection("votes").add({
                 albumID: albumID,
                 vote_value: currentVote,
                 peopleID: peopleID,
-            })
-            .then(() => {
+            }).then(() => {
                 console.log("Vote submitted:", { albumID, vote_value: currentVote, peopleID });
-            })
-            .catch(error => {
+            }).catch(error => {
                 console.error("Error submitting vote:", error);
             });
         }
@@ -299,26 +352,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // -------------------------------
-    // 11. INFO Mode Toggling and Delayed Text Resizing
+    // 11. INFO Mode Toggle & Delayed Text Resize
     // -------------------------------
     buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
-
-        // Toggle album image fade and overlay text visibility
         albumImage.classList.toggle('image-faded', infoMode);
+        // The album title/artist should be visible when info mode is on.
         const album = shuffledAlbums[currentAlbumIndex];
         albumNameElement.textContent = infoMode ? album.name : '';
         albumArtistElement.textContent = infoMode ? album.artist : '';
+        albumInfoText.style.display = infoMode ? 'flex' : 'none';
 
+        // Delay text resizing to allow layout to settle.
         if (infoMode) {
-            albumInfoText.style.display = 'flex';
-            // Delay adjustment to allow layout to settle (e.g., 500ms)
             setTimeout(adjustAlbumInfoFontSize, 500);
-        } else {
-            albumInfoText.style.display = 'none';
         }
 
-        // Toggle fade on person images and info texts
+        // Toggle fade on person images and info texts.
         personLeft.classList.toggle('image-faded', infoMode);
         personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
         personRight.classList.toggle('image-faded', infoMode);
@@ -326,31 +376,27 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function adjustAlbumInfoFontSize() {
-        // Reset font sizes to allow recalculation
         albumNameElement.style.fontSize = '';
         albumArtistElement.style.fontSize = '';
         const nameFontSize = getMaxFontSize(albumNameElement);
         const artistFontSize = getMaxFontSize(albumArtistElement);
-        // Use the smaller of the two to ensure both fit nicely
         const finalFontSize = Math.min(nameFontSize, artistFontSize);
         albumNameElement.style.fontSize = `${finalFontSize}px`;
         albumArtistElement.style.fontSize = `${finalFontSize}px`;
     }
 
-    // Binary search for maximum font size that fits within element container
+    // Binary search for maximum font size that fits.
     function getMaxFontSize(element) {
         const container = element.parentElement;
         const maxWidth = container.offsetWidth;
-        const maxHeight = element.offsetHeight;
+        const maxHeight = container.offsetHeight;
         let fontSize = 1;
         element.style.fontSize = `${fontSize}px`;
-        let low = 1;
-        let high = 1000;
+        let low = 1, high = 1000;
         while (low <= high) {
             const mid = Math.floor((low + high) / 2);
             element.style.fontSize = `${mid}px`;
-            const isTooLarge = element.scrollWidth > maxWidth || element.scrollHeight > maxHeight;
-            if (isTooLarge) {
+            if (element.scrollWidth > maxWidth || element.scrollHeight > maxHeight) {
                 high = mid - 1;
             } else {
                 fontSize = mid;
@@ -361,14 +407,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // Event Listeners & Initial Calls
+    // Event Listeners for Arrow Buttons & Vote
     // -------------------------------
-    // Arrow button events
     buttonPersonLeft.addEventListener('click', () => moveScale('left', 'left'));
     buttonPersonRight.addEventListener('click', () => moveScale('right', 'right'));
-    // Vote submit event
     buttonEnter.addEventListener('click', submitVote);
-    // Initial resize call & scale creation
+
+    // -------------------------------
+    // Initial Setup and Data Loading
+    // -------------------------------
     resizeMainContainer();
     window.addEventListener('resize', resizeMainContainer);
     createScaleSegments();
@@ -376,14 +423,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const albumsCSV = '/albums.csv';
     const peopleCSV = '/people.csv';
 
-    Promise.all([fetchAlbums(albumsCSV), fetchPeople(peopleCSV)])
-        .then(([albumData, peopleData]) => {
-            albums = albumData;
-            shuffledAlbums = shuffleArray([...albums]);
-            loadPeople(peopleData);
-            updateScale();
-            currentAlbumIndex = 0;
-            // Ensure the first album is displayed immediately.
-            updateDisplay();
-        });
+    Promise.all([fetchAlbums(albumsCSV), fetchPeople(peopleCSV)]).then(([albumData, peopleData]) => {
+        albums = albumData;
+        shuffledAlbums = shuffleArray([...albums]);
+        loadPeople(peopleData);
+        updateScale();
+        currentAlbumIndex = 0;
+        // Display the first album immediately.
+        updateDisplay();
+    });
 });
