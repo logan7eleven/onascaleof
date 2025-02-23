@@ -201,9 +201,6 @@ body::after {
     height: 90%;
     object-fit: cover;
     object-position: center 33.333%;
-    position: absolute;
-    top: 5%;
-    left: 5%;
 }
 
 .arrow {
