@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // -------------------------------
-    // Check for Required DOM Elements (excluding site-title)
+    // Check for Required DOM Elements (excluding any not used)
     // -------------------------------
     const requiredIDs = [
         'main-container',
@@ -90,26 +90,26 @@ document.addEventListener('DOMContentLoaded', function () {
     // 1. Resize Main Container & Related Elements
     // -------------------------------
     function resizeMainContainer() {
-        // Determine base dimension as 90% of viewport height and width (pick the smaller)
+        // Determine base dimension as 90% of viewport height and width (choose the smaller)
         const viewHeight = window.innerHeight * 0.9;
         const viewWidth = window.innerWidth * 0.9;
         const baseSize = Math.min(viewHeight, viewWidth);
-        // Main container: height = baseSize; width follows a 2:3 ratio (width = 2/3 * height)
+        // Resize main container: set height to baseSize and width to maintain a 2:3 ratio.
         mainContainer.style.height = `${baseSize}px`;
         mainContainer.style.width = `${(baseSize * 2) / 3}px`;
         mainContainer.style.fontSize = `${baseSize * 0.015}px`;
 
         const mainRect = mainContainer.getBoundingClientRect();
 
-        // Update scale container: 90% width of main container and 7.5% height of main container.
+        // Update scale container: 90% of main container's width and 7.5% of its height.
         scaleContainer.style.width = `${mainRect.width * 0.9}px`;
         scaleContainer.style.height = `${mainRect.height * 0.075}px`;
 
-        // Update person arrow container and button row: 80% width of main container.
+        // Update person arrow container and button row: 80% of main container's width.
         personArrowContainer.style.width = `${mainRect.width * 0.80}px`;
         buttonRow.style.width = `${mainRect.width * 0.80}px`;
 
-        // Update person arrow button widths: gap equals 5% of main container width.
+        // Update person arrow button widths: leaving a gap equal to 5% of main container's width.
         const gapForArrows = mainRect.width * 0.05;
         const totalArrowWidth = mainRect.width * 0.80;
         const personButtonWidth = (totalArrowWidth - gapForArrows) / 2;
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
         buttonPersonRight.style.width = `${personButtonWidth}px`;
         buttonPersonRight.style.backgroundColor = "#d3d3d3";
 
-        // Update three-button row widths: gaps equal 5% of main container width.
+        // Update three-button row widths, with gaps equal to 5% of main container width.
         const gapForButtons = mainRect.width * 0.05;
         const totalButtonsWidth = mainRect.width * 0.80;
         const numButtons = 3;
@@ -137,18 +137,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // 2. Person Image Container Sizing (4:3 Ratio)
+    // 2. Person Image Container Sizing (Maintaining a 4:3 Width:Height Ratio)
     // -------------------------------
     function setPersonImageContainerSize() {
         const albumHeight = albumContainer.offsetHeight;
-        // Each person image container's height = 1/3 of album container height.
+        // Each person image container's height is 1/3 of the album container's height.
         const containerHeight = albumHeight / 3;
-        // For a 4:3 ratio (width:height), width = (4/3)*height.
+        // For a 4:3 ratio, width equals (4/3)*height.
         const containerWidth = containerHeight * (4 / 3);
         document.querySelectorAll('.person-image-container').forEach(container => {
             container.style.height = `${containerHeight}px`;
             container.style.width = `${containerWidth}px`;
-            // Ensure container background is black unless changed by vote action.
+            // Ensure the background is black unless updated by a vote action.
             container.style.backgroundColor = "black";
         });
     }
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // 4. Load People Data
+    // 4. Load People Data into the UI
     // -------------------------------
     function loadPeople(data) {
         const filtered = data.filter(person => person.peopleID === peopleID);
@@ -220,12 +220,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // 5. Album Display & Navigation
+    // 5. Display Album Data & Reset Outlines
     // -------------------------------
     function updateDisplay() {
         let album = shuffledAlbums[currentAlbumIndex];
         albumImage.src = album.url;
-        // Reset outlines on album image container and person containers.
+        // Reset outlines on container elements.
         albumContainer.style.outline = "";
         personLeft.style.outline = "";
         personRight.style.outline = "";
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
         updateScale();
     }
 
-    // Fisher-Yates Shuffle for random album order.
+    // Fisher-Yates Shuffle for randomizing album order.
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
             shuffledAlbums = shuffleArray([...albums]);
             currentAlbumIndex = 0;
         }
-        // Reset outlines.
+        // Reset outlines before updating display.
         albumContainer.style.outline = "";
         personLeft.style.outline = "";
         personRight.style.outline = "";
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function createScaleSegments() {
         scaleSegmentsLeft.innerHTML = "";
         scaleSegmentsRight.innerHTML = "";
-        const segmentsPerSide = totalScaleSegments / 2; // 20 per side.
+        const segmentsPerSide = totalScaleSegments / 2; // 20 segments per side.
         for (let i = 0; i < segmentsPerSide; i++) {
             const leftSeg = document.createElement('div');
             leftSeg.classList.add('scale-segment');
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
             rightSeg.classList.add('scale-segment');
             scaleSegmentsRight.appendChild(rightSeg);
         }
-        scaleDivider.style.backgroundColor = "#333"; // Darker center divider.
+        scaleDivider.style.backgroundColor = "#333"; // Set center divider to a darker color.
     }
 
     function updateScale() {
@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // 7. Update Vote Outline and Color Transition
+    // 7. Update Vote Outlines and Color Transitions
     // -------------------------------
     function updateVoteOutline(clickedSide) {
         let outlineColor = "";
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // 8. Adjust Vote Value on Arrow Click
+    // 8. Adjust Vote Value on Arrow Button Clicks
     // -------------------------------
     function moveScale(direction, clickedSide) {
         if (!voteSubmitted) {
@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // 9. Submit Vote
+    // 9. Submit Vote and Persist Color Outlines
     // -------------------------------
     function submitVote() {
         if (!voteSubmitted) {
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // 10. Next Button Handler
+    // 10. Next Button Click Handler
     // -------------------------------
     buttonNext.addEventListener('click', async () => {
         if (!voteSubmitted) {
@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // -------------------------------
-    // 11. INFO Mode Toggle and Delayed Text Resize
+    // 11. INFO Mode Toggle and Delayed Text Resizing
     // -------------------------------
     buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function () {
         albumArtistElement.style.fontSize = `${finalFontSize}px`;
     }
 
-    // Binary search for maximum font size that fits.
+    // Binary search for the maximum font size that fits.
     function getMaxFontSize(element) {
         const container = element.parentElement;
         const maxWidth = container.offsetWidth;
