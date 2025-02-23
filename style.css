@@ -1,181 +1,307 @@
-/* Universal styles (including disabling tap highlight and text selection) */
 * {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-/* Global Reset and Centering */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #f0f0f0;
+html {
+    font-size: 100%;
 }
 
-/* Main Container */
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    text-align: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+    background-color: #826E67;
+    position: relative;
+    overflow: hidden;
+    font-size: 100%;
+}
+
+body::before,
+body::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+body::after {
+    background-size: 100vw 100vh;
+    opacity: 1;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle, #A1887F 40%, transparent 40%),
+        radial-gradient(circle, #A1887F 40%, transparent 40%);
+    background-position: 0 0, 50vw 50vh;
+}
+
 #main-container {
-  position: relative;
-  background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+    background-color: #555;
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+    width: min(60vh, 40vw);
+    height: calc(1.5 * min(60vh, 40vw));
+    max-width: 90vw;
+    max-height: 90vh;
+    aspect-ratio: 2 / 3;
 }
 
-/* Album Container with Image & Info Overlay */
+#site-title {
+    font-size: 5em;
+    color: black;
+    width: 100%;
+    text-align: center;
+    margin-top: 1.5%;
+    margin-bottom: 1.5%;
+}
+
 #album-container {
-  position: relative;
-  width: 100%;
-  height: auto;
+    width: 80%;
+    height: 0;
+    padding-bottom: 80%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    margin-bottom: 1.5%;
+    transition: background-color 0.01s ease;
 }
+
 #album-image {
-  display: block;
-  width: 90%;
-  height: 90%;
-  margin: auto;
+    max-width: 95%;
+    max-height: 95%;
+    width: 95%;
+    height: 95%;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: filter 0.3s ease;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-/* Album Info Overlay (divided into 40/20/40 portions) */
-#album-info-text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none; /* visible when info mode is active */
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  pointer-events: none;
-  text-align: center;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 0.5em;
-  box-sizing: border-box;
-}
-#album-info-text.show {
-  display: flex;
-}
-#album-name {
-  flex: 0 0 40%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow-wrap: break-word;
-  white-space: normal;
-  padding: 0 0.5em;
-}
-.by-text {
-  flex: 0 0 20%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-style: italic;
-}
-#album-artist {
-  flex: 0 0 40%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow-wrap: break-word;
-  white-space: normal;
-  padding: 0 0.5em;
-}
-
-/* Scale Container */
 #scale-container {
-  margin: 1em auto;
-  background: #eee;
+    width: 80%;
+    position: relative;
+    margin-bottom: 1.5%;
 }
+
 #scale {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
+    display: flex;
+    align-items: center;
+    height: 1em;
+    background-color: #eee;
+    border-radius: 0.3em;
+    overflow: hidden;
 }
+
+#scale-segments-left,
+#scale-segments-right {
+    display: flex;
+    width: 50%;
+    height: 100%;
+}
+
+#scale-segments-left {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
 .scale-segment {
-  width: 100%;
-  height: 100%;
-  background-color: #ccc;
-  margin: 0 1px;
+    width: 5%;
+    height: 100%;
+    background-color: transparent;
+    box-sizing: border-box;
 }
+
 .scale-segment.active-left {
-  background-color: #BAA0FA;
+    background-color: #BAA0FA;
 }
+
 .scale-segment.active-right {
-  background-color: #F7B73D;
+    background-color: #F7B73D;
 }
+
 #scale-divider {
-  width: 2px;
-  height: 100%;
-  background-color: #333;
+    width: 0.05em;
+    height: 100%;
+    background-color: #ccc;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
 }
 
-/* Person Arrow Container and Buttons */
+/* Person Arrow Container */
 #person-arrow-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 1em 0;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    gap: calc(5% * 1.25);
+    margin-bottom: 1.5%;
+    box-sizing: border-box;
 }
+
 .person-arrow-button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    padding: 0.5em;
+    box-sizing: border-box;
 }
+
+.person-arrow-button:first-of-type {
+    flex-direction: row;
+    background-color: #BAA0FA;
+}
+
+.person-arrow-button:last-of-type {
+    flex-direction: row-reverse;
+    background-color: #F7B73D;
+}
+
 .person-image-container {
-  position: relative;
-  background-color: black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.person-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.person-info-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
+    position: relative;
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: background-color 0.01s ease;
 }
 
-/* Arrow Styling */
+.person-arrow-button img {
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    object-position: center 33.333%;
+    position: absolute;
+    top: 5%;
+    left: 5%;
+}
+
 .arrow {
-  font-size: 2em;
-  margin-top: 0.5em;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Three-Button Row */
+.arrow::before {
+    content: '';
+    border: solid rgba(0, 0, 0, 0.5);
+    border-width: 0 0.3em 0.3em 0;
+    display: inline-block;
+    padding: 0.5em;
+}
+
+.left-arrow::before {
+    transform: rotate(135deg);
+}
+
+.right-arrow::before {
+    transform: rotate(-45deg);
+}
+
+/* Button Row */
 #button-row {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 1em auto;
-}
-.app-button {
-  padding: 0.5em 1em;
-  font-size: 1em;
-  cursor: pointer;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    gap: 5%;
+    margin: 0 auto;
+    margin-bottom: 1.5%;
 }
 
-/* Fade Effect for Info Mode */
+.app-button {
+    border: none;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    height: 2.5em;
+    font-size: 2em;
+    background-color: #ddd;
+    color: #333;
+    padding: 0.5em 1em;
+    transition: background-color 0.3s ease;
+    width: 30%;
+    margin: 0;
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-text {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    justify-content: center;
+    align-items: center;
+    color: black;
+    z-index: 10;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+#album-info-text {
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.5em;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+#album-name,
+#album-artist {
+    height: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#album-by {
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    overflow: hidden;
+}
+
 .image-faded {
-  opacity: 0.4;
+    filter: grayscale(80%) blur(3px);
+    opacity: 0.7;
 }

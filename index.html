@@ -1,64 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>On A Scale Of</title>
-    <link rel="stylesheet" href="style.css" />
-    <!-- Use Firebase v8 so that no module syntax errors appear -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script defer src="script.js"></script>
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On a Scale Of</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
     <div id="main-container">
-      <!-- Album Container with Image & Overlay -->
-      <div id="album-container">
-        <img id="album-image" src="" alt="Album Image" />
-        <div id="album-info-text">
-          <div id="album-name"></div>
-          <div class="by-text">by</div>
-          <div id="album-artist"></div>
-        </div>
-      </div>
-
-      <!-- Scale Container -->
-      <div id="scale-container">
-        <div id="scale">
-          <div id="scale-segments-left"></div>
-          <div id="scale-divider"></div>
-          <div id="scale-segments-right"></div>
-        </div>
-      </div>
-
-      <!-- Person Arrow Container -->
-      <div id="person-arrow-container" class="person-arrow-container">
-        <div class="person-arrow-button">
-          <button id="button-person-left">
-            <div class="person-image-container">
-              <img id="person-left" class="person-image" src="" alt="Left Person" />
-              <div id="person-left-info-text" class="person-info-overlay"></div>
+        <div id="album-container">
+            <img id="album-image" src="" alt="Album Cover">
+            <div id="album-info-text">
+                <div id="album-name"></div>
+                <div id="album-artist"></div>
             </div>
-            <span class="arrow">&larr;</span>
-          </button>
         </div>
-        <div class="person-arrow-button">
-          <button id="button-person-right">
-            <div class="person-image-container">
-              <img id="person-right" class="person-image" src="" alt="Right Person" />
-              <div id="person-right-info-text" class="person-info-overlay"></div>
-            </div>
-            <span class="arrow">&rarr;</span>
-          </button>
+        <div id="person-arrow-container" class="person-arrow-container">
+            <button id="button-person-left" class="person-button">
+                <div class="person-image-container">
+                    <img id="person-left" class="person-image" src="" alt="Left Person">
+                    <div id="person-left-info-text" class="person-info-text"></div>
+                </div>
+            </button>
+            <button id="button-person-right" class="person-button">
+                <div class="person-image-container">
+                    <img id="person-right" class="person-image" src="" alt="Right Person">
+                    <div id="person-right-info-text" class="person-info-text"></div>
+                </div>
+            </button>
         </div>
-      </div>
-
-      <!-- Three-Button Row -->
-      <div id="button-row">
-        <button class="app-button" id="button-enter">Enter</button>
-        <button class="app-button" id="button-next">Next</button>
-        <button class="app-button" id="button-info">Info</button>
-      </div>
+        <div class="scale-container">
+            <div id="scale-segments-left" class="scale-segments"></div>
+            <div class="center-line"></div>
+            <div id="scale-segments-right" class="scale-segments"></div>
+        </div>
+        <div class="button-container">
+            <button id="button-enter">ENTER</button>
+            <button id="button-next">NEXT</button>
+            <button id="button-info">INFO</button>
+        </div>
     </div>
-  </body>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="script.js"></script>
+</body>
 </html>
