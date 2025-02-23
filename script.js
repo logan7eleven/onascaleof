@@ -447,6 +447,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('resize', resizeMainContainer);
   createScaleSegments();
 
+  // CSV URLs (images and data come from these CSVs)
   const albumsCSV = '/albums.csv';
   const peopleCSV = '/people.csv';
 
