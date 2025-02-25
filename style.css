@@ -118,7 +118,7 @@ body::after {
     display: flex;
     align-items: center;
     height: 30px;              /*  <--  EXPLICIT HEIGHT IN PIXELS */
-    background-color: lightgreen; /*  <--  ANOTHER VISIBLE BACKGROUND */
+    background-color: transparent;
     border: 2px solid darkgreen; /*  <--  ANOTHER DEFINITE BORDER */
     border-radius: 0.3em;
     overflow: hidden;
@@ -135,11 +135,11 @@ body::after {
     flex-direction: row-reverse;
     justify-content: flex-end;
 }
-
 .scale-segment {
     width: 5%;
     height: 100%;
-    background-color: transparent; /* KEEP THIS LINE BUT OVERRIDE BACKGROUND COLOR BELOW */
+    background-color: yellow; /*  <-- ADD THIS LINE (YELLOW BACKGROUND) */
+    border: 1px solid black; /*  <-- ADD THIS LINE (BLACK BORDER) */
     box-sizing: border-box;
 }
 
