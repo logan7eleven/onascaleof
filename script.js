@@ -182,6 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 6. Dynamic Scale
     // -------------------------------
     function createScaleSegments() {
+        console.log("createScaleSegments() is being called!");
         for (let i = 0; i < numSegments; i++) {
             const leftSegment = document.createElement('div');
             leftSegment.classList.add('scale-segment');
@@ -193,6 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateScale() {
+        console.log("updateScale() is being called!");
         // Calculate number of active segments
         const leftActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(-currentVote / 5)));
         const rightActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(currentVote / 5)));
