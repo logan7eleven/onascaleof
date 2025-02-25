@@ -114,7 +114,7 @@ body::after {
 #scale {
     display: flex;
     align-items: center;
-    height: 1em;
+    height: 10em;
     background-color: #eee;
     border-radius: 0.3em;
     overflow: hidden;
