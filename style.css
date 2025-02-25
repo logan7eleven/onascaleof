@@ -139,7 +139,7 @@ body::after {
 .scale-segment {
     width: 5%;
     height: 100%;
-    background-color: transparent;
+    background-color: transparent; /* KEEP THIS LINE BUT OVERRIDE BACKGROUND COLOR BELOW */
     box-sizing: border-box;
 }
 
