@@ -109,13 +109,17 @@ body::after {
     width: 80%;
     position: relative;
     margin-bottom: 1.5%;
+    background-color: lightcoral; /*  <-- VERY VISIBLE BACKGROUND */
+    border: 2px solid darkred;   /*  <--  DEFINITE BORDER */
+    padding: 5px;               /*  <-- ADD PADDING TO ENSURE SIZE */
 }
 
 #scale {
     display: flex;
     align-items: center;
-    height: 10em;
-    background-color: #eee;
+    height: 30px;              /*  <--  EXPLICIT HEIGHT IN PIXELS */
+    background-color: lightgreen; /*  <--  ANOTHER VISIBLE BACKGROUND */
+    border: 2px solid darkgreen; /*  <--  ANOTHER DEFINITE BORDER */
     border-radius: 0.3em;
     overflow: hidden;
 }
