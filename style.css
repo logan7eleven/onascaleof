@@ -152,7 +152,8 @@ body::after {
     background-color: transparent; /* Keep transparent background */
     border: 1px solid black; /* Revert border back to just border */
     box-sizing: border-box;
-    /* Remove flex-grow and flex-basis */
+    flex-grow: 1;      /*  <-- RE-ADD flex-grow: 1; */
+    flex-basis: 0; 
 }
 
 .scale-segment.active-left {
