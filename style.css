@@ -116,44 +116,44 @@ body::after {
 
 #scale {
     display: flex;
-    align-items: stretch;
-    align-items: center; /* Revert align-items back to center */
+    align-items: center; /* Keep align-items: center; for now */
     height: 30px;
     background-color: transparent;
     border: 2px solid darkgreen;
     border-radius: 0.3em;
     overflow: hidden;
-    width: 100%; /* Keep width 100% if you have it, if not, it's fine */
+    width: 100%; /* Keep width: 100% */
 }
 
 #scale-segments-left,
 #scale-segments-right {
     display: flex;
     flex-direction: row;
-    width: 50%;
+    width: 100%; /*  <-- CHANGE width to 100% */
     height: 100%;
-    background-color: lightblue;
-    align-items: stretch;
+    background-color: lightblue; /* Keep background color for debugging */
+    align-items: stretch; /*  <-- RE-ADD align-items: stretch; */
 }
 
 #scale-segments-right {
     justify-content: flex-start;
-    background-color: lightsalmon; /* Keep lightsalmon background */
+    background-color: lightsalmon; /* Keep background color for debugging */
 }
 
 #scale-segments-left {
     justify-content: flex-end;
     flex-direction: row-reverse;
-    background-color: lightblue; /* Keep lightblue background */
+    background-color: lightblue; /* Keep background color for debugging */
 }
 
 .scale-segment {
+    /* width: 5%;  <-- KEEP width: 5% REMOVED */
     height: 100%;
-    background-color: transparent; /* Keep transparent background */
-    border: 1px solid black; /* Revert border back to just border */
+    background-color: transparent;
+    border-left: 1px solid black;
     box-sizing: border-box;
-    flex-grow: 1;      /*  <-- RE-ADD flex-grow: 1; */
-    flex-basis: 0; 
+    flex-grow: 1;
+    flex-basis: 0;
 }
 
 .scale-segment.active-left {
