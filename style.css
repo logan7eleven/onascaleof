@@ -116,6 +116,7 @@ body::after {
 
 #scale {
     display: flex;
+    align-items: stretch;
     align-items: center; /* Revert align-items back to center */
     height: 30px;
     background-color: transparent;
