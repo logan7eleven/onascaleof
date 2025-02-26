@@ -131,8 +131,8 @@ body::after {
     flex-direction: row;
     width: 50%;
     height: 100%;
-    background-color: lightblue; /* Keep lightblue background */
-    /* Remove flex-shrink, flex-basis, align-items: stretch */
+    background-color: lightblue;
+    align-items: stretch;
 }
 
 #scale-segments-right {
