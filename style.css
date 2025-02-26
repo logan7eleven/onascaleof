@@ -127,19 +127,28 @@ body::after {
 #scale-segments-left,
 #scale-segments-right {
     display: flex;
+    flex-direction: row;
     width: 50%;
     height: 100%;
+    background-color: lightblue;
+}
+
+#scale-segments-right {
+    justify-content: flex-start;
+    background-color: lightsalmon; 
 }
 
 #scale-segments-left {
-    flex-direction: row-reverse;
     justify-content: flex-end;
+    flex-direction: row-reverse;
+    background-color: lightblue;
 }
+
 .scale-segment {
     width: 5%;
     height: 100%;
-    background-color: yellow; /*  <-- ADD THIS LINE (YELLOW BACKGROUND) */
-    border: 1px solid black; /*  <-- ADD THIS LINE (BLACK BORDER) */
+    background-color: transparent;
+    border: 1px solid black;
     box-sizing: border-box;
 }
 
