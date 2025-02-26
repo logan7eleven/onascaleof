@@ -116,41 +116,54 @@ body::after {
 
 #scale {
     display: flex;
-    align-items: center;
-    height: 30px;              /*  <--  EXPLICIT HEIGHT IN PIXELS */
+    align-items: stretch; /* Change align-items to stretch */
+    height: 30px;
     background-color: transparent;
-    border: 2px solid darkgreen; /*  <--  ANOTHER DEFINITE BORDER */
+    border: 2px solid darkgreen;
     border-radius: 0.3em;
     overflow: hidden;
+    width: 100%;
 }
 
 #scale-segments-left,
 #scale-segments-right {
     display: flex;
     flex-direction: row;
-    width: 50%;
-    height: 100%;
-    background-color: lightblue;
+    width: 50%; /* Keep width 50% */
+    height: 100%; /* Keep height 100% */
+    background-color: lightblue; /* Keep background color for debugging */
+    flex-shrink: 0;
+    flex-basis: auto;
+    align-items: stretch; /* Add align-items: stretch to segments containers */
 }
 
 #scale-segments-right {
     justify-content: flex-start;
-    background-color: lightsalmon; 
+    background-color: lightsalmon; /* Keep background color for debugging */
 }
 
 #scale-segments-left {
     justify-content: flex-end;
     flex-direction: row-reverse;
-    background-color: lightblue;
+    background-color: lightblue; /* Keep background color for debugging */
 }
 
 .scale-segment {
-    width: 5%;
-    height: 100%;
-    background-color: transparent;
-    border: 1px solid black;
+    width: 5%; /* Keep width 5% */
+    height: 100%; /* Keep height 100% */
+    background-color: transparent; /* Keep transparent background */
+    border-left: 1px solid black; /* Change to border-left to separate segments */
     box-sizing: border-box;
+    flex-grow: 1; /* Add flex-grow: 1 to segments */
+    flex-basis: 0; /* Add flex-basis: 0 to segments */
 }
+
+/* Remove border from the first segment of each side to avoid double border at the divider */
+#scale-segments-left .scale-segment:first-child,
+#scale-segments-right .scale-segment:first-child {
+    border-left: none;
+}
+
 
 .scale-segment.active-left {
     background-color: #BAA0FA;
