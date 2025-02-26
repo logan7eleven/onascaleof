@@ -148,7 +148,6 @@ body::after {
 }
 
 .scale-segment {
-    width: 5%;
     height: 100%;
     background-color: transparent; /* Keep transparent background */
     border: 1px solid black; /* Revert border back to just border */
