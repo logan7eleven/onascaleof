@@ -122,18 +122,16 @@ body::after {
     border: 2px solid darkgreen;
     border-radius: 0.3em;
     overflow: hidden;
-    width: 100%;
+    width: 100%; /* Keep width: 100% */
 }
 
 #scale-segments-left,
 #scale-segments-right {
     display: flex;
     flex-direction: row;
-    /* width: 50%;  <-- REMOVE width: 50%; */
-    flex-basis: 50%; /*  <-- ADD flex-basis: 50%; */
+    width: 50%; /*  <-- CHANGE width to 100% */
     height: 100%;
     background-color: lightblue; /* Keep background color for debugging */
-    align-items: stretch; /*  <-- RE-ADD align-items: stretch; */
 }
 
 #scale-segments-right {
