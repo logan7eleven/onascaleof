@@ -185,11 +185,12 @@ body::after {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .arrow {
     width: 100%;
-    height: 80%;
+    height: 60%;
     position: relative;
     display: flex;
     align-items: center;
@@ -197,13 +198,48 @@ body::after {
 }
 
 .left-arrow {
-    clip-path: polygon(40% 0%, 0% 50%, 40% 100%, 100% 100%, 60% 50%, 100% 0%);
-    background-color: rgba(0, 0, 0, 0.2);
+    clip-path: polygon(
+        60% 35%,
+        100% 35%,
+        100% 65%,
+        60% 65%,
+        60% 65%,
+        40% 100%,
+        0% 50%,
+        40% 0%,
+        60% 35%
+    );
+    background-color: transparent;
+    border: 0.3em solid black;
 }
 
 .right-arrow {
-    clip-path: polygon(0% 0%, 60% 0%, 100% 50%, 60% 100%, 0% 100%, 40% 50%);
-    background-color: rgba(0, 0, 0, 0.2);
+    clip-path: polygon(
+        40% 35%,
+        0% 35%,
+        0% 65%,
+        40% 65%,
+        40% 65%,
+        60% 100%,
+        100% 50%,
+        60% 0%,
+        40% 35%
+    );
+    background-color: transparent;
+    border: 0.3em solid black;
+}
+
+.arrow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    clip-path: inherit;
+    background-color: black;
+    transform: scale(1.1);
+    z-index: -1;
 }
 
 .person-image-container img {
