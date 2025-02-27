@@ -271,11 +271,9 @@ document.addEventListener('DOMContentLoaded', function () {
             // Show and position the vote marker
             voteMarker.style.display = 'block';
             if (currentVote > 0) {
-                const rightPosition = (currentVote / 100) * (scale.offsetWidth / 2);
-                voteMarker.style.left = `calc(50% + ${rightPosition}px)`;
+                voteMarker.style.left = `${50 + (currentVote/2)}%`;
             } else if (currentVote < 0) {
-                const leftPosition = (-currentVote / 100) * (scale.offsetWidth / 2);
-                voteMarker.style.left = `calc(50% - ${leftPosition}px)`;
+                voteMarker.style.left = `${50 + (currentVote/2)}%`;
             } else {
                 voteMarker.style.left = '50%';
             }
