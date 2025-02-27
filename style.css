@@ -68,7 +68,7 @@ body::after {
     width: 90%;
     font-size: 5em;
     color: black;
-    margin-bottom: 1.5%;
+    margin: 0 0 1.5% 0; 
 }
 
 #album-container {
