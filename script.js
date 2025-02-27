@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let peopleID = 2; // Active peopleID to filter people data
     let infoMode = false;
     const numSegments = 20; // Total segments on each side
+    let storedAlbumNameFontSize = 0;
+    let storedAlbumArtistFontSize = 0;
 
     // Firebase initialization
     const firebaseConfig = {
@@ -312,44 +314,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // -------------------------------
-    // 11. INFO Mode Toggling and Delayed Text Resizing
+    // 11. Font Size Calculation and Info Mode
     // -------------------------------
-    buttonInfo.addEventListener('click', () => {
-        infoMode = !infoMode;
-
-        // Toggle album image fade and overlay text visibility
-        albumImage.classList.toggle('image-faded', infoMode);
-        const album = shuffledAlbums[currentAlbumIndex];
-        albumNameElement.textContent = infoMode ? album.name : '';
-        albumArtistElement.textContent = infoMode ? album.artist : '';
-
-        if (infoMode) {
-            albumInfoText.style.display = 'flex';
-            // Delay adjustment to allow layout to settle (e.g., 500ms)
-            setTimeout(adjustAlbumInfoFontSize, 500);
-        } else {
-            albumInfoText.style.display = 'none';
-        }
-
-        // Toggle fade on person images and info texts
-        personLeft.classList.toggle('image-faded', infoMode);
-        personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
-        personRight.classList.toggle('image-faded', infoMode);
-        personRightInfoText.style.display = infoMode ? 'flex' : 'none';
-    });
-
-    function adjustAlbumInfoFontSize() {
-        // Reset font sizes to allow recalculation
-        albumNameElement.style.fontSize = '';
-        albumArtistElement.style.fontSize = '';
-        const nameFontSize = getMaxFontSize(albumNameElement);
-        const artistFontSize = getMaxFontSize(albumArtistElement);
-        // Use the smaller of the two to ensure both fit nicely
-        const finalFontSize = Math.min(nameFontSize, artistFontSize);
-        albumNameElement.style.fontSize = `${finalFontSize}px`;
-        albumArtistElement.style.fontSize = `${finalFontSize}px`;
-    }
-
     // Binary search for maximum font size that fits within element container
     function getMaxFontSize(element) {
         const container = element.parentElement;
@@ -372,6 +338,32 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return fontSize;
     }
+
+    buttonInfo.addEventListener('click', () => {
+        infoMode = !infoMode;
+
+        // Toggle album image fade and overlay text visibility
+        albumImage.classList.toggle('image-faded', infoMode);
+        const album = shuffledAlbums[currentAlbumIndex];
+        albumNameElement.textContent = infoMode ? album.name : '';
+        albumArtistElement.textContent = infoMode ? album.artist : '';
+
+        if (infoMode) {
+            albumInfoText.style.display = 'flex';
+            // Apply stored font sizes immediately
+            const finalFontSize = Math.min(storedAlbumNameFontSize, storedAlbumArtistFontSize);
+            albumNameElement.style.fontSize = `${finalFontSize}px`;
+            albumArtistElement.style.fontSize = `${finalFontSize}px`;
+        } else {
+            albumInfoText.style.display = 'none';
+        }
+
+        // Toggle fade on person images and info texts
+        personLeft.classList.toggle('image-faded', infoMode);
+        personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
+        personRight.classList.toggle('image-faded', infoMode);
+        personRightInfoText.style.display = infoMode ? 'flex' : 'none';
+    });
 
     // -------------------------------
     // Event Listeners & Initial Calls
@@ -398,6 +390,12 @@ document.addEventListener('DOMContentLoaded', function () {
         loadPeople(peopleData);
         updateScale();
         updateDisplay();
+        
+        // Calculate and store font sizes after initial display
+        setTimeout(() => {
+            storedAlbumNameFontSize = getMaxFontSize(albumNameElement);
+            storedAlbumArtistFontSize = getMaxFontSize(albumArtistElement);
+        }, 500);
     }).catch(error => {
         console.error('Error loading data:', error);
     });
