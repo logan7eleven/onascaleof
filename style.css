@@ -105,32 +105,23 @@ body::after {
     transform: translate(-50%, -50%);
 }
 
-#scale-container {
-    width: 80%;
-    position: relative;
-    margin-bottom: 1.5%;
-    background-color: lightcoral; /*  <-- VERY VISIBLE BACKGROUND */
-    border: 2px solid darkred;   /*  <--  DEFINITE BORDER */
-    padding: 5px;               /*  <-- ADD PADDING TO ENSURE SIZE */
-}
-
-#scale-container {
+#scale-container { /* Keep #scale-container styles as they are */
     width: 80%;
     position: relative;
     margin-bottom: 1.5%;
     background-color: lightcoral;
     border: 2px solid darkred;
     padding: 5px;
-    height: auto; /* Keep height: auto; */
-    display: flex; /* Add display: flex; to #scale-container */
-    flex-direction: column; /* Add flex-direction: column; to #scale-container */
-    align-items: stretch; /* Add align-items: stretch; to #scale-container */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
-#scale {
+#scale { /* Keep #scale styles as they are */
     display: flex;
-    align-items: stretch; /* Change align-items to stretch */
-    height: 30px; /* Keep height: 30px; */
+    align-items: center;
+    height: 30px;
     background-color: transparent;
     border: 2px solid darkgreen;
     border-radius: 0.3em;
@@ -143,24 +134,27 @@ body::after {
     display: flex;
     flex-direction: row;
     width: 50%;
-    height: 100%;
+    /* height: 100%;  <-- REMOVE height: 100%; */
+    height: 28px; /*  <-- ADD explicit height in pixels (slightly less than #scale height) */
     background-color: lightblue;
-    align-items: stretch; /* Keep align-items: stretch; */
+    align-items: stretch;
 }
 
-#scale-segments-right {
+#scale-segments-right { /* Keep these as they are */
     justify-content: flex-start;
     background-color: lightsalmon;
 }
 
-#scale-segments-left {
+#scale-segments-left { /* Keep these as they are */
     justify-content: flex-end;
     flex-direction: row-reverse;
     background-color: lightblue;
 }
 
 .scale-segment {
-    height: 100%;
+    /* height: 100%;  <-- REMOVE height: 100%; */
+    height: 28px; /*  <-- ADD explicit height in pixels (same as segment containers) */
+    width: auto; /* ADD width: auto; - let flex-grow control width */
     background-color: transparent;
     border-left: 1px solid black;
     box-sizing: border-box;
@@ -168,7 +162,7 @@ body::after {
     flex-basis: 0;
 }
 
-.scale-segment.active-left {
+.scale-segment.active-left { /* Keep active-* styles as they are */
     background-color: #BAA0FA;
 }
 
@@ -176,7 +170,7 @@ body::after {
     background-color: #F7B73D;
 }
 
-#scale-divider {
+#scale-divider { /* Keep scale-divider style as it is */
     width: 0.05em;
     height: 100%;
     background-color: #ccc;
