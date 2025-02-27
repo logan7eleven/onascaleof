@@ -212,20 +212,46 @@ body::after {
     align-items: center;
     justify-content: center;
     position: relative;
+    padding: 5%;
 }
 
 .arrow {
     width: 100%;
-    height: 50%;
-    background-image: url('2.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    mix-blend-mode: darken;
+    height: 40%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .left-arrow {
-    transform: scaleX(-1);
+    clip-path: polygon(
+        40% 30%,
+        100% 30%,
+        100% 70%,
+        40% 70%,
+        40% 70%,
+        20% 100%,
+        0% 50%,
+        20% 0%,
+        40% 30%
+    );
+    background-color: black;
+}
+
+.right-arrow {
+    clip-path: polygon(
+        0% 30%,
+        60% 30%,
+        60% 70%,
+        0% 70%,
+        60% 70%,
+        80% 100%,
+        100% 50%,
+        80% 0%,
+        60% 30%
+    );
+    background-color: black;
 }
 
 .person-image-container img {
@@ -263,10 +289,11 @@ body::after {
 
 .overlay-text {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 0.7);
     display: none;
     flex-direction: column;
@@ -275,6 +302,12 @@ body::after {
 }
 
 #album-info-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform: none;
     justify-content: space-between;
     padding: 5%;
     box-sizing: border-box;
