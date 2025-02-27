@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Update middle line visibility
-        scale.style.setProperty('--middle-line-color', currentVote === 0 ? '#333' : 'transparent');
+        scale.style.setProperty('--middle-line-color', currentVote === 0 ? '#888' : 'transparent');
     }
 
     // -------------------------------
