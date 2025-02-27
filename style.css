@@ -202,11 +202,12 @@ body::after {
     align-items: center;
     justify-content: center;
     position: relative;
+    padding: 5%;
 }
 
 .arrow {
     width: 100%;
-    height: 60%;
+    height: 40%;
     position: relative;
     display: flex;
     align-items: center;
@@ -215,47 +216,40 @@ body::after {
 
 .left-arrow {
     clip-path: polygon(
-        60% 40%,
-        100% 40%,
-        100% 60%,
-        60% 60%,
-        60% 60%,
-        35% 85%,
-        0% 50%,
-        35% 15%,
-        60% 40%
+        /* Stem */
+        40% 30%,    /* Top-left of stem */
+        100% 30%,   /* Top-right of stem */
+        100% 70%,   /* Bottom-right of stem */
+        40% 70%,    /* Bottom-left of stem */
+        /* Arrow head */
+        40% 70%,    /* Bottom connect point */
+        20% 100%,   /* Bottom point */
+        0% 50%,     /* Arrow tip */
+        20% 0%,     /* Top point */
+        40% 30%     /* Top connect point */
     );
-    background-color: transparent;
-    border: 0.3em solid black;
+    background-color: black;
 }
 
 .right-arrow {
     clip-path: polygon(
-        40% 40%,
-        0% 40%,
-        0% 60%,
-        40% 60%,
-        40% 60%,
-        65% 85%,
-        100% 50%,
-        65% 15%,
-        40% 40%
+        /* Stem */
+        0% 30%,     /* Top-left of stem */
+        60% 30%,    /* Top-right of stem */
+        60% 70%,    /* Bottom-right of stem */
+        0% 70%,     /* Bottom-left of stem */
+        /* Arrow head */
+        60% 70%,    /* Bottom connect point */
+        80% 100%,   /* Bottom point */
+        100% 50%,   /* Arrow tip */
+        80% 0%,     /* Top point */
+        60% 30%     /* Top connect point */
     );
-    background-color: transparent;
-    border: 0.3em solid black;
+    background-color: black;
 }
 
 .arrow::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    clip-path: inherit;
-    background-color: black;
-    transform: scale(1.1);
-    z-index: -1;
+    display: none;
 }
 
 .person-image-container img {
