@@ -143,7 +143,6 @@ body::after {
     width: 80%;
     display: flex;
     justify-content: space-between;
-    gap: 5%;
     margin: 1.5% 0;  /* Equal vertical margins */
 }
 
@@ -152,12 +151,12 @@ body::after {
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 2%;
     border: none;
     cursor: pointer;
     border-radius: 0.5em;
-    position: relative; /* Added for arrow positioning */
+    position: relative;
 }
 
 .person-arrow-button:first-child {
@@ -173,8 +172,15 @@ body::after {
     background-color: #000;
     border-radius: 0.5em;
     overflow: hidden;
-    width: 80%; /* Adjusted to leave space for the arrow */
     height: 100%;
+}
+
+.person-arrow-button:first-child .person-image-container {
+    width: 80%;
+}
+
+.person-arrow-button:last-child .person-image-container {
+    width: 80%;
 }
 
 .person-image-container img {
@@ -186,33 +192,6 @@ body::after {
     transform: translate(-50%, -50%);
     object-fit: cover;
     object-position: center 33.333%;
-}
-
-.arrow {
-    width: 15%; /* Adjusted width to fit next to image */
-    height: 50%; /* Arrow height as half of the button height */
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.arrow img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%);
-}
-
-.left-arrow {
-    left: 5%; /* Adjust positioning */
-    transform: translateY(-50%) rotate(180deg); /* Rotate the left arrow */
-}
-
-.right-arrow {
-    right: 5%; /* Adjust positioning */
 }
 
 #button-row {
@@ -222,304 +201,6 @@ body::after {
     justify-content: space-between;
     gap: 5%;
     margin: 1.5% 0;  /* Equal vertical margins */
-}
-
-.app-button {
-    flex: 1;
-    height: 100%;
-    font-size: 2em;
-    border: none;
-    border-radius: 0.5em;
-    background-color: #ddd;
-    color: #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.overlay-text {
-    position: absolute;
-    top: 5%;
-    left: 5%;
-    width: 90%;
-    height: 90%;
-    background-color: rgba(255, 255, 255, 0.7);
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-#album-info-text {
-    justify-content: space-between;
-    padding: 5%;
-}
-
-#album-name,
-#album-artist {
-    height: 40%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-}
-
-#album-by {
-    height: 20%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5em;
-}
-
-.image-faded {
-    filter: grayscale(80%) blur(3px);
-    opacity: 0.7;
-}
-
-.scale-segment {
-    height: 100%;
-    transition: background-color 0.2s ease;
-}
-
-.scale-segment.active-left {
-    background-color: #BAA0FA;
-}
-
-.scale-segment.active-right {
-    background-color: #F7B73D;
-}* {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-html {
-    font-size: 100%;
-}
-
-body {
-    font-family: sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    text-align: center;
-    min-height: 100vh;
-    box-sizing: border-box;
-    background-color: #826E67;
-    position: relative;
-    overflow: hidden;
-}
-
-body::before,
-body::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
-body::after {
-    background-size: 100vw 100vh;
-    opacity: 1;
-    pointer-events: none;
-    background-image:
-        radial-gradient(circle, #A1887F 40%, transparent 40%),
-        radial-gradient(circle, #A1887F 40%, transparent 40%);
-    background-position: 0 0, 50vw 50vh;
-}
-
-#main-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    box-sizing: border-box;
-    background-color: #555;
-    padding-top: 1.5%;
-    padding-bottom: 1.5%;
-    width: min(60vh, 40vw);
-    height: calc(1.5 * min(60vh, 40vw));
-    max-width: 90vw;
-    max-height: 90vh;
-    aspect-ratio: 2 / 3;
-}
-
-#site-title {
-    width: 90%;
-    font-size: 5em;
-    color: black;
-    margin: 0 0 1.5% 0;
-}
-
-#album-container {
-    width: 80%;
-    aspect-ratio: 1;
-    position: relative;
-    background-color: #000;
-    margin-bottom: 1.5%;
-}
-
-#album-image {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    height: 90%;
-    object-fit: contain;
-    background-color: rgba(0, 0, 0, 0.3);
-}
-
-#scale-container {
-    width: 90%;
-    height: 10%;
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.5%;
-}
-
-#scale {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-    width: 100%;
-    position: relative;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-#scale::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    height: 100%;
-    width: 2px;
-    background-color: #333;
-    transform: translateX(-50%);
-    z-index: 5;
-}
-
-#scale-segments-left,
-#scale-segments-right {
-    display: flex;
-    flex-direction: row;
-    width: 50%;
-    height: 100%;
-    background-color: #ddd;
-}
-
-#scale-segments-right {
-    justify-content: flex-start;
-}
-
-#scale-segments-left {
-    justify-content: flex-end;
-    flex-direction: row-reverse;
-}
-
-#person-arrow-container {
-    width: 80%;
-    display: flex;
-    justify-content: space-between;
-    gap: 5%;
-    margin-bottom: 1.5%;
-}
-
-.person-arrow-button {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 2%;
-    border: none;
-    cursor: pointer;
-    border-radius: 0.5em;
-    position: relative; /* Added for arrow positioning */
-}
-
-.person-arrow-button:first-child {
-    background-color: #BAA0FA;
-}
-
-.person-arrow-button:last-child {
-    background-color: #F7B73D;
-}
-
-.person-image-container {
-    position: relative;
-    background-color: #000;
-    border-radius: 0.5em;
-    overflow: hidden;
-    width: 80%; /* Adjusted to leave space for the arrow */
-    height: 100%;
-}
-
-.person-image-container img {
-    width: 90%;
-    height: 90%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    object-fit: cover;
-    object-position: center 33.333%;
-}
-
-.arrow {
-    width: 15%; /* Adjusted width to fit next to image */
-    height: 50%; /* Arrow height as half of the button height */
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.arrow::before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    border: solid rgba(0, 0, 0, 0.5);
-    border-width: 0.3em 0.3em 0 0;
-}
-
-.left-arrow {
-    left: 5%; /* Adjust positioning */
-}
-
-.left-arrow::before {
-    transform: rotate(-135deg);
-}
-
-.right-arrow {
-    right: 5%; /* Adjust positioning */
-}
-
-.right-arrow::before {
-    transform: rotate(45deg);
-}
-
-#button-row {
-    width: 80%;
-    height: 10%;
-    display: flex;
-    justify-content: space-between;
-    gap: 5%;
-    margin-bottom: 1.5%;
 }
 
 .app-button {
