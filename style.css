@@ -288,20 +288,19 @@ body {
 #album-name,
 #album-artist {
     position: relative;
-    min-height: 35%;
+    height: 35%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 100%;
+    width: 95%;
     overflow: visible;
     z-index: 3;
-    padding: 2% 0;
 }
 
 #album-by {
     position: relative;
-    min-height: 15%;
+    height: 15%;
     display: flex;
     align-items: center;
     justify-content: center;
