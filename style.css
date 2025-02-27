@@ -22,30 +22,9 @@ body {
     text-align: center;
     min-height: 100vh;
     box-sizing: border-box;
-    background-color: #826E67;
+    background-color: #FFF9C4; /* Pale yellow background */
     position: relative;
     overflow: hidden;
-}
-
-body::before,
-body::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
-body::after {
-    background-size: 100vw 100vh;
-    opacity: 1;
-    pointer-events: none;
-    background-image:
-        radial-gradient(circle, #A1887F 40%, transparent 40%),
-        radial-gradient(circle, #A1887F 40%, transparent 40%);
-    background-position: 0 0, 50vw 50vh;
 }
 
 #main-container {
@@ -62,6 +41,7 @@ body::after {
     max-width: 90vw;
     max-height: 90vh;
     aspect-ratio: 2 / 3;
+    border-radius: 20px; /* Added curved corners to main container */
 }
 
 #site-title {
@@ -126,9 +106,21 @@ body::after {
     left: 50%;
     height: 100%;
     width: 2px;
-    background-color: #333;
+    background-color: transparent;
     transform: translateX(-50%);
     z-index: 5;
+    transition: background-color 0.2s ease;
+}
+
+#vote-marker {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: #333;
+    z-index: 5;
+    display: none;
 }
 
 #scale-segments-left,
@@ -182,7 +174,7 @@ body::after {
 .person-image-container {
     position: relative;
     background-color: #000;
-    border-radius: 0.5em;
+    border-radius: 0; /* Removed curved corners from person image containers */
     overflow: hidden;
     width: 45%;
     height: 100%;
