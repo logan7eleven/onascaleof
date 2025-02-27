@@ -182,19 +182,25 @@ document.addEventListener('DOMContentLoaded', function () {
     // 6. Dynamic Scale
     // -------------------------------
     function createScaleSegments() {
-        console.log("createScaleSegments() is being called!");
+        // Clear existing segments first
+        scaleSegmentsLeft.innerHTML = '';
+        scaleSegmentsRight.innerHTML = '';
+        
+        // Create new segments
         for (let i = 0; i < numSegments; i++) {
             const leftSegment = document.createElement('div');
             leftSegment.classList.add('scale-segment');
+            leftSegment.style.width = `${100/numSegments}%`;
             scaleSegmentsLeft.appendChild(leftSegment);
+            
             const rightSegment = document.createElement('div');
             rightSegment.classList.add('scale-segment');
+            rightSegment.style.width = `${100/numSegments}%`;
             scaleSegmentsRight.appendChild(rightSegment);
         }
     }
 
     function updateScale() {
-        console.log("updateScale() is being called!");
         // Calculate number of active segments
         const leftActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(-currentVote / 5)));
         const rightActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(currentVote / 5)));
@@ -205,11 +211,18 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Mark segments as active
+        const leftSegments = scaleSegmentsLeft.querySelectorAll('.scale-segment');
         for (let i = 0; i < leftActiveSegments; i++) {
-            scaleSegmentsLeft.children[i].classList.add('active-left');
+            if (leftSegments[i]) {
+                leftSegments[i].classList.add('active-left');
+            }
         }
+        
+        const rightSegments = scaleSegmentsRight.querySelectorAll('.scale-segment');
         for (let i = 0; i < rightActiveSegments; i++) {
-            scaleSegmentsRight.children[i].classList.add('active-right');
+            if (rightSegments[i]) {
+                rightSegments[i].classList.add('active-right');
+            }
         }
     }
 
@@ -229,8 +242,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update clicked person's container outline
         if (clickedSide === 'left') {
             personLeft.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
+            personRight.style.outline = "";
         } else if (clickedSide === 'right') {
             personRight.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
+            personLeft.style.outline = "";
         }
     }
 
@@ -260,8 +275,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // Persist outline on winning person container
             if (currentVote > 0) {
                 personRight.style.outline = `0.3em solid ${outlineColor}`;
+                personLeft.style.outline = "";
             } else if (currentVote < 0) {
                 personLeft.style.outline = `0.3em solid ${outlineColor}`;
+                personRight.style.outline = "";
             }
             buttonEnter.disabled = true;
             voteSubmitted = true;
