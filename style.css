@@ -79,13 +79,21 @@ body::after {
     margin-bottom: 1.5%;
 }
 
-#album-image {
+.album-image-wrapper {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
     height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#album-image {
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     background-color: rgba(0, 0, 0, 0.3);
 }
@@ -253,11 +261,11 @@ body::after {
 
 .overlay-text {
     position: absolute;
-    width: 90%;    /* Match image width */
-    height: 90%;   /* Match image height */
-    top: 50%;      /* Center positioning like the images */
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center positioning like the images */
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
     background-color: rgba(255, 255, 255, 0.7);
     display: none;
     flex-direction: column;
