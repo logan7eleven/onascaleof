@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Update middle line visibility
-        scale.style.setProperty('--middle-line-color', currentVote === 0 ? '#888' : 'transparent');
+        scale.style.setProperty('--middle-line-opacity', currentVote === 0 ? '1' : '0');
     }
 
     // -------------------------------
@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function () {
     resizeMainContainer();
     createScaleSegments();
 
-    // Load initial data
+    // Load initial data and set initial middle line opacity
     Promise.all([
         fetchAlbums('/albums.csv'),
         fetchPeople('/people.csv')
@@ -397,6 +397,8 @@ document.addEventListener('DOMContentLoaded', function () {
         loadPeople(peopleData);
         updateScale();
         updateDisplay();
+        // Set initial middle line opacity
+        scale.style.setProperty('--middle-line-opacity', '1');
         // Add a small delay to ensure DOM is ready
         setTimeout(calculateInitialFontSizes, 100);
     }).catch(error => {
