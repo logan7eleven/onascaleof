@@ -253,10 +253,11 @@ body::after {
 
 .overlay-text {
     position: absolute;
-    top: 5%;
-    left: 5%;
-    width: 90%;
-    height: 90%;
+    width: 90%;    /* Match image width */
+    height: 90%;   /* Match image height */
+    top: 50%;      /* Center positioning like the images */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center positioning like the images */
     background-color: rgba(255, 255, 255, 0.7);
     display: none;
     flex-direction: column;
