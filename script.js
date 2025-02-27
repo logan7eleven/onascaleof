@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const personRightInfoText = document.getElementById('person-right-info-text');
     const scaleSegmentsLeft = document.getElementById('scale-segments-left');
     const scaleSegmentsRight = document.getElementById('scale-segments-right');
+    const scale = document.getElementById('scale');
+    const voteMarker = document.getElementById('vote-marker');
 
     // Variables related to albums, votes, scale, and people
     let albums = [];
@@ -25,9 +27,11 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentAlbumIndex = 0;
     let currentVote = 0;
     let voteSubmitted = false;
-    let peopleID = 2; // Active peopleID to filter people data
+    let peopleID = 2;
     let infoMode = false;
-    const numSegments = 20; // Total segments on each side
+    const numSegments = 20;
+    let storedNameFontSize = 0;
+    let storedArtistFontSize = 0;
 
     // Firebase initialization
     const firebaseConfig = {
@@ -59,9 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // -------------------------------
     function setPersonImageContainerSize() {
         let albumHeight = albumContainer.offsetHeight;
-        // Each person image container should be 1/3 the height of the album container
         const personContainerHeight = albumHeight / 3;
-        const personContainerWidth = personContainerHeight * 0.75; // 4:3 ratio
+        const personContainerWidth = personContainerHeight * 0.75;
 
         document.querySelectorAll('.person-image-container').forEach(container => {
             container.style.height = `${personContainerHeight}px`;
@@ -142,18 +145,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateDisplay() {
         let album = shuffledAlbums[currentAlbumIndex];
         albumImage.src = album.url;
-        // Reset albumImage outline and vote state
         albumImage.style.outline = "";
         voteSubmitted = false;
         buttonEnter.disabled = false;
         currentVote = 0;
         updateScale();
-        // Reset person outlines
         personLeft.style.outline = "";
         personRight.style.outline = "";
+        
+        // Reset and hide vote marker
+        voteMarker.style.display = 'none';
+        voteMarker.style.left = '50%';
     }
 
-    // Fisher-Yates Shuffle
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -162,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return array;
     }
 
-    // Move to Next Album
     function getNextAlbum() {
         currentAlbumIndex++;
         if (currentAlbumIndex >= shuffledAlbums.length) {
@@ -176,11 +179,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // 6. Dynamic Scale
     // -------------------------------
     function createScaleSegments() {
-        // Clear existing segments first
         scaleSegmentsLeft.innerHTML = '';
         scaleSegmentsRight.innerHTML = '';
         
-        // Create new segments
         for (let i = 0; i < numSegments; i++) {
             const leftSegment = document.createElement('div');
             leftSegment.classList.add('scale-segment');
@@ -195,16 +196,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateScale() {
-        // Calculate number of active segments
         const leftActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(-currentVote / 5)));
         const rightActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(currentVote / 5)));
 
-        // Clear all segments
         document.querySelectorAll('.scale-segment').forEach(segment => {
             segment.classList.remove('active-left', 'active-right');
         });
 
-        // Mark segments as active
         const leftSegments = scaleSegmentsLeft.querySelectorAll('.scale-segment');
         for (let i = 0; i < leftActiveSegments; i++) {
             if (leftSegments[i]) {
@@ -218,22 +216,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 rightSegments[i].classList.add('active-right');
             }
         }
+
+        // Update middle line visibility
+        scale.style.setProperty('--middle-line-color', currentVote === 0 ? '#333' : 'transparent');
     }
 
     // -------------------------------
     // 7. Outline Update Helper
     // -------------------------------
     function updateVoteOutline(clickedSide) {
-        // Determine color based on currentVote value, not necessarily the button pressed.
-        let outlineColor = "";
-        if (currentVote > 0) {
-            outlineColor = "#F7B73D";
-        } else if (currentVote < 0) {
-            outlineColor = "#BAA0FA";
-        }
-        // Immediately update outlines on album image container
+        let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
         albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
-        // Update clicked person's container outline
+        
         if (clickedSide === 'left') {
             personLeft.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
             personRight.style.outline = "";
@@ -263,10 +257,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // -------------------------------
     function submitVote() {
         if (!voteSubmitted) {
-            // Set album outline persist based on currentVote
             let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
             albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
-            // Persist outline on winning person container
+            
             if (currentVote > 0) {
                 personRight.style.outline = `0.3em solid ${outlineColor}`;
                 personLeft.style.outline = "";
@@ -274,6 +267,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 personLeft.style.outline = `0.3em solid ${outlineColor}`;
                 personRight.style.outline = "";
             }
+
+            // Show and position the vote marker
+            voteMarker.style.display = 'block';
+            if (currentVote > 0) {
+                const rightPosition = (currentVote / 100) * (scale.offsetWidth / 2);
+                voteMarker.style.left = `calc(50% + ${rightPosition}px)`;
+            } else if (currentVote < 0) {
+                const leftPosition = (-currentVote / 100) * (scale.offsetWidth / 2);
+                voteMarker.style.left = `calc(50% - ${leftPosition}px)`;
+            } else {
+                voteMarker.style.left = '50%';
+            }
+            
             buttonEnter.disabled = true;
             voteSubmitted = true;
             const albumID = shuffledAlbums[currentAlbumIndex].albumID;
@@ -292,67 +298,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // 10. Next Button Handler
+    // 10. Calculate Initial Font Sizes
     // -------------------------------
-    buttonNext.addEventListener('click', async () => {
-        if (!voteSubmitted) {
-            try {
-                const albumID = shuffledAlbums[currentAlbumIndex].albumID;
-                await db.collection("votes").add({
-                    albumID: albumID,
-                    peopleID: peopleID,
-                    skips: 1
-                });
-                console.log("Skip recorded for album:", albumID);
-            } catch (error) {
-                console.error("Error logging skip:", error);
-            }
-        }
-        getNextAlbum();
-    });
+    function calculateInitialFontSizes() {
+        albumInfoText.style.display = 'flex';
+        albumNameElement.textContent = 'Temporary';
+        albumArtistElement.textContent = 'Temporary';
 
-    // -------------------------------
-    // 11. INFO Mode Toggling and Text Resizing
-    // -------------------------------
-    buttonInfo.addEventListener('click', () => {
-        infoMode = !infoMode;
+        storedNameFontSize = getMaxFontSize(albumNameElement);
+        storedArtistFontSize = getMaxFontSize(albumArtistElement);
 
-        // Toggle album image fade and overlay text visibility
-        albumImage.classList.toggle('image-faded', infoMode);
-        const album = shuffledAlbums[currentAlbumIndex];
-        albumNameElement.textContent = infoMode ? album.name : '';
-        albumArtistElement.textContent = infoMode ? album.artist : '';
-
-        if (infoMode) {
-            albumInfoText.style.display = 'flex';
-            // Delay adjustment to allow layout to settle
-            setTimeout(adjustAlbumInfoFontSize, 500);
-        } else {
-            albumInfoText.style.display = 'none';
-        }
-
-        // Toggle fade on person images and info texts
-        personLeft.classList.toggle('image-faded', infoMode);
-        personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
-        personRight.classList.toggle('image-faded', infoMode);
-        personRightInfoText.style.display = infoMode ? 'flex' : 'none';
-    });
-
-    function adjustAlbumInfoFontSize() {
-        // Reset font sizes to allow recalculation
-        albumNameElement.style.fontSize = '';
-        albumArtistElement.style.fontSize = '';
-        const nameFontSize = getMaxFontSize(albumNameElement);
-        const artistFontSize = getMaxFontSize(albumArtistElement);
-        // Use the smaller of the two to ensure both fit nicely
-        const finalFontSize = Math.min(nameFontSize, artistFontSize);
-        albumNameElement.style.fontSize = `${finalFontSize}px`;
-        albumArtistElement.style.fontSize = `${finalFontSize}px`;
+        albumInfoText.style.display = 'none';
+        albumNameElement.textContent = '';
+        albumArtistElement.textContent = '';
     }
 
     function getMaxFontSize(element) {
-        const wrapper = document.querySelector('.album-image-wrapper');  // Use wrapper instead of parent
-        const maxWidth = wrapper.offsetWidth * 0.9;  // Account for padding
+        const wrapper = document.querySelector('.album-image-wrapper');
+        const maxWidth = wrapper.offsetWidth * 0.9;
         const maxHeight = element.offsetHeight;
         let fontSize = 1;
         element.style.fontSize = `${fontSize}px`;
@@ -373,12 +336,49 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------
-    // Event Listeners & Initial Calls
+    // Event Listeners
     // -------------------------------
-    // Arrow button events
     buttonPersonLeft.addEventListener('click', () => moveScale('left', 'left'));
     buttonPersonRight.addEventListener('click', () => moveScale('right', 'right'));
     buttonEnter.addEventListener('click', submitVote);
+    buttonNext.addEventListener('click', async () => {
+        if (!voteSubmitted) {
+            try {
+                const albumID = shuffledAlbums[currentAlbumIndex].albumID;
+                await db.collection("votes").add({
+                    albumID: albumID,
+                    peopleID: peopleID,
+                    skips: 1
+                });
+                console.log("Skip recorded for album:", albumID);
+            } catch (error) {
+                console.error("Error logging skip:", error);
+            }
+        }
+        getNextAlbum();
+    });
+
+    buttonInfo.addEventListener('click', () => {
+        infoMode = !infoMode;
+
+        albumImage.classList.toggle('image-faded', infoMode);
+        const album = shuffledAlbums[currentAlbumIndex];
+        albumNameElement.textContent = infoMode ? album.name : '';
+        albumArtistElement.textContent = infoMode ? album.artist : '';
+
+        if (infoMode) {
+            albumInfoText.style.display = 'flex';
+            albumNameElement.style.fontSize = `${storedNameFontSize}px`;
+            albumArtistElement.style.fontSize = `${storedArtistFontSize}px`;
+        } else {
+            albumInfoText.style.display = 'none';
+        }
+
+        personLeft.classList.toggle('image-faded', infoMode);
+        personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
+        personRight.classList.toggle('image-faded', infoMode);
+        personRightInfoText.style.display = infoMode ? 'flex' : 'none';
+    });
 
     // Window resize event
     window.addEventListener('resize', resizeMainContainer);
@@ -397,6 +397,8 @@ document.addEventListener('DOMContentLoaded', function () {
         loadPeople(peopleData);
         updateScale();
         updateDisplay();
+        // Add a small delay to ensure DOM is ready
+        setTimeout(calculateInitialFontSizes, 100);
     }).catch(error => {
         console.error('Error loading data:', error);
     });
