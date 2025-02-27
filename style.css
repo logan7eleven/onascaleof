@@ -68,7 +68,7 @@ body::after {
     width: 90%;
     font-size: 5em;
     color: black;
-    margin: 0 0 1.5% 0;
+    margin: 1.5% 0;  /* Equal vertical margins */
 }
 
 #album-container {
@@ -76,7 +76,7 @@ body::after {
     aspect-ratio: 1;
     position: relative;
     background-color: #000;
-    margin-bottom: 1.5%;
+    margin: 1.5% 0;  /* Equal vertical margins */
 }
 
 #album-image {
@@ -95,7 +95,7 @@ body::after {
     height: 10%;
     display: flex;
     align-items: center;
-    margin-bottom: 1.5%;
+    margin: 1.5% 0;  /* Equal vertical margins */
 }
 
 #scale {
@@ -144,7 +144,7 @@ body::after {
     display: flex;
     justify-content: space-between;
     gap: 5%;
-    margin-bottom: 1.5%;
+    margin: 1.5% 0;  /* Equal vertical margins */
 }
 
 .person-arrow-button {
@@ -198,28 +198,13 @@ body::after {
     transform: translateY(-50%);
 }
 
-.arrow::before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    border: solid rgba(0, 0, 0, 0.5);
-    border-width: 0.3em 0.3em 0 0;
-}
-
 .left-arrow {
     left: 5%; /* Adjust positioning */
-}
-
-.left-arrow::before {
-    transform: rotate(-135deg);
+    transform: rotate(180deg); /* Rotate the left arrow */
 }
 
 .right-arrow {
     right: 5%; /* Adjust positioning */
-}
-
-.right-arrow::before {
-    transform: rotate(45deg);
 }
 
 #button-row {
@@ -228,7 +213,7 @@ body::after {
     display: flex;
     justify-content: space-between;
     gap: 5%;
-    margin-bottom: 1.5%;
+    margin: 1.5% 0;  /* Equal vertical margins */
 }
 
 .app-button {
