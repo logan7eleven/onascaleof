@@ -45,22 +45,31 @@ document.addEventListener('DOMContentLoaded', function () {
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // -------------------------------
-    // 1. Main Container Resizing
-    // -------------------------------
     function resizeMainContainer() {
-        let viewHeight = window.innerHeight * 0.9;
-        let viewWidth = window.innerWidth * 0.9;
-        let baseSize = Math.min(viewHeight, viewWidth);
-        mainContainer.style.height = `${baseSize}px`;
-        mainContainer.style.width = `${(baseSize * 2) / 3}px`;
-        mainContainer.style.fontSize = `${baseSize * 0.015}px`;
+        let maxHeight = window.innerHeight * 0.9; // 90% of viewport height
+        let maxWidth = window.innerWidth * 0.9;   // 90% of viewport width
+        
+        // Calculate dimensions maintaining 2:3 aspect ratio
+        let containerWidth, containerHeight;
+        
+        // If height is the constraint
+        let potentialWidth = (maxHeight * 2) / 3;
+        if (potentialWidth <= maxWidth) {
+            containerHeight = maxHeight;
+            containerWidth = potentialWidth;
+        } else {
+            // Width is the constraint
+            containerWidth = maxWidth;
+            containerHeight = (maxWidth * 3) / 2;
+        }
+        
+        mainContainer.style.width = `${containerWidth}px`;
+        mainContainer.style.height = `${containerHeight}px`;
+        mainContainer.style.fontSize = `${containerWidth * 0.015}px`;
+        
         setPersonImageContainerSize();
     }
 
-    // -------------------------------
-    // 2. Person Image Container Sizing
-    // -------------------------------
     function setPersonImageContainerSize() {
         let albumHeight = albumContainer.offsetHeight;
         const personContainerHeight = albumHeight / 3;
@@ -72,9 +81,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // -------------------------------
-    // 3. Fetch Albums & People CSV Data
-    // -------------------------------
     function fetchAlbums(url) {
         return fetch(url)
             .then(response => response.text())
@@ -119,9 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // -------------------------------
-    // 4. Load People Data into UI
-    // -------------------------------
     function loadPeople(data) {
         const filteredPeople = data.filter(person => person.peopleID === peopleID);
         const leftPerson = filteredPeople.find(person => person.side === 'L');
@@ -139,9 +142,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // -------------------------------
-    // 5. Album Display and Navigation
-    // -------------------------------
     function updateDisplay() {
         let album = shuffledAlbums[currentAlbumIndex];
         albumImage.src = album.url;
@@ -153,7 +153,6 @@ document.addEventListener('DOMContentLoaded', function () {
         personLeft.style.outline = "";
         personRight.style.outline = "";
         
-        // Reset and hide vote marker
         voteMarker.style.display = 'none';
         voteMarker.style.left = '50%';
     }
@@ -166,18 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return array;
     }
 
-    function getNextAlbum() {
-        currentAlbumIndex++;
-        if (currentAlbumIndex >= shuffledAlbums.length) {
-            shuffledAlbums = shuffleArray([...albums]);
-            currentAlbumIndex = 0;
-        }
-        updateDisplay();
-    }
-
-    // -------------------------------
-    // 6. Dynamic Scale
-    // -------------------------------
     function createScaleSegments() {
         scaleSegmentsLeft.innerHTML = '';
         scaleSegmentsRight.innerHTML = '';
@@ -217,44 +204,34 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // Update middle line visibility
         scale.style.setProperty('--middle-line-opacity', currentVote === 0 ? '1' : '0');
     }
 
-    // -------------------------------
-    // 7. Outline Update Helper
-    // -------------------------------
-    function updateVoteOutline(clickedSide) {
-        let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
-        albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
-        
-        if (clickedSide === 'left') {
-            personLeft.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
-            personRight.style.outline = "";
-        } else if (clickedSide === 'right') {
-            personRight.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
-            personLeft.style.outline = "";
-        }
-    }
+    function getMaxFontSize(element) {
+        const wrapper = document.querySelector('.album-image-wrapper');
+        const maxWidth = wrapper.offsetWidth * 0.9;
+        const maxHeight = wrapper.offsetHeight * 0.4;
+        let fontSize = 1;
+        element.style.fontSize = `${fontSize}px`;
+        let low = 1;
+        let high = 1000;
 
-    // -------------------------------
-    // 8. Move Scale on Arrow Button Click
-    // -------------------------------
-    function moveScale(direction, clickedSide) {
-        if (!voteSubmitted) {
-            if (direction === "right") {
-                currentVote = Math.min(100, currentVote + 5);
-            } else if (direction === "left") {
-                currentVote = Math.max(-100, currentVote - 5);
+        while (low <= high) {
+            const mid = Math.floor((low + high) / 2);
+            element.style.fontSize = `${mid}px`;
+            
+            const isTooLarge = element.scrollWidth > maxWidth || element.scrollHeight > maxHeight;
+            
+            if (isTooLarge) {
+                high = mid - 1;
+            } else {
+                fontSize = mid;
+                low = mid + 1;
             }
-            updateScale();
-            updateVoteOutline(clickedSide);
         }
+        return fontSize;
     }
 
-    // -------------------------------
-    // 9. Submit Vote
-    // -------------------------------
     function submitVote() {
         if (!voteSubmitted) {
             let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
@@ -295,47 +272,32 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // -------------------------------
-    // 10. Calculate Initial Font Sizes
-    // -------------------------------
-    function calculateInitialFontSizes() {
-        albumInfoText.style.display = 'flex';
-        albumNameElement.textContent = 'Temporary';
-        albumArtistElement.textContent = 'Temporary';
-
-        storedNameFontSize = getMaxFontSize(albumNameElement);
-        storedArtistFontSize = getMaxFontSize(albumArtistElement);
-
-        albumInfoText.style.display = 'none';
-        albumNameElement.textContent = '';
-        albumArtistElement.textContent = '';
-    }
-
-    function getMaxFontSize(element) {
-        const wrapper = document.querySelector('.album-image-wrapper');
-        const maxWidth = wrapper.offsetWidth * 0.9;
-        const maxHeight = element.offsetHeight;
-        let fontSize = 1;
-        element.style.fontSize = `${fontSize}px`;
-        let low = 1;
-        let high = 1000;
-        while (low <= high) {
-            const mid = Math.floor((low + high) / 2);
-            element.style.fontSize = `${mid}px`;
-            const isTooLarge = element.scrollWidth > maxWidth || element.scrollHeight > maxHeight;
-            if (isTooLarge) {
-                high = mid - 1;
-            } else {
-                fontSize = mid;
-                low = mid + 1;
+    function moveScale(direction, clickedSide) {
+        if (!voteSubmitted) {
+            if (direction === "right") {
+                currentVote = Math.min(100, currentVote + 5);
+            } else if (direction === "left") {
+                currentVote = Math.max(-100, currentVote - 5);
             }
+            updateScale();
+            updateVoteOutline(clickedSide);
         }
-        return fontSize;
     }
 
-    // -------------------------------
+    function updateVoteOutline(clickedSide) {
+        let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
+        albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
+        
+        if (clickedSide === 'left') {
+            personLeft.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
+            personRight.style.outline = "";
+        } else if (clickedSide === 'right') {
+            personRight.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
+            personLeft.style.outline = "";
+        }
+    }
+
     // Event Listeners
-    // -------------------------------
     buttonPersonLeft.addEventListener('click', () => moveScale('left', 'left'));
     buttonPersonRight.addEventListener('click', () => moveScale('right', 'right'));
     buttonEnter.addEventListener('click', submitVote);
@@ -355,6 +317,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         getNextAlbum();
     });
+
+    function getNextAlbum() {
+        currentAlbumIndex++;
+        if (currentAlbumIndex >= shuffledAlbums.length) {
+            shuffledAlbums = shuffleArray([...albums]);
+            currentAlbumIndex = 0;
+        }
+        updateDisplay();
+    }
 
     buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
@@ -385,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function () {
     resizeMainContainer();
     createScaleSegments();
 
-    // Load initial data and set initial middle line opacity
+    // Load initial data
     Promise.all([
         fetchAlbums('/albums.csv'),
         fetchPeople('/people.csv')
@@ -402,4 +373,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }).catch(error => {
         console.error('Error loading data:', error);
     });
+
+    function calculateInitialFontSizes() {
+        albumInfoText.style.display = 'flex';
+        albumNameElement.textContent = 'Temporary';
+        albumArtistElement.textContent = 'Temporary';
+
+        storedNameFontSize = getMaxFontSize(albumNameElement);
+        storedArtistFontSize = getMaxFontSize(albumArtistElement);
+
+        albumInfoText.style.display = 'none';
+        albumNameElement.textContent = '';
+        albumArtistElement.textContent = '';
+    }
 });
