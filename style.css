@@ -105,63 +105,55 @@ body::after {
     transform: translate(-50%, -50%);
 }
 
-#scale-container { /* Keep #scale-container styles as they are */
+#scale-container {
     width: 80%;
-    position: relative;
     margin-bottom: 1.5%;
-    background-color: lightcoral;
-    border: 2px solid darkred;
+    background-color: lightcoral; /* Keep background for visibility */
+    border: 2px solid darkred;   /* Keep border for visibility */
     padding: 5px;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    display: flex; /* Make #scale-container flex container */
+    flex-direction: column; /* Stack children vertically */
 }
 
-#scale { /* Keep #scale styles as they are */
-    display: flex;
-    align-items: stretch; /* Keep align-items: stretch; */
-    height: 30px;
-    background-color: transparent;
-    border: 2px solid darkgreen;
-    border-radius: 0.3em;
-    overflow: hidden;
-    width: 100%;
+#scale {
+    display: flex; /* Make #scale flex container */
+    flex-direction: row; /* Arrange children horizontally */
+    height: 30px;      /* Explicit pixel height for #scale */
+    background-color: lightgreen; /* Keep background for visibility */
+    border: 2px solid darkgreen; /* Keep border for visibility */
 }
 
 #scale-segments-left,
 #scale-segments-right {
     display: flex;
-    flex-direction: row;
-    width: 50%; /* Keep width: 50%; */
-    height: 28px; /* Keep explicit height: 28px; */
-    background-color: lightblue;
-    align-items: stretch; /* Keep align-items: stretch; */
-    justify-content: space-between; /*  <-- CHANGE justify-content to space-between; */
+    flex-direction: row; /* Horizontal segment layout */
+    width: 50%;         /* 50% width for left/right halves */
+    height: 100%;        /* 100% height of parent (#scale) */
+    background-color: lightblue; /* Keep background color for debugging */
 }
 
 #scale-segments-right {
-    justify-content: flex-start; /* REMOVE justify-content: flex-start; from #scale-segments-right */
+    justify-content: flex-start; /* Keep justify-content: flex-start; */
     background-color: lightsalmon;
 }
 
 #scale-segments-left {
-    justify-content: flex-end; /* REMOVE justify-content: flex-end; from #scale-segments-left */
-    flex-direction: row-reverse;
+    justify-content: flex-end;  /* Keep justify-content: flex-end; */
+    flex-direction: row-reverse; /* Keep row-reverse for left side */
     background-color: lightblue;
 }
 
-.scale-segment { /* Keep .scale-segment styles as they are (with pixel height) */
-    height: 28px;
-    width: auto;
-    background-color: transparent;
-    border-left: 1px solid black;
+.scale-segment {
+    width: auto;        /* Let flex-grow control width */
+    height: 100%;       /* 100% height of parent */
+    background-color: yellow; /* Force yellow background */
+    border-left: 1px solid black; /* Keep border-left */
     box-sizing: border-box;
-    flex-grow: 1;
-    flex-basis: 0;
+    flex-grow: 1;       /* Allow segments to grow */
+    flex-basis: 0;       /* Start with zero base width */
 }
 
-.scale-segment.active-left { /* Keep active-* styles as they are */
+.scale-segment.active-left {
     background-color: #BAA0FA;
 }
 
@@ -169,7 +161,7 @@ body::after {
     background-color: #F7B73D;
 }
 
-#scale-divider { /* Keep scale-divider style as it is */
+#scale-divider { /* Keep scale-divider as is */
     width: 0.05em;
     height: 100%;
     background-color: #ccc;
