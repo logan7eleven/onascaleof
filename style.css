@@ -114,39 +114,52 @@ body::after {
     padding: 5px;               /*  <-- ADD PADDING TO ENSURE SIZE */
 }
 
+#scale-container {
+    width: 80%;
+    position: relative;
+    margin-bottom: 1.5%;
+    background-color: lightcoral;
+    border: 2px solid darkred;
+    padding: 5px;
+    height: auto; /* Keep height: auto; */
+    display: flex; /* Add display: flex; to #scale-container */
+    flex-direction: column; /* Add flex-direction: column; to #scale-container */
+    align-items: stretch; /* Add align-items: stretch; to #scale-container */
+}
+
 #scale {
     display: flex;
-    align-items: center; /* Keep align-items: center; for now */
-    height: 30px;
+    align-items: stretch; /* Change align-items to stretch */
+    height: 30px; /* Keep height: 30px; */
     background-color: transparent;
     border: 2px solid darkgreen;
     border-radius: 0.3em;
     overflow: hidden;
-    width: 100%; /* Keep width: 100% */
+    width: 100%;
 }
 
 #scale-segments-left,
 #scale-segments-right {
     display: flex;
     flex-direction: row;
-    width: 50%; /*  <-- CHANGE width to 100% */
+    width: 50%;
     height: 100%;
-    background-color: lightblue; /* Keep background color for debugging */
+    background-color: lightblue;
+    align-items: stretch; /* Keep align-items: stretch; */
 }
 
 #scale-segments-right {
     justify-content: flex-start;
-    background-color: lightsalmon; /* Keep background color for debugging */
+    background-color: lightsalmon;
 }
 
 #scale-segments-left {
     justify-content: flex-end;
     flex-direction: row-reverse;
-    background-color: lightblue; /* Keep background color for debugging */
+    background-color: lightblue;
 }
 
 .scale-segment {
-    /* width: 5%;  <-- KEEP width: 5% REMOVED */
     height: 100%;
     background-color: transparent;
     border-left: 1px solid black;
@@ -163,7 +176,7 @@ body::after {
     background-color: #F7B73D;
 }
 
-#scale-divider { /* Keep scale-divider as is */
+#scale-divider {
     width: 0.05em;
     height: 100%;
     background-color: #ccc;
