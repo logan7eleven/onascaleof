@@ -22,7 +22,7 @@ body {
     text-align: center;
     min-height: 100vh;
     box-sizing: border-box;
-    background-color: #FFF9C4; /* Pale yellow background */
+    background-color: #FFF9C4;
     position: relative;
     overflow: hidden;
 }
@@ -41,7 +41,7 @@ body {
     max-width: 90vw;
     max-height: 90vh;
     aspect-ratio: 2 / 3;
-    border-radius: 20px; /* Added curved corners to main container */
+    border-radius: 20px;
 }
 
 #site-title {
@@ -98,6 +98,7 @@ body {
     border-radius: 4px;
     overflow: hidden;
 }
+
 #scale::after {
     content: '';
     position: absolute;
@@ -105,10 +106,11 @@ body {
     left: 50%;
     height: 100%;
     width: 2px;
-    background-color: #888; /* New mid-grey color between #ddd and #333 */
+    background-color: #888;
     transform: translateX(-50%);
     z-index: 5;
-    transition: background-color 0.2s ease;
+    opacity: var(--middle-line-opacity, 1);
+    transition: opacity 0.2s ease;
 }
 
 #vote-marker {
@@ -173,7 +175,7 @@ body {
 .person-image-container {
     position: relative;
     background-color: #000;
-    border-radius: 0; /* Removed curved corners from person image containers */
+    border-radius: 0;
     overflow: hidden;
     width: 45%;
     height: 100%;
