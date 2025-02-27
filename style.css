@@ -166,7 +166,7 @@ body::after {
 
 #button-person-right {
     background-color: #F7B73D;
-    flex-direction: row-reverse;
+    flex-direction: row;
 }
 
 .person-image-container {
@@ -177,6 +177,22 @@ body::after {
     width: 45%;
     height: 100%;
     flex-shrink: 0;
+}
+
+#button-person-left .person-image-container {
+    order: 1;
+}
+
+#button-person-left .arrow-container {
+    order: 2;
+}
+
+#button-person-right .person-image-container {
+    order: 2;
+}
+
+#button-person-right .arrow-container {
+    order: 1;
 }
 
 .arrow-container {
@@ -199,15 +215,15 @@ body::after {
 
 .left-arrow {
     clip-path: polygon(
-        60% 35%,
-        100% 35%,
-        100% 65%,
-        60% 65%,
-        60% 65%,
-        40% 100%,
+        60% 40%,
+        100% 40%,
+        100% 60%,
+        60% 60%,
+        60% 60%,
+        35% 85%,
         0% 50%,
-        40% 0%,
-        60% 35%
+        35% 15%,
+        60% 40%
     );
     background-color: transparent;
     border: 0.3em solid black;
@@ -215,15 +231,15 @@ body::after {
 
 .right-arrow {
     clip-path: polygon(
-        40% 35%,
-        0% 35%,
-        0% 65%,
-        40% 65%,
-        40% 65%,
-        60% 100%,
+        40% 40%,
+        0% 40%,
+        0% 60%,
+        40% 60%,
+        40% 60%,
+        65% 85%,
         100% 50%,
-        60% 0%,
-        40% 35%
+        65% 15%,
+        40% 40%
     );
     background-color: transparent;
     border: 0.3em solid black;
