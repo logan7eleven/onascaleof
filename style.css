@@ -108,49 +108,56 @@ body::after {
 #scale-container {
     width: 80%;
     margin-bottom: 1.5%;
-    background-color: lightcoral; /* Keep background for visibility */
-    border: 2px solid darkred;   /* Keep border for visibility */
     padding: 5px;
-    display: flex; /* Make #scale-container flex container */
-    flex-direction: column; /* Stack children vertically */
+    box-sizing: border-box;
 }
 
 #scale {
-    display: flex; /* Make #scale flex container */
-    flex-direction: row; /* Arrange children horizontally */
-    height: 30px;      /* Explicit pixel height for #scale */
-    background-color: lightgreen; /* Keep background for visibility */
-    border: 2px solid darkgreen; /* Keep border for visibility */
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+#scale::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    width: 2px;
+    background-color: #333;
+    transform: translateX(-50%);
+    z-index: 5;
 }
 
 #scale-segments-left,
 #scale-segments-right {
     display: flex;
-    flex-direction: row; /* Horizontal segment layout */
-    width: 50%;         /* 50% width for left/right halves */
-    height: 100%;        /* 100% height of parent (#scale) */
-    background-color: lightblue; /* Keep background color for debugging */
+    flex-direction: row;
+    width: 50%;
+    height: 100%;
+    background-color: #ddd;
 }
 
 #scale-segments-right {
-    justify-content: flex-start; /* Keep justify-content: flex-start; */
-    background-color: lightsalmon;
+    justify-content: flex-start;
 }
 
 #scale-segments-left {
-    justify-content: flex-end;  /* Keep justify-content: flex-end; */
-    flex-direction: row-reverse; /* Keep row-reverse for left side */
-    background-color: lightblue;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
 }
 
 .scale-segment {
-    width: auto;        /* Let flex-grow control width */
-    height: 100%;       /* 100% height of parent */
-    background-color: yellow; /* Force yellow background */
-    border-left: 1px solid black; /* Keep border-left */
+    height: 100%;
+    background-color: transparent;
     box-sizing: border-box;
-    flex-grow: 1;       /* Allow segments to grow */
-    flex-basis: 0;       /* Start with zero base width */
+    transition: background-color 0.2s ease;
 }
 
 .scale-segment.active-left {
@@ -159,16 +166,6 @@ body::after {
 
 .scale-segment.active-right {
     background-color: #F7B73D;
-}
-
-#scale-divider { /* Keep scale-divider as is */
-    width: 0.05em;
-    height: 100%;
-    background-color: #ccc;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
 }
 
 /* Person Arrow Container */
@@ -268,6 +265,15 @@ body::after {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.app-button:hover {
+    background-color: #ccc;
+}
+
+.app-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .overlay-text {
