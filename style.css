@@ -120,7 +120,7 @@ body::after {
 
 #scale { /* Keep #scale styles as they are */
     display: flex;
-    align-items: center;
+    align-items: stretch; /* Keep align-items: stretch; */
     height: 30px;
     background-color: transparent;
     border: 2px solid darkgreen;
@@ -133,28 +133,27 @@ body::after {
 #scale-segments-right {
     display: flex;
     flex-direction: row;
-    width: 50%;
-    /* height: 100%;  <-- REMOVE height: 100%; */
-    height: 28px; /*  <-- ADD explicit height in pixels (slightly less than #scale height) */
+    width: 50%; /* Keep width: 50%; */
+    height: 28px; /* Keep explicit height: 28px; */
     background-color: lightblue;
-    align-items: stretch;
+    align-items: stretch; /* Keep align-items: stretch; */
+    justify-content: space-between; /*  <-- CHANGE justify-content to space-between; */
 }
 
-#scale-segments-right { /* Keep these as they are */
-    justify-content: flex-start;
+#scale-segments-right {
+    justify-content: flex-start; /* REMOVE justify-content: flex-start; from #scale-segments-right */
     background-color: lightsalmon;
 }
 
-#scale-segments-left { /* Keep these as they are */
-    justify-content: flex-end;
+#scale-segments-left {
+    justify-content: flex-end; /* REMOVE justify-content: flex-end; from #scale-segments-left */
     flex-direction: row-reverse;
     background-color: lightblue;
 }
 
-.scale-segment {
-    /* height: 100%;  <-- REMOVE height: 100%; */
-    height: 28px; /*  <-- ADD explicit height in pixels (same as segment containers) */
-    width: auto; /* ADD width: auto; - let flex-grow control width */
+.scale-segment { /* Keep .scale-segment styles as they are (with pixel height) */
+    height: 28px;
+    width: auto;
     background-color: transparent;
     border-left: 1px solid black;
     box-sizing: border-box;
