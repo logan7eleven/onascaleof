@@ -156,15 +156,17 @@ body::after {
     border: none;
     cursor: pointer;
     border-radius: 0.5em;
-    position: relative; /* Added for arrow positioning */
+    gap: 5%;
 }
 
-.person-arrow-button:first-child {
+#button-person-left {
     background-color: #BAA0FA;
+    flex-direction: row;
 }
 
-.person-arrow-button:last-child {
+#button-person-right {
     background-color: #F7B73D;
+    flex-direction: row-reverse;
 }
 
 .person-image-container {
@@ -172,8 +174,36 @@ body::after {
     background-color: #000;
     border-radius: 0.5em;
     overflow: hidden;
-    width: 80%; /* Adjusted to leave space for the arrow */
+    width: 45%;
     height: 100%;
+    flex-shrink: 0;
+}
+
+.arrow-container {
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrow {
+    width: 100%;
+    height: 80%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-arrow {
+    clip-path: polygon(40% 0%, 0% 50%, 40% 100%, 100% 100%, 60% 50%, 100% 0%);
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.right-arrow {
+    clip-path: polygon(0% 0%, 60% 0%, 100% 50%, 60% 100%, 0% 100%, 40% 50%);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .person-image-container img {
@@ -185,41 +215,6 @@ body::after {
     transform: translate(-50%, -50%);
     object-fit: cover;
     object-position: center 33.333%;
-}
-
-.arrow {
-    width: 15%; /* Adjusted width to fit next to image */
-    height: 50%; /* Arrow height as half of the button height */
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.arrow::before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    border: solid rgba(0, 0, 0, 0.5);
-    border-width: 0.3em 0.3em 0 0;
-}
-
-.left-arrow {
-    left: 5%; /* Adjust positioning */
-}
-
-.left-arrow::before {
-    transform: rotate(-135deg);
-}
-
-.right-arrow {
-    right: 5%; /* Adjust positioning */
-}
-
-.right-arrow::before {
-    transform: rotate(45deg);
 }
 
 #button-row {
