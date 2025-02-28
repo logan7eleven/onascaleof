@@ -358,18 +358,21 @@ document.addEventListener('DOMContentLoaded', function () {
             albumNameElement.textContent = album.name;
             albumArtistElement.textContent = album.artist;
             albumInfoText.style.display = 'flex';
+
+            // Calculate available height for each element based on their CSS percentages
+            const nameHeight = containerHeight * 0.35;  // 35% of container
+            const artistHeight = containerHeight * 0.35; // 35% of container
             
             // Calculate and set font sizes based on actual content
             const nameSize = calculateOptimalFontSize(albumNameElement, containerHeight, containerWidth, 35);
             const artistSize = calculateOptimalFontSize(albumArtistElement, containerHeight, containerWidth, 35);
-            
-            // Set 'by' text size to exactly 15% of container height
-            const byElement = document.getElementById('album-by');
-            byElement.style.fontSize = `${Math.floor(containerHeight * 0.15)}px`;
-            
+
             // Apply calculated sizes
             albumNameElement.style.fontSize = `${nameSize}px`;
             albumArtistElement.style.fontSize = `${artistSize}px`;
+
+            // Simply set 'by' text to 15% of container height
+            document.getElementById('album-by').style.fontSize = `${Math.floor(containerHeight * 0.15)}px`;
             
             // Handle person info text sizes
             const personContainers = document.querySelectorAll('.person-image-container');
