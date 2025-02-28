@@ -234,7 +234,7 @@ body {
 
 #button-row {
     width: 80%;
-    height: 7.5%;
+    height: 5%;
     display: flex;
     justify-content: space-between;
     gap: 5%;
