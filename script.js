@@ -30,8 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let peopleID = 1;
     let infoMode = false;
     const numSegments = 20;
-    let storedNameFontSize = 0;
-    let storedArtistFontSize = 0;
 
     // Firebase initialization
     const firebaseConfig = {
@@ -86,6 +84,42 @@ document.addEventListener('DOMContentLoaded', function () {
             container.style.height = `${personContainerHeight}px`;
             container.style.width = `${personContainerWidth}px`;
         });
+    }
+
+    function calculateOptimalFontSize(element, containerHeight, containerWidth, maxHeightPercent) {
+        // Clear any existing font size
+        element.style.fontSize = '';
+        
+        // Set proper display for measurement
+        const originalDisplay = element.style.display;
+        element.style.display = 'flex';
+        
+        // Calculate maximum dimensions based on percentages
+        const maxHeight = containerHeight * (maxHeightPercent / 100);
+        const maxWidth = containerWidth * 0.88;  // 88% of container width
+        
+        let fontSize = 1;
+        let low = 1;
+        let high = 1000;
+
+        while (low <= high) {
+            const mid = Math.floor((low + high) / 2);
+            element.style.fontSize = `${mid}px`;
+            
+            const rect = element.getBoundingClientRect();
+            const fits = rect.width <= maxWidth && rect.height <= maxHeight;
+            
+            if (fits) {
+                fontSize = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        
+        // Restore original display property
+        element.style.display = originalDisplay;
+        return fontSize;
     }
 
     function fetchAlbums(url) {
@@ -214,34 +248,6 @@ document.addEventListener('DOMContentLoaded', function () {
         scale.style.setProperty('--middle-line-opacity', currentVote === 0 ? '1' : '0');
     }
 
-    function getMaxFontSize(element) {
-        const wrapper = document.querySelector('.album-image-wrapper');
-        const maxWidth = wrapper.offsetWidth * 0.95;  // Using 95% of wrapper width
-        const maxHeight = element.clientHeight * 0.95; // Use the actual height of the text container
-
-        let fontSize = 1;
-        element.style.fontSize = `${fontSize}px`;
-        let low = 1;
-        let high = 1000;
-
-        while (low <= high) {
-            const mid = Math.floor((low + high) / 2);
-            element.style.fontSize = `${mid}px`;
-            
-            // Check both width and height constraints
-            const isTooLarge = element.scrollWidth > maxWidth || 
-                              element.scrollHeight > maxHeight;
-            
-            if (isTooLarge) {
-                high = mid - 1;
-            } else {
-                fontSize = mid;
-                low = mid + 1;
-            }
-        }
-        return fontSize;
-    }
-
     function submitVote() {
         if (!voteSubmitted) {
             let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
@@ -255,7 +261,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 personRight.style.outline = "";
             }
 
-            // Show and position the vote marker
             voteMarker.style.display = 'block';
             if (currentVote > 0) {
                 voteMarker.style.left = `${50 + (currentVote/2)}%`;
@@ -307,6 +312,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function getNextAlbum() {
+        currentAlbumIndex++;
+        if (currentAlbumIndex >= shuffledAlbums.length) {
+            shuffledAlbums = shuffleArray([...albums]);
+            currentAlbumIndex = 0;
+        }
+        updateDisplay();
+    }
+
     // Event Listeners
     buttonPersonLeft.addEventListener('click', () => moveScale('left', 'left'));
     buttonPersonRight.addEventListener('click', () => moveScale('right', 'right'));
@@ -328,41 +342,62 @@ document.addEventListener('DOMContentLoaded', function () {
         getNextAlbum();
     });
 
-    function getNextAlbum() {
-        currentAlbumIndex++;
-        if (currentAlbumIndex >= shuffledAlbums.length) {
-            shuffledAlbums = shuffleArray([...albums]);
-            currentAlbumIndex = 0;
-        }
-        updateDisplay();
-    }
-
     buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
 
+        // Handle album image and info
         albumImage.classList.toggle('image-faded', infoMode);
-        const album = shuffledAlbums[currentAlbumIndex];
-        albumNameElement.textContent = infoMode ? album.name : '';
-        albumArtistElement.textContent = infoMode ? album.artist : '';
-
+        
         if (infoMode) {
+            const album = shuffledAlbums[currentAlbumIndex];
+            const wrapper = document.querySelector('.album-image-wrapper');
+            const containerHeight = wrapper.offsetHeight;
+            const containerWidth = wrapper.offsetWidth;
+            
+            // Set content
+            albumNameElement.textContent = album.name;
+            albumArtistElement.textContent = album.artist;
             albumInfoText.style.display = 'flex';
-            albumNameElement.style.fontSize = `${storedNameFontSize}px`;
-            albumArtistElement.style.fontSize = `${storedArtistFontSize}px`;
+            
+            // Calculate and set font sizes based on actual content
+            const nameSize = calculateOptimalFontSize(albumNameElement, containerHeight, containerWidth, 35);
+            const artistSize = calculateOptimalFontSize(albumArtistElement, containerHeight, containerWidth, 35);
+            
+            // Set 'by' text size to exactly 15% of container height
+            const byElement = document.getElementById('album-by');
+            byElement.style.fontSize = `${Math.floor(containerHeight * 0.15)}px`;
+            
+            // Apply calculated sizes
+            albumNameElement.style.fontSize = `${nameSize}px`;
+            albumArtistElement.style.fontSize = `${artistSize}px`;
+            
+            // Handle person info text sizes
+            const personContainers = document.querySelectorAll('.person-image-container');
+            personContainers.forEach(container => {
+                const infoText = container.querySelector('.overlay-text');
+                if (infoText) {
+                    const personHeight = container.offsetHeight;
+                    const personWidth = container.offsetWidth;
+                    const personFontSize = calculateOptimalFontSize(infoText, personHeight, personWidth, 88);
+                    infoText.style.fontSize = `${personFontSize}px`;
+                    infoText.style.display = 'flex';
+                }
+            });
         } else {
             albumInfoText.style.display = 'none';
+            personLeftInfoText.style.display = 'none';
+            personRightInfoText.style.display = 'none';
         }
 
+        // Toggle person image effects
         personLeft.classList.toggle('image-faded', infoMode);
-        personLeftInfoText.style.display = infoMode ? 'flex' : 'none';
         personRight.classList.toggle('image-faded', infoMode);
-        personRightInfoText.style.display = infoMode ? 'flex' : 'none';
     });
 
-    // Window resize event
+    // Window resize event handlers
     window.addEventListener('resize', resizeMainContainer);
-    window.addEventListener('load', resizeMainContainer);       // Add this line
-    window.addEventListener('orientationchange', resizeMainContainer); // Add this line
+    window.addEventListener('load', resizeMainContainer);
+    window.addEventListener('orientationchange', resizeMainContainer);
 
     // Initialize container sizes and scale
     resizeMainContainer();
@@ -378,24 +413,8 @@ document.addEventListener('DOMContentLoaded', function () {
         loadPeople(peopleData);
         updateScale();
         updateDisplay();
-        // Set initial middle line opacity
         scale.style.setProperty('--middle-line-opacity', '1');
-        // Add a small delay to ensure DOM is ready
-        setTimeout(calculateInitialFontSizes, 100);
     }).catch(error => {
         console.error('Error loading data:', error);
     });
-
-    function calculateInitialFontSizes() {
-        albumInfoText.style.display = 'flex';
-        albumNameElement.textContent = 'Temporary';
-        albumArtistElement.textContent = 'Temporary';
-
-        storedNameFontSize = getMaxFontSize(albumNameElement);
-        storedArtistFontSize = getMaxFontSize(albumArtistElement);
-
-        albumInfoText.style.display = 'none';
-        albumNameElement.textContent = '';
-        albumArtistElement.textContent = '';
-    }
 });
