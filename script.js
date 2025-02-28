@@ -48,25 +48,29 @@ document.addEventListener('DOMContentLoaded', function () {
     function resizeMainContainer() {
         let maxHeight = window.innerHeight * 0.9; // 90% of viewport height
         let maxWidth = window.innerWidth * 0.9;   // 90% of viewport width
-        
+    
         // Calculate dimensions maintaining 2:3 aspect ratio
         let containerWidth, containerHeight;
-        
-        // If height is the constraint
-        let potentialWidth = (maxHeight * 2) / 3;
-        if (potentialWidth <= maxWidth) {
-            containerHeight = maxHeight;
-            containerWidth = potentialWidth;
-        } else {
+    
+        // Calculate both possible dimensions
+        let heightBasedWidth = (maxHeight * 2) / 3;  // Width if height is constraint
+        let widthBasedHeight = (maxWidth * 3) / 2;   // Height if width is constraint
+    
+        // Choose the dimension that fits within both constraints
+        if (widthBasedHeight <= maxHeight) {
             // Width is the constraint
             containerWidth = maxWidth;
-            containerHeight = (maxWidth * 3) / 2;
+            containerHeight = widthBasedHeight;
+        } else {
+            // Height is the constraint
+            containerWidth = heightBasedWidth;
+            containerHeight = maxHeight;
         }
-        
+    
         mainContainer.style.width = `${containerWidth}px`;
         mainContainer.style.height = `${containerHeight}px`;
         mainContainer.style.fontSize = `${containerWidth * 0.015}px`;
-        
+    
         setPersonImageContainerSize();
     }
 
