@@ -80,7 +80,7 @@ body {
 
 #scale-container {
     width: 90%;
-    height: 7.5%;
+    height: 5%;
     display: flex;
     align-items: center;
     margin-bottom: 1.5%;
@@ -234,7 +234,7 @@ body {
 
 #button-row {
     width: 80%;
-    height: 5%;
+    height: 3%;
     display: flex;
     justify-content: space-between;
     gap: 5%;
