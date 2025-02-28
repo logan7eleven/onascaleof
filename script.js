@@ -46,6 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const db = firebase.firestore();
 
     function resizeMainContainer() {
+        mainContainer.style.width = '';
+        mainContainer.style.height = '';
+       
         let maxHeight = window.innerHeight * 0.9; // 90% of viewport height
         let maxWidth = window.innerWidth * 0.9;   // 90% of viewport width
     
@@ -67,9 +70,9 @@ document.addEventListener('DOMContentLoaded', function () {
             containerHeight = maxHeight;
         }
     
-        mainContainer.style.width = `${containerWidth}px`;
-        mainContainer.style.height = `${containerHeight}px`;
-        mainContainer.style.fontSize = `${containerWidth * 0.015}px`;
+        mainContainer.style.width = `${Math.floor(containerWidth)}px`;
+        mainContainer.style.height = `${Math.floor(containerHeight)}px`;
+        mainContainer.style.fontSize = `${Math.floor(containerWidth * 0.015)}px`;
     
         setPersonImageContainerSize();
     }
@@ -358,6 +361,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Window resize event
     window.addEventListener('resize', resizeMainContainer);
+    window.addEventListener('load', resizeMainContainer);       // Add this line
+    window.addEventListener('orientationchange', resizeMainContainer); // Add this line
 
     // Initialize container sizes and scale
     resizeMainContainer();
