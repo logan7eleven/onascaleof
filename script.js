@@ -99,11 +99,11 @@ document.addEventListener('DOMContentLoaded', function () {
         
         // Calculate maximum dimensions based on percentages
         const maxHeight = containerHeight * (maxHeightPercent / 100);
-        const maxWidth = containerWidth * 0.88;  // 88% of container width
+        const maxWidth = containerWidth;
         
         let fontSize = 1;
         let low = 1;
-        let high = 1000;
+        let high = 500;
 
         while (low <= high) {
             const mid = Math.floor((low + high) / 2);
@@ -353,38 +353,32 @@ document.addEventListener('DOMContentLoaded', function () {
         
         if (infoMode) {
             const album = shuffledAlbums[currentAlbumIndex];
-            const wrapper = document.querySelector('.album-image-wrapper');
-            const containerHeight = wrapper.offsetHeight;
-            const containerWidth = wrapper.offsetWidth;
-            
+            const container = document.getElementById('album-container');  
+            const containerHeight = container.offsetHeight * 0.90;  // 90% of album container
+            const containerWidth = container.offsetWidth * 0.90;    // 90% of album container
+                    
             // Set content
             albumNameElement.textContent = album.name;
             albumArtistElement.textContent = album.artist;
             albumInfoText.style.display = 'flex';
 
-            // Calculate available height for each element based on their CSS percentages
-            const nameHeight = containerHeight * 0.35;  // 35% of container
-            const artistHeight = containerHeight * 0.35; // 35% of container
+            // Calculate and set font sizes
+            const nameSize = calculateOptimalFontSize(albumNameElement, containerHeight * 0.35, containerWidth, 100);
+            const artistSize = calculateOptimalFontSize(albumArtistElement, containerHeight * 0.35, containerWidth, 100);
             
-            // Calculate and set font sizes based on actual content
-            const nameSize = calculateOptimalFontSize(albumNameElement, containerHeight, containerWidth, 35);
-            const artistSize = calculateOptimalFontSize(albumArtistElement, containerHeight, containerWidth, 35);
-
             // Apply calculated sizes
             albumNameElement.style.fontSize = `${nameSize}px`;
             albumArtistElement.style.fontSize = `${artistSize}px`;
-
-            // Simply set 'by' text to 15% of container height
             document.getElementById('album-by').style.fontSize = `${Math.floor(containerHeight * 0.15)}px`;
-            
+
             // Handle person info text sizes
             const personContainers = document.querySelectorAll('.person-image-container');
             personContainers.forEach(container => {
                 const infoText = container.querySelector('.overlay-text');
                 if (infoText) {
-                    const personHeight = container.offsetHeight;
-                    const personWidth = container.offsetWidth;
-                    const personFontSize = calculateOptimalFontSize(infoText, personHeight, personWidth, 88);
+                    const personHeight = container.offsetHeight * 0.88;
+                    const personWidth = container.offsetWidth * 0.88;
+                    const personFontSize = calculateOptimalFontSize(infoText, personHeight, personWidth, 100);
                     infoText.style.fontSize = `${personFontSize}px`;
                     infoText.style.display = 'flex';
                 }
