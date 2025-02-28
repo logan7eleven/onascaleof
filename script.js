@@ -363,13 +363,13 @@ document.addEventListener('DOMContentLoaded', function () {
             albumInfoText.style.display = 'flex';
 
             // Calculate and set font sizes
-            const nameSize = calculateOptimalFontSize(albumNameElement, containerHeight * 0.35, containerWidth, 100);
-            const artistSize = calculateOptimalFontSize(albumArtistElement, containerHeight * 0.35, containerWidth, 100);
+            const nameSize = calculateOptimalFontSize(albumNameElement, containerHeight * 0.35, containerWidth, 35);
+            const artistSize = calculateOptimalFontSize(albumArtistElement, containerHeight * 0.35, containerWidth, 35);
             
             // Apply calculated sizes
             albumNameElement.style.fontSize = `${nameSize}px`;
             albumArtistElement.style.fontSize = `${artistSize}px`;
-            document.getElementById('album-by').style.fontSize = `${Math.floor(containerHeight * 0.15)}px`;
+            document.getElementById('album-by').style.fontSize = `${Math.floor(containerHeight * 0.08)}px`;
 
             // Handle person info text sizes
             const personContainers = document.querySelectorAll('.person-image-container');
@@ -378,15 +378,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (infoText) {
                     const personHeight = container.offsetHeight * 0.88;
                     const personWidth = container.offsetWidth * 0.88;
-                    const personFontSize = calculateOptimalFontSize(infoText, personHeight, personWidth, 100);
+                    const personFontSize = calculateOptimalFontSize(infoText, personHeight, personWidth, 50);
                     infoText.style.fontSize = `${personFontSize}px`;
                     infoText.style.display = 'flex';
                 }
             });
         } else {
             albumInfoText.style.display = 'none';
-            personLeftInfoText.style.display = 'none';
-            personRightInfoText.style.display = 'none';
+            document.querySelectorAll('.overlay-text').forEach(text => {
+                text.style.display = 'none';
+            });
         }
 
         // Toggle person image effects
