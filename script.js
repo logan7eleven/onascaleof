@@ -210,34 +210,30 @@ document.addEventListener('DOMContentLoaded', function () {
     function getMaxFontSize(element) {
         const wrapper = document.querySelector('.album-image-wrapper');
         const maxWidth = wrapper.offsetWidth * 0.95;  // Using 95% of wrapper width
-    
-        // Calculate maxHeight based on element's designated height percentage
-        const elementHeight = element.offsetHeight;
-        const maxWidth = wrapper.offsetWidth * 0.95;  // Using 95% of element's container height
         const maxHeight = element.clientHeight * 0.95; // Use the actual height of the text container
-    
+
         let fontSize = 1;
         element.style.fontSize = `${fontSize}px`;
         let low = 1;
         let high = 1000;
 
         while (low <= high) {
-        const mid = Math.floor((low + high) / 2);
-        element.style.fontSize = `${mid}px`;
-        
-        // Check both width and height constraints
-        const isTooLarge = element.scrollWidth > maxWidth || 
-                          element.scrollHeight > maxHeight;
-        
-        if (isTooLarge) {
-            high = mid - 1;
-        } else {
-            fontSize = mid;
-            low = mid + 1;
+            const mid = Math.floor((low + high) / 2);
+            element.style.fontSize = `${mid}px`;
+            
+            // Check both width and height constraints
+            const isTooLarge = element.scrollWidth > maxWidth || 
+                              element.scrollHeight > maxHeight;
+            
+            if (isTooLarge) {
+                high = mid - 1;
+            } else {
+                fontSize = mid;
+                low = mid + 1;
+            }
         }
+        return fontSize;
     }
-    return fontSize;
-}
 
     function submitVote() {
         if (!voteSubmitted) {
