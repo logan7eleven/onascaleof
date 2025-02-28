@@ -87,12 +87,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function calculateOptimalFontSize(element, containerHeight, containerWidth, maxHeightPercent) {
-        // Clear any existing font size
         element.style.fontSize = '';
         
         // Set proper display for measurement
         const originalDisplay = element.style.display;
         element.style.display = 'flex';
+
+        // Ensure proper word break behavior
+        element.style.wordBreak = 'keep-all';
+        element.style.overflowWrap = 'break-word';
         
         // Calculate maximum dimensions based on percentages
         const maxHeight = containerHeight * (maxHeightPercent / 100);
