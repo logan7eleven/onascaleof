@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentAlbumIndex = 0;
     let currentVote = 0;
     let voteSubmitted = false;
-    let peopleID = 2;
+    let peopleID = 1;
     let infoMode = false;
     const numSegments = 20;
     let storedNameFontSize = 0;
