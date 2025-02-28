@@ -42,7 +42,7 @@ body {
 
 #site-title {
     width: 90%;
-    font-size: 5em;
+    font-size: 10em;
     color: black;
     margin: 0 0 1.5% 0;
 }
@@ -80,7 +80,7 @@ body {
 
 #scale-container {
     width: 90%;
-    height: 10%;
+    height: 7.5%;
     display: flex;
     align-items: center;
     margin-bottom: 1.5%;
@@ -234,7 +234,7 @@ body {
 
 #button-row {
     width: 80%;
-    height: 10%;
+    height: 7.5%;
     display: flex;
     justify-content: space-between;
     gap: 5%;
