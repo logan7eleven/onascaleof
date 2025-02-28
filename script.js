@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
         // Calculate maxHeight based on element's designated height percentage
         const elementHeight = element.offsetHeight;
-        const maxHeight = elementHeight * 0.95;  // Using 95% of element's container height
+        const maxWidth = wrapper.offsetWidth * 0.95;  // Using 95% of element's container height
         const maxHeight = element.clientHeight * 0.95; // Use the actual height of the text container
     
         let fontSize = 1;
