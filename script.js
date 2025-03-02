@@ -87,20 +87,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function calculateOptimalFontSize(element, containerHeight, containerWidth, maxHeightPercent) {
-        element.style.fontSize = '';
-        
-        // Set proper display for measurement
-        const originalDisplay = element.style.display;
-        element.style.display = 'flex';
-
-        // Ensure proper word break behavior
-        element.style.wordBreak = 'keep-all';
+        element.style.fontSize = ''; // Reset font size
+        element.style.display = 'inline-block'; // Set to inline-block to properly measure width
+        element.style.wordBreak = 'break-word';
         element.style.overflowWrap = 'break-word';
-        
-        // Calculate maximum dimensions based on percentages
+        element.style.whiteSpace = 'normal'; // Allow wrapping
+    
         const maxHeight = containerHeight * (maxHeightPercent / 100);
         const maxWidth = containerWidth;
-        
+
         let fontSize = 1;
         let low = 1;
         let high = 500;
@@ -108,10 +103,11 @@ document.addEventListener('DOMContentLoaded', function () {
         while (low <= high) {
             const mid = Math.floor((low + high) / 2);
             element.style.fontSize = `${mid}px`;
-            
+
+            // Check if it fits within max height and width, considering scroll height
             const rect = element.getBoundingClientRect();
             const fits = rect.width <= maxWidth && rect.height <= maxHeight;
-            
+
             if (fits) {
                 fontSize = mid;
                 low = mid + 1;
@@ -119,9 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 high = mid - 1;
             }
         }
-        
-        // Restore original display property
-        element.style.display = originalDisplay;
+
         return fontSize;
     }
 
