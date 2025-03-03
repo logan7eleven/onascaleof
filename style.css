@@ -1,8 +1,6 @@
-/* --- style.css --- (Overlay size fix, pixelated font) */
 @font-face {
-    font-family: 'Pixelated';
-    src: url('your-pixelated-font.woff2') format('woff2'), /*  Replace 'your-pixelated-font.woff2' */
-         url('your-pixelated-font.woff') format('woff');  /* with the actual path to your font files */
+    font-family: 'VT323'; /* Use the font's name */
+    src: url('fonts/VT323-Regular.ttf') format('truetype'); /* Path to the .ttf file */
     font-weight: normal;
     font-style: normal;
 }
