@@ -261,6 +261,7 @@ body {
     justify-content: center;
 }
 
+/* Text overlay stays at 98% with margins */
 .overlay-text {
     position: absolute;
     width: 98%;
@@ -282,9 +283,8 @@ body {
     text-align: center;
 }
 
-/* Grey overlay effect only - no sizing or positioning */
-#album-image.image-faded,
-.person-image-container img.image-faded {
+/* Simple grey overlay effect */
+.image-faded {
     filter: grayscale(80%);
     opacity: 0.7;
 }
