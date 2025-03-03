@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const numSegments = 20;
 
     // Firebase initialization (No changes)
-    const firebaseConfig = {
+   const firebaseConfig = {
         apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
         authDomain: "onascaleof-2e3b4.firebaseapp.com",
         projectId: "onascaleof-2e3b4",
@@ -80,8 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
             container.style.width = `${personContainerWidth}px`;
         });
     }
-
-      function fetchAlbums(url) {
+    function fetchAlbums(url) {
         // ... (No changes in fetchAlbums) ...
               return fetch(url)
         .then(response => response.text())
@@ -313,32 +312,32 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     buttonInfo.addEventListener('click', () => {
-    infoMode = !infoMode;
+        infoMode = !infoMode;
 
-    // --- Apply 'image-faded' to IMAGES, not containers ---
-    albumImage.classList.toggle('image-faded', infoMode);
-    personLeft.classList.toggle('image-faded', infoMode);
-    personRight.classList.toggle('image-faded', infoMode);
-    // --- End Apply 'image-faded' to IMAGES ---
+        // --- Apply 'image-faded' to IMAGES ---
+        albumImage.classList.toggle('image-faded', infoMode);
+        personLeft.classList.toggle('image-faded', infoMode);
+        personRight.classList.toggle('image-faded', infoMode);
+        // --- End Apply 'image-faded' to IMAGES ---
 
-    if (infoMode) {
-        albumInfoText.style.display = 'flex';
-        personLeftInfoText.style.display = 'flex';
-        personRightInfoText.style.display = 'flex';
+        if (infoMode) {
+            albumInfoText.style.display = 'flex';
+            personLeftInfoText.style.display = 'flex';
+            personRightInfoText.style.display = 'flex';
 
-        const album = shuffledAlbums[currentAlbumIndex];
-        albumInfoText.textContent = `${album.name}\nby ${album.artist}`;
-        albumInfoText.style.fontSize = `${Math.floor(albumContainer.offsetHeight * 0.1)}px`;
+            const album = shuffledAlbums[currentAlbumIndex];
+            albumInfoText.textContent = `${album.name}\nby ${album.artist}`;
+            albumInfoText.style.fontSize = `${Math.floor(albumContainer.offsetHeight * 0.1)}px`;
 
-        personLeftInfoText.style.fontSize = `${Math.floor(personLeft.parentElement.offsetHeight * 0.15)}px`;
-        personRightInfoText.style.fontSize = `${Math.floor(personRight.parentElement.offsetHeight * 0.15)}px`;
+            personLeftInfoText.style.fontSize = `${Math.floor(personLeft.parentElement.offsetHeight * 0.15)}px`;
+            personRightInfoText.style.fontSize = `${Math.floor(personRight.parentElement.offsetHeight * 0.15)}px`;
 
-    } else {
-        albumInfoText.style.display = 'none';
-        personLeftInfoText.style.display = 'none';
-        personRightInfoText.style.display = 'none';
-    }
-});
+        } else {
+            albumInfoText.style.display = 'none';
+            personLeftInfoText.style.display = 'none';
+            personRightInfoText.style.display = 'none';
+        }
+    });
 
     // Window resize event handlers
     window.addEventListener('resize', resizeMainContainer);
