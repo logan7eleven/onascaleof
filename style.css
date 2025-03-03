@@ -1,3 +1,12 @@
+/* --- style.css --- (Overlay size fix, pixelated font) */
+@font-face {
+    font-family: 'Pixelated';
+    src: url('your-pixelated-font.woff2') format('woff2'), /*  Replace 'your-pixelated-font.woff2' */
+         url('your-pixelated-font.woff') format('woff');  /* with the actual path to your font files */
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
@@ -257,16 +266,18 @@ body {
 
 .overlay-text {
     position: absolute;
-    width: 98%;  /*98% of parent*/
-    height: 98%; /*98% of parent*/
-    top: 1%; /*centers it*/
-    left: 1%; /*centers it*/
+    width: 98%;
+    height: 98%;
+    top: 1%;
+    left: 1%;
     background-color: rgba(255, 255, 255, 0.7);
-    display: none; /* Hidden by default */
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-sizing: border-box; /* Include padding in width/height */
+    box-sizing: border-box;
+    word-break: keep-all;
+    font-family: 'Pixelated', sans-serif; /* Use the pixelated font */
 
 }
 
@@ -276,58 +287,35 @@ body {
   height: 98%;
   top: 1%;
   left: 1%;
-  transform: translate(0, 0); /* Remove transform */
-  display: none; /* Hidden by default */
+  transform: translate(0, 0);
+  display: none;
   flex-direction: column;
-  justify-content: space-between; /* Distribute space */
-  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center both vertically and horizontally */
+  align-items: center;
   box-sizing: border-box;
-  padding: 0; /* Reset padding */
+  padding: 0;
   background-color: rgba(255, 255, 255, 0.7);
-    z-index: 2;
+  z-index: 2;
+  font-family: 'Pixelated', sans-serif; /* Use the pixelated font */
+  text-align: center; /* Ensure text is center-aligned */
 }
 
-#album-name,
-#album-artist {
-    position: relative;
-    height: 40%; /* 40% of the container height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-     z-index: 3;
-    box-sizing: border-box;
 
-}
-
-#album-by {
-     position: relative;
-    height: 20%; /*20% of parent*/
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    overflow: visible;
-     z-index: 3;
-    box-sizing: border-box;
-}
-/* This now applies to the IMAGE, not the overlay */
-.image-faded {
+/* Apply to the image itself, NOT .image-faded */
+#album-image.image-faded {
     filter: grayscale(80%) blur(3px);
     opacity: 0.7;
-    width: 90%;  /*90% of parent*/
-    height: 90%; /*90% of parent*/
+    width: 90%;  /* Corrected: Full 90% width */
+    height: 90%; /* Corrected: Full 90% height */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
+
 .scale-segment {
     height: 100%;
-    transition: background-color 0.2s ease;
+    transition: background-color: 0.2s ease;
 }
 
 .scale-segment.active-left {
