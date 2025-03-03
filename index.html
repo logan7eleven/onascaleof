@@ -1,26 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>onascaleof.com</title>
+    <title>On a Scale Of</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="main-container">
         <h1 id="site-title">onascaleof.com</h1>
-        
         <div id="album-container">
             <div class="album-image-wrapper">
-                <img id="album-image" src="album.jpg" alt="Album Cover">
-                <div id="album-info-text"></div>
-            </div>
-            <div class="album-overlay-container">
-                <div class="grey-overlay"></div>
-                <div class="overlay-text"></div>
+                <img id="album-image" src="" alt="Album Cover">
+                <div id="album-info-text" class="overlay-text"></div>
             </div>
         </div>
-
         <div id="scale-container">
             <div id="scale">
                 <div id="scale-segments-left"></div>
@@ -28,43 +22,34 @@
                 <div id="vote-marker"></div>
             </div>
         </div>
-
         <div id="person-arrow-container">
             <button id="button-person-left" class="person-arrow-button">
                 <div class="person-image-container">
-                    <img id="person-left" src="person1.jpg" alt="Person 1">
-                    <div id="person-left-info-text"></div>
-                    <div class="person-overlay-container">
-                        <div class="grey-overlay"></div>
-                        <div class="overlay-text"></div>
-                    </div>
+                    <img id="person-left" src="" alt="Left Person">
+                    <div id="person-left-info-text" class="overlay-text"></div>
                 </div>
                 <div class="arrow-container">
                     <div class="arrow left-arrow"></div>
                 </div>
             </button>
-
             <button id="button-person-right" class="person-arrow-button">
                 <div class="arrow-container">
-                    <div class="arrow"></div>
+                    <div class="arrow right-arrow"></div>
                 </div>
                 <div class="person-image-container">
-                    <img id="person-right" src="person2.jpg" alt="Person 2">
-                    <div id="person-right-info-text"></div>
-                    <div class="person-overlay-container">
-                        <div class="grey-overlay"></div>
-                        <div class="overlay-text"></div>
-                    </div>
+                    <img id="person-right" src="" alt="Right Person">
+                    <div id="person-right-info-text" class="overlay-text"></div>
                 </div>
             </button>
         </div>
-
         <div id="button-row">
-            <button id="button-info" class="app-button">i</button>
-            <button id="button-next" class="app-button">></button>
-            <button id="button-enter" class="app-button">enter</button>
+            <button id="button-info" class="app-button">INFO</button>
+            <button id="button-enter" class="app-button">ENTER</button>
+            <button id="button-next" class="app-button">NEXT</button>
         </div>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
