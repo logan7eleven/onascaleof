@@ -1,3 +1,5 @@
+/* --- style.css --- (FINAL, CORRECT Overlay and Text Overlay Sizing) */
+
 @font-face {
     font-family: 'VT323';
     src: url('fonts/VT323-Regular.ttf') format('truetype');
@@ -78,8 +80,8 @@ body {
 
 #album-image {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 100%;  /* Fill the wrapper */
+    height: 100%; /* Fill the wrapper */
     object-fit: contain;
     background-color: rgba(0, 0, 0, 0.3);
 }
@@ -189,6 +191,7 @@ body {
 
 }
 
+/* Size and position the IMAGES within their containers */
 .person-image-container img {
     width: 90%;
     height: 90%;
@@ -262,12 +265,13 @@ body {
     justify-content: center;
 }
 
+/* --- CORRECTED overlay-text sizing --- */
 .overlay-text {
     position: absolute;
-    width: 98%;
-    height: 98%;
-    top: 1%;
-    left: 1%;
+    width: calc(90% * 0.98); /* 98% of 90% (image width) */
+    height: calc(90% * 0.98);/* 98% of 90% (image height) */
+    top: calc(50% - (90% * 0.98) / 2);    /* Center based on image size */
+    left: calc(50% - (90% * 0.98) / 2);   /* Center based on image size */
     background-color: rgba(255, 255, 255, 0.7);
     display: none;
     flex-direction: column;
@@ -279,12 +283,11 @@ body {
 }
 
 #album-info-text {
-    /* No changes needed here */
   position: absolute;
-  width: 98%;
-  height: 98%;
-  top: 1%;
-  left: 1%;
+  width: calc(90% * 0.98); /* 98% of 90% (image width) */
+  height: calc(90% * 0.98);/* 98% of 90% (image height) */
+  top: calc(50% - (90% * 0.98) / 2);    /* Center based on image size */
+  left: calc(50% - (90% * 0.98) / 2);   /* Center based on image size */
   transform: translate(0, 0);
   display: none;
   flex-direction: column;
@@ -297,17 +300,20 @@ body {
   font-family: 'VT323', sans-serif;
   text-align: center;
 }
+/* --- END CORRECTED overlay-text sizing --- */
 
+/* --- image-faded rule (NO BLUR) --- */
 #album-image.image-faded,
 .person-image-container img.image-faded {
     filter: grayscale(80%);
     opacity: 0.7;
-    width: 90%;        /* REQUIRED for person images */
-    height: 90%;       /* REQUIRED for person images */
-    top: 50%;          /* REQUIRED for person images */
-    left: 50%;         /* REQUIRED for person images */
-    transform: translate(-50%, -50%); /* REQUIRED for person images */
+    width: 90%;        /* REQUIRED */
+    height: 90%;       /* REQUIRED */
+    top: 50%;          /* REQUIRED */
+    left: 50%;         /* REQUIRED */
+    transform: translate(-50%, -50%); /* REQUIRED */
 }
+/* --- END image-faded rule --- */
 
 .scale-segment {
     height: 100%;
