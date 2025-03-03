@@ -188,7 +188,6 @@ body {
     height: 100%;
 
 }
-/*CRITICAL: Size and position the images */
 .person-image-container img {
     width: 90%;
     height: 90%;
@@ -297,19 +296,11 @@ body {
   text-align: center;
 }
 
-/* --- CORRECTED image-faded rule --- */
 #album-image.image-faded,
-.person-image-container img.image-faded
-{
-    filter: grayscale(80%) blur(3px);
+.person-image-container img.image-faded {
+    filter: grayscale(80%); /* ONLY grayscale */
     opacity: 0.7;
-    width: 90%;        /* ADDED */
-    height: 90%;       /* ADDED */
-    top: 50%;          /* ADDED */
-    left: 50%;         /* ADDED */
-    transform: translate(-50%, -50%); /* ADDED */
 }
-/* --- END CORRECTED image-faded rule --- */
 
 .scale-segment {
     height: 100%;
