@@ -1,5 +1,3 @@
-/* --- style.css --- (FINAL, CORRECT Overlay and Text Overlay Sizing) */
-
 @font-face {
     font-family: 'VT323';
     src: url('fonts/VT323-Regular.ttf') format('truetype');
@@ -265,8 +263,8 @@ body {
     justify-content: center;
 }
 
-/* --- CORRECTED overlay-text sizing --- */
 .overlay-text {
+    /* No changes needed here */
     position: absolute;
     width: calc(90% * 0.98); /* 98% of 90% (image width) */
     height: calc(90% * 0.98);/* 98% of 90% (image height) */
@@ -283,6 +281,7 @@ body {
 }
 
 #album-info-text {
+      /* No changes needed here */
   position: absolute;
   width: calc(90% * 0.98); /* 98% of 90% (image width) */
   height: calc(90% * 0.98);/* 98% of 90% (image height) */
@@ -300,20 +299,14 @@ body {
   font-family: 'VT323', sans-serif;
   text-align: center;
 }
-/* --- END CORRECTED overlay-text sizing --- */
 
-/* --- image-faded rule (NO BLUR) --- */
+/* --- CORRECTED image-faded rule (NO BLUR) --- */
 #album-image.image-faded,
 .person-image-container img.image-faded {
     filter: grayscale(80%);
     opacity: 0.7;
-    width: 90%;        /* REQUIRED */
-    height: 90%;       /* REQUIRED */
-    top: 50%;          /* REQUIRED */
-    left: 50%;         /* REQUIRED */
-    transform: translate(-50%, -50%); /* REQUIRED */
 }
-/* --- END image-faded rule --- */
+/* --- END CORRECTED image-faded rule --- */
 
 .scale-segment {
     height: 100%;
