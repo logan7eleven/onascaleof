@@ -320,10 +320,9 @@ document.addEventListener('DOMContentLoaded', function () {
     buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
 
-        albumImage.classList.toggle('image-faded', infoMode);
-        personLeft.classList.toggle('image-faded', infoMode);
-        personRight.classList.toggle('image-faded', infoMode);
-
+        albumContainer.classList.toggle('image-faded', infoMode); // Album container
+        personLeft.parentElement.classList.toggle('image-faded', infoMode); // Person containers
+        personRight.parentElement.classList.toggle('image-faded', infoMode);
 
         if (infoMode) {
             // Show overlays
