@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'VT323'; /* Correct font family name */
-    src: url('fonts/VT323-Regular.ttf') format('truetype'); /* Path to YOUR font file */
+    font-family: 'VT323';
+    src: url('fonts/VT323-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -188,7 +188,7 @@ body {
     height: 100%;
 
 }
-
+/*CRITICAL CHANGE:  Set image size/position within container*/
 .person-image-container img {
     width: 90%;
     height: 90%;
@@ -297,18 +297,13 @@ body {
   text-align: center;
 }
 
-/* Apply 'image-faded' to the IMAGES */
+/* --- CORRECTED image-faded rule --- */
 #album-image.image-faded,
 .person-image-container img.image-faded {
     filter: grayscale(80%) blur(3px);
     opacity: 0.7;
-    width: 90%;  /* Ensure it covers the 90% area */
-    height: 90%; /* Ensure it covers the 90% area */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
-
+/* --- END CORRECTED image-faded rule --- */
 
 .scale-segment {
     height: 100%;
