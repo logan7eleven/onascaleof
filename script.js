@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const scale = document.getElementById('scale');
     const voteMarker = document.getElementById('vote-marker');
 
-    // Variables (No changes)
+    // Variables
     let albums = [];
     let shuffledAlbums = [];
     let people = { left: {}, right: {} };
@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let infoMode = false;
     const numSegments = 20;
 
-    // Firebase initialization (No changes)
-   const firebaseConfig = {
+    // Firebase initialization
+const firebaseConfig = {
         apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
         authDomain: "onascaleof-2e3b4.firebaseapp.com",
         projectId: "onascaleof-2e3b4",
@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const db = firebase.firestore();
 
     function resizeMainContainer() {
-        // ... (No changes in resizeMainContainer) ...
         mainContainer.style.width = '';
         mainContainer.style.height = '';
 
@@ -70,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function setPersonImageContainerSize() {
-        // ... (No changes in setPersonImageContainerSize) ...
         let albumHeight = albumContainer.offsetHeight;
         const personContainerHeight = albumHeight / 3;
         const personContainerWidth = personContainerHeight * 0.75;
@@ -80,7 +78,8 @@ document.addEventListener('DOMContentLoaded', function () {
             container.style.width = `${personContainerWidth}px`;
         });
     }
-    function fetchAlbums(url) {
+
+      function fetchAlbums(url) {
         // ... (No changes in fetchAlbums) ...
               return fetch(url)
         .then(response => response.text())
@@ -99,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function fetchPeople(url) {
-        // ... (No changes in fetchPeople) ...
               return fetch(url)
         .then(response => response.text())
         .then(csv => {
@@ -127,7 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function loadPeople(data) {
-        // ... (No changes in loadPeople) ...
               const filteredPeople = data.filter(person => person.peopleID === peopleID);
       const leftPerson = filteredPeople.find(person => person.side === 'L');
       const rightPerson = filteredPeople.find(person => person.side === 'R');
@@ -145,7 +142,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateDisplay() {
-        // ... (No changes in updateDisplay) ...
                 let album = shuffledAlbums[currentAlbumIndex];
         albumImage.src = album.url;
         albumImage.style.outline = "";
@@ -161,7 +157,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function shuffleArray(array) {
-        // ... (No changes in shuffleArray) ...
                 for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
@@ -170,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function createScaleSegments() {
-        // ... (No changes in createScaleSegments) ...
                 scaleSegmentsLeft.innerHTML = '';
         scaleSegmentsRight.innerHTML = '';
 
@@ -188,7 +182,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateScale() {
-        // ... (No changes in updateScale) ...
         const leftActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(-currentVote / 5)));
         const rightActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(currentVote / 5)));
 
@@ -214,7 +207,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function submitVote() {
-        // ... (No changes in submitVote) ...
               if (!voteSubmitted) {
         let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
         albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
@@ -254,7 +246,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function moveScale(direction, clickedSide) {
-        // ... (No changes in moveScale) ...
               if (!voteSubmitted) {
         if (direction === "right") {
           currentVote = Math.min(100, currentVote + 5);
@@ -267,7 +258,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateVoteOutline(clickedSide) {
-        // ... (No changes in updateVoteOutline) ...
               let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
       albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
 
@@ -281,7 +271,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getNextAlbum() {
-        // ... (No changes in getNextAlbum) ...
         currentAlbumIndex++;
       if (currentAlbumIndex >= shuffledAlbums.length) {
         shuffledAlbums = shuffleArray([...albums]);
