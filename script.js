@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Elements (No changes)
+    // Elements from the HTML (No changes)
     const mainContainer = document.getElementById('main-container');
     const albumContainer = document.getElementById('album-container');
     const albumImage = document.getElementById('album-image');
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const scale = document.getElementById('scale');
     const voteMarker = document.getElementById('vote-marker');
 
-    // Variables
+    // Variables (No changes)
     let albums = [];
     let shuffledAlbums = [];
     let people = { left: {}, right: {} };
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let infoMode = false;
     const numSegments = 20;
 
-    // Firebase initialization
+    // Firebase initialization (No changes)
 const firebaseConfig = {
         apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
         authDomain: "onascaleof-2e3b4.firebaseapp.com",
@@ -98,6 +98,7 @@ const firebaseConfig = {
     }
 
     function fetchPeople(url) {
+        // ... (No changes in fetchPeople) ...
               return fetch(url)
         .then(response => response.text())
         .then(csv => {
@@ -125,6 +126,7 @@ const firebaseConfig = {
     }
 
     function loadPeople(data) {
+        // ... (No changes in loadPeople) ...
               const filteredPeople = data.filter(person => person.peopleID === peopleID);
       const leftPerson = filteredPeople.find(person => person.side === 'L');
       const rightPerson = filteredPeople.find(person => person.side === 'R');
@@ -142,6 +144,7 @@ const firebaseConfig = {
     }
 
     function updateDisplay() {
+        // ... (No changes in updateDisplay) ...
                 let album = shuffledAlbums[currentAlbumIndex];
         albumImage.src = album.url;
         albumImage.style.outline = "";
@@ -157,6 +160,7 @@ const firebaseConfig = {
     }
 
     function shuffleArray(array) {
+        // ... (No changes in shuffleArray) ...
                 for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
@@ -165,6 +169,7 @@ const firebaseConfig = {
     }
 
     function createScaleSegments() {
+        // ... (No changes in createScaleSegments) ...
                 scaleSegmentsLeft.innerHTML = '';
         scaleSegmentsRight.innerHTML = '';
 
@@ -182,6 +187,7 @@ const firebaseConfig = {
     }
 
     function updateScale() {
+        // ... (No changes in updateScale) ...
         const leftActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(-currentVote / 5)));
         const rightActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(currentVote / 5)));
 
@@ -207,6 +213,7 @@ const firebaseConfig = {
     }
 
     function submitVote() {
+        // ... (No changes in submitVote) ...
               if (!voteSubmitted) {
         let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
         albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
@@ -246,6 +253,7 @@ const firebaseConfig = {
     }
 
     function moveScale(direction, clickedSide) {
+        // ... (No changes in moveScale) ...
               if (!voteSubmitted) {
         if (direction === "right") {
           currentVote = Math.min(100, currentVote + 5);
@@ -258,6 +266,7 @@ const firebaseConfig = {
     }
 
     function updateVoteOutline(clickedSide) {
+        // ... (No changes in updateVoteOutline) ...
               let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
       albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
 
@@ -271,6 +280,7 @@ const firebaseConfig = {
     }
 
     function getNextAlbum() {
+        // ... (No changes in getNextAlbum) ...
         currentAlbumIndex++;
       if (currentAlbumIndex >= shuffledAlbums.length) {
         shuffledAlbums = shuffleArray([...albums]);
@@ -279,7 +289,7 @@ const firebaseConfig = {
       updateDisplay();
     }
 
-    // Event Listeners (CORRECTED buttonInfo)
+   // Event Listeners (CORRECTED buttonInfo)
     buttonPersonLeft.addEventListener('click', () => moveScale('left', 'left'));
     buttonPersonRight.addEventListener('click', () => moveScale('right', 'right'));
     buttonEnter.addEventListener('click', submitVote);
@@ -316,7 +326,7 @@ const firebaseConfig = {
 
             const album = shuffledAlbums[currentAlbumIndex];
             albumInfoText.textContent = `${album.name}\nby ${album.artist}`;
-            albumInfoText.style.fontSize = `${Math.floor(albumContainer.offsetHeight * 0.1)}px`;
+            albumInfoText.style.fontSize = `${Math.floor(albumContainer.offsetHeight * 0.9 * 0.1)}px`;
 
             personLeftInfoText.style.fontSize = `${Math.floor(personLeft.parentElement.offsetHeight * 0.15)}px`;
             personRightInfoText.style.fontSize = `${Math.floor(personRight.parentElement.offsetHeight * 0.15)}px`;
