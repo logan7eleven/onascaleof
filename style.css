@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'VT323'; /* Use the font's name */
-    src: url('fonts/VT323-Regular.ttf') format('truetype'); /* Path to the .ttf file */
+    font-family: 'VT323'; /* Correct font family name */
+    src: url('fonts/VT323-Regular.ttf') format('truetype'); /* Path to YOUR font file */
     font-weight: normal;
     font-style: normal;
 }
@@ -276,7 +276,6 @@ body {
     box-sizing: border-box;
     word-break: keep-all;
     font-family: 'VT323', sans-serif;
-
 }
 
 #album-info-text {
@@ -288,20 +287,28 @@ body {
   transform: translate(0, 0);
   display: none;
   flex-direction: column;
-  justify-content: center; /* Center both vertically and horizontally */
+  justify-content: center;
   align-items: center;
   box-sizing: border-box;
   padding: 0;
   background-color: rgba(255, 255, 255, 0.7);
   z-index: 2;
   font-family: 'VT323', sans-serif;
-  text-align: center; /* Ensure text is center-aligned */
+  text-align: center;
 }
 
-.image-faded {
+/* Apply 'image-faded' to the IMAGES */
+#album-image.image-faded,
+.person-image-container img.image-faded {
     filter: grayscale(80%) blur(3px);
     opacity: 0.7;
+    width: 90%;  /* Ensure it covers the 90% area */
+    height: 90%; /* Ensure it covers the 90% area */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
+
 
 .scale-segment {
     height: 100%;
