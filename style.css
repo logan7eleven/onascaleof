@@ -60,7 +60,21 @@ body {
     background-color: #000;
     margin-bottom: 1.5%;
     overflow: visible;
+    transition: background-color 0.2s ease; /* Smooth transition for album flash */
 }
+
+#album-container.flash-left {
+    background-color: #BAA0FA; /* Purple flash for album (negative) */
+}
+
+#album-container.flash-neutral {
+    background-color: #333; /* Dark grey flash for album (neutral) - using #333 */
+}
+
+#album-container.flash-right {
+    background-color: #F7B73D; /* Orange flash for album (positive) */
+}
+
 
 .album-image-wrapper {
     position: absolute;
@@ -101,6 +115,7 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
     overflow: hidden;
+    background-color: #000; /* Scale background to black */
 }
 
 #scale::after {
@@ -165,15 +180,14 @@ body {
     cursor: pointer;
     border-radius: 0.5em;
     gap: 5%;
+    background-color: #ddd; /* Match button-row buttons */
 }
 
 #button-person-left {
-    background-color: #BAA0FA;
     flex-direction: row;
 }
 
 #button-person-right {
-    background-color: #F7B73D;
     flex-direction: row;
 }
 
@@ -181,12 +195,22 @@ body {
     position: relative;
     background-color: #000;
     border-radius: 0;
-    overflow: hidden;
+    overflow: hidden; /* Keep overflow hidden if needed */
     aspect-ratio: 3 / 4;
     flex-shrink: 0;
     width: 45%;
     height: 100%;
+    transition: background-color 0.1s ease; /* Smooth transition for flash */
 }
+
+.person-image-container.flash-left {
+    background-color: #BAA0FA; /* Purple flash for left person */
+}
+
+.person-image-container.flash-right {
+    background-color: #F7B73D; /* Orange flash for right person */
+}
+
 
 .person-image-container img {
     width: 90%;
@@ -252,7 +276,7 @@ body {
     flex: 1;
     height: 100%;
     font-size: 2em;
-    border: none;
+    border: none; /* Remove borders from app buttons */
     border-radius: 0.5em;
     background-color: #ddd;
     color: #333;
@@ -262,24 +286,30 @@ body {
 }
 
 .image-overlay {
+    /* Default .image-overlay styles (for album) - KEEP THESE */
     position: absolute;
-    width: 100%; /* Match image size */
-    height: 100%; /* Match image size */
-    top: 50%;
+    width: 90%; /* Match album image size */
+    height: 90%; /* Match album image size */
+    top: 50%; /* Album overlay vertical centering */
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 0.7);
     display: none;
-    z-index: 2; /* Sit on top of images, below text */
+    z-index: 2;
 }
 
 .person-image-container .image-overlay {
+    /* Specific styles for .image-overlay inside .person-image-container */
     width: 90%; /* Match person image size */
     height: 90%; /* Match person image size */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.7);
+    display: none;
+    z-index: 2;
 }
+
 
 .overlay-text {
     position: absolute; /* Position relative to .image-overlay */
@@ -289,6 +319,7 @@ body {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    padding: 1%;
     word-break: keep-all;
     font-family: 'VT323', sans-serif;
     z-index: 3; /* Sit on top of .image-overlay */
