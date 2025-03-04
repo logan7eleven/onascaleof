@@ -43,7 +43,10 @@ body {
     align-items: center;
     position: relative;
     box-sizing: border-box;
-    background-color: #555;
+    background-image: url('images/body.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
     padding-top: 1.5%;
     padding-bottom: 1.5%;
     border-radius: 2%;
