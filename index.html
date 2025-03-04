@@ -11,8 +11,10 @@
         <h1 id="site-title">onascaleof.com</h1>
         <div id="album-container">
             <div class="album-image-wrapper">
-                <img id="album-image" src="" alt="Album Cover">
-                <div id="album-info-text" class="overlay-text"></div>
+                <div class="image-overlay">
+                    <div id="album-info-text" class="overlay-text"></div>
+                </div>
+                 <img id="album-image" src="" alt="Album Cover">
             </div>
         </div>
         <div id="scale-container">
@@ -25,20 +27,24 @@
         <div id="person-arrow-container">
             <button id="button-person-left" class="person-arrow-button">
                 <div class="person-image-container">
-                    <img id="person-left" src="" alt="Left Person">
-                    <div id="person-left-info-text" class="overlay-text"></div>
+                    <div class="image-overlay">
+                        <div id="person-left-info-text" class="overlay-text"></div>
+                    </div>
+                     <img id="person-left" src="" alt="Left Person">
                 </div>
                 <div class="arrow-container">
                     <div class="arrow left-arrow"></div>
                 </div>
             </button>
             <button id="button-person-right" class="person-arrow-button">
-                <div class="arrow-container">
+             <div class="arrow-container">
                     <div class="arrow right-arrow"></div>
                 </div>
                 <div class="person-image-container">
+                    <div class="image-overlay">
+                        <div id="person-right-info-text" class="overlay-text"></div>
+                    </div>
                     <img id="person-right" src="" alt="Right Person">
-                    <div id="person-right-info-text" class="overlay-text"></div>
                 </div>
             </button>
         </div>
