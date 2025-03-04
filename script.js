@@ -1,3 +1,4 @@
+--- START OF FILE script.js ---
 document.addEventListener('DOMContentLoaded', function () {
     // Elements from the HTML (No changes)
     const mainContainer = document.getElementById('main-container');
@@ -214,17 +215,12 @@ const firebaseConfig = {
     }
 
     function submitVote() {
-        // ... (No changes in submitVote) ...
+        // ... (Submit Vote function - outline related code removed) ...
               if (!voteSubmitted) {
-        let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
-        albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
 
 
         voteMarker.style.display = 'block';
-        if (currentVote > 0) {
-          voteMarker.style.left = `${50 + (currentVote / 2)}%`;
-        } else if (currentVote < 0) {
-          voteMarker.style.left = `${50 + (currentVote / 2)}%`;
+         voteMarker.style.left = `${50 + (currentVote / 2)}%`;
         } else {
           voteMarker.style.left = '50%';
         }
@@ -255,7 +251,6 @@ const firebaseConfig = {
           currentVote = Math.max(-100, currentVote - 5);
         }
         updateScale();
-        updateVoteOutline(clickedSide);
       }
 
         // --- Add flash effect to person image container ---
@@ -265,24 +260,6 @@ const firebaseConfig = {
             personContainer.classList.remove(clickedSide === 'left' ? 'flash-left' : 'flash-right');
         }, 100); // 100ms flash duration
         // --- End flash effect ---
-    }
-
-
-    function updateVoteOutline(clickedSide) {
-        // ... (No changes in updateVoteOutline) ...
-              let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
-      albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
-
-      // --- Album container flash effect moved to updateScale() ---
-      // --- Person image outline effect removed from here ---
-
-      if (clickedSide === 'left') {
-        personLeft.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
-        personRight.style.outline = "";
-      } else if (clickedSide === 'right') {
-        personRight.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
-        personLeft.style.outline = "";
-      }
     }
 
     function getNextAlbum() {
@@ -311,7 +288,7 @@ const firebaseConfig = {
 
         if (flashClass) {
             albumContainerElement.classList.add(flashClass);
-            setTimeout(() => {
+             setTimeout(() => {
                 albumContainerElement.classList.remove(flashClass);
             }, 200); // 200ms flash duration for album
         } else {
@@ -320,7 +297,7 @@ const firebaseConfig = {
         }
     }
 
-
+        voteMarker.style.backgroundColor = '#fff'; // vote marker white
    // Event Listeners (CORRECTED buttonInfo)
     buttonPersonLeft.addEventListener('click', () => moveScale('left', 'left'));
     buttonPersonRight.addEventListener('click', () => moveScale('right', 'right'));
