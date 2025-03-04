@@ -187,7 +187,7 @@ const firebaseConfig = {
     }
 
     function updateScale() {
-        // ... (No changes in updateScale) ...
+        // ... (Existing updateScale code) ...
         const leftActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(-currentVote / 5)));
         const rightActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(currentVote / 5)));
 
@@ -210,6 +210,7 @@ const firebaseConfig = {
         }
 
         scale.style.setProperty('--middle-line-opacity', currentVote === 0 ? '1' : '0');
+        updateAlbumContainerFlash(); // Call function to update album flash
     }
 
     function submitVote() {
@@ -218,13 +219,6 @@ const firebaseConfig = {
         let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
         albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
 
-        if (currentVote > 0) {
-          personRight.style.outline = `0.3em solid ${outlineColor}`;
-          personLeft.style.outline = "";
-        } else if (currentVote < 0) {
-          personLeft.style.outline = `0.3em solid ${outlineColor}`;
-          personRight.style.outline = "";
-        }
 
         voteMarker.style.display = 'block';
         if (currentVote > 0) {
@@ -263,12 +257,24 @@ const firebaseConfig = {
         updateScale();
         updateVoteOutline(clickedSide);
       }
+
+        // --- Add flash effect to person image container ---
+        const personContainer = clickedSide === 'left' ? buttonPersonLeft.querySelector('.person-image-container') : buttonPersonRight.querySelector('.person-image-container');
+        personContainer.classList.add(clickedSide === 'left' ? 'flash-left' : 'flash-right');
+        setTimeout(() => {
+            personContainer.classList.remove(clickedSide === 'left' ? 'flash-left' : 'flash-right');
+        }, 100); // 100ms flash duration
+        // --- End flash effect ---
     }
+
 
     function updateVoteOutline(clickedSide) {
         // ... (No changes in updateVoteOutline) ...
               let outlineColor = currentVote > 0 ? "#F7B73D" : currentVote < 0 ? "#BAA0FA" : "";
       albumImage.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
+
+      // --- Album container flash effect moved to updateScale() ---
+      // --- Person image outline effect removed from here ---
 
       if (clickedSide === 'left') {
         personLeft.style.outline = outlineColor ? `0.3em solid ${outlineColor}` : "";
@@ -288,6 +294,32 @@ const firebaseConfig = {
       }
       updateDisplay();
     }
+
+    function updateAlbumContainerFlash() {
+        // --- Album container flash effect based on scale ---
+        const albumContainerElement = albumContainer;
+        albumContainerElement.classList.remove('flash-left', 'flash-neutral', 'flash-right'); // Remove existing flash classes
+
+        let flashClass = '';
+        if (currentVote < 0) {
+            flashClass = 'flash-left';
+        } else if (currentVote === 0) {
+            flashClass = 'flash-neutral';
+        } else if (currentVote > 0) {
+            flashClass = 'flash-right';
+        }
+
+        if (flashClass) {
+            albumContainerElement.classList.add(flashClass);
+            setTimeout(() => {
+                albumContainerElement.classList.remove(flashClass);
+            }, 200); // 200ms flash duration for album
+        } else {
+            // Optionally reset background to default black if no flash class
+            // albumContainerElement.style.backgroundColor = '#000';
+        }
+    }
+
 
    // Event Listeners (CORRECTED buttonInfo)
     buttonPersonLeft.addEventListener('click', () => moveScale('left', 'left'));
@@ -341,6 +373,7 @@ const firebaseConfig = {
             albumInfoText.style.display = 'none';
             personLeftInfoText.style.display = 'none';
             personRightInfoText.style.display = 'none';
+        }
         }
     });
 
