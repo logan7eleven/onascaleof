@@ -138,7 +138,7 @@ body {
     top: 0;
     height: 100%;
     width: 0.5%;
-    background-color: #333;
+    background-color: #fff; /* Vote marker white */
     z-index: 6;
     display: none;
     transform: translateX(-50%);
@@ -180,7 +180,7 @@ body {
     cursor: pointer;
     border-radius: 0.5em;
     gap: 5%;
-    background-color: #ddd; /* Match button-row buttons */
+    background-color: #999; /* Mid-grey for person buttons */
 }
 
 #button-person-left {
@@ -278,7 +278,7 @@ body {
     font-size: 2em;
     border: none; /* Remove borders from app buttons */
     border-radius: 0.5em;
-    background-color: #ddd;
+    background-color: #999; /* Mid-grey for app buttons */
     color: #333;
     display: flex;
     align-items: center;
@@ -288,8 +288,8 @@ body {
 .image-overlay {
     /* Default .image-overlay styles (for album) - KEEP THESE */
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 90%; /* Match album image size */
+    height: 90%; /* Match album image size */
     top: 50%; /* Album overlay vertical centering */
     left: 50%;
     transform: translate(-50%, -50%);
@@ -319,7 +319,7 @@ body {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    padding: 1%;
+    padding: 1%; /* Add 1% padding for text margin */
     word-break: keep-all;
     font-family: 'VT323', sans-serif;
     z-index: 3; /* Sit on top of .image-overlay */
@@ -348,3 +348,4 @@ body {
 .scale-segment.active-right {
     background-color: #F7B73D;
 }
+--- START OF FILE style.css ---
