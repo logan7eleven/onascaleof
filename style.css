@@ -173,8 +173,6 @@ body {
     justify-content: space-between;
     gap: 5%;
     margin-bottom: 1.5%;
-    box-shadow: 0 0.2em 0.4em rgba(0, 0, 0, 0.3); /* Medium shadow for person-arrow-container - using em */
-    overflow: hidden; /* Clip shadow overflow in gaps */
 }
 
 .person-arrow-button {
@@ -191,6 +189,7 @@ body {
     background-size: cover;
     background-repeat: repeat;
     background-position: center center;
+    box-shadow: 0 0.2em 0.4em rgba(0, 0, 0, 0.3);
 }
 
 #button-person-left {
@@ -280,8 +279,6 @@ body {
     justify-content: space-between;
     gap: 5%;
     margin-bottom: 1.5%;
-    box-shadow: 0 0.2em 0.4em rgba(0, 0, 0, 0.3); /* Medium shadow for button-row - using em */
-    overflow: hidden; /* Clip shadow overflow in gaps */
 }
 
 .app-button {
@@ -301,6 +298,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 0.2em 0.4em rgba(0, 0, 0, 0.3); /* Medium shadow for button-row - using em */
 }
 
 .image-overlay {
