@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (rightPerson) {
             people.right = rightPerson;
-            personRight.src = personRight.url;
-            personRightInfoText.textContent = personRight.name;
+            personRight.src = rightPerson.url;
+            personRightInfoText.textContent = rightPerson.name;
         }
     }
 
