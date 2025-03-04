@@ -371,5 +371,5 @@ body {
     background-position: center;
     pointer-events: none; /* Make shader divs non-interactive */
     z-index: 4; /* Sit above containers, below overlay text */
-    opacity: 0.95; /* Adjust transparency here (example: 0.6) */
+    opacity: 0.35; /* Adjust transparency here (example: 0.6) */
 }
