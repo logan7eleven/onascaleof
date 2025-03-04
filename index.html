@@ -10,6 +10,7 @@
     <div id="main-container">
         <h1 id="site-title">onascaleof.com</h1>
         <div id="album-container">
+            <div class="screen-shader"></div> <!-- Shader for album container -->
             <div class="album-image-wrapper">
                 <div class="image-overlay">
                     <div id="album-info-text" class="overlay-text"></div>
@@ -18,6 +19,7 @@
             </div>
         </div>
         <div id="scale-container">
+            <div class="screen-shader"></div> <!-- Shader for scale container -->
             <div id="scale">
                 <div id="scale-segments-left"></div>
                 <div id="scale-segments-right"></div>
@@ -26,12 +28,14 @@
         </div>
         <div id="person-arrow-container">
             <button id="button-person-left" class="person-arrow-button">
+                <div class="screen-shader person-screen-shader"></div> <!-- Shader for left person container -->
                 <div class="person-image-container">
                     <div class="image-overlay">
                         <div id="person-left-info-text" class="overlay-text"></div>
                     </div>
                      <img id="person-left" src="" alt="Left Person">
                 </div>
+
                 <div class="arrow-container">
                     <div class="arrow left-arrow"></div>
                 </div>
@@ -39,6 +43,7 @@
             <button id="button-person-right" class="person-arrow-button">
              <div class="arrow-container">
                     <div class="arrow right-arrow"></div>
+                <div class="screen-shader person-screen-shader"></div> <!-- Shader for right person container -->
                 </div>
                 <div class="person-image-container">
                     <div class="image-overlay">
