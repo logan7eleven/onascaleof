@@ -285,8 +285,11 @@ body {
     font-size: 2em;
     border: none; /* Remove borders from app buttons */
     border-radius: 0.5em;
-    background-color: #999; /* Mid-grey for app buttons */
-    color: #333;
+    background-image: url('images/plastic.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    color: #000;
     display: flex;
     align-items: center;
     justify-content: center;
