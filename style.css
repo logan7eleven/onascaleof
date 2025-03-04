@@ -150,7 +150,7 @@ body {
     flex-direction: row;
     width: 50%;
     height: 100%;
-    background-color: #ddd;
+    background-color: transparent;
 }
 
 #scale-segments-right {
