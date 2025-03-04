@@ -228,10 +228,9 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error("Error submitting vote:", error);
             });
-    }
         buttonPersonLeft.disabled = true; // Disable person buttons after vote
         buttonPersonRight.disabled = true;
-}
+    }
 
     function moveScale(direction, clickedSide) {
         if (!voteSubmitted) {
