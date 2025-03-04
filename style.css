@@ -50,6 +50,7 @@ body {
     padding-top: 1.5%;
     padding-bottom: 1.5%;
     border-radius: 2%;
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.4);
 }
 
 #site-title {
@@ -184,6 +185,7 @@ body {
     cursor: pointer;
     border-radius: 0.5em;
     gap: 5%;
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.4);
     background-image: url('images/plastic.png');
     background-size: cover;
     background-repeat: repeat;
@@ -296,6 +298,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.4);
 }
 
 .image-overlay {
