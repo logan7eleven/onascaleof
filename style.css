@@ -358,4 +358,18 @@ body {
 .scale-segment.active-right {
     background-color: #F7B73D;
 }
---- START OF FILE style.css ---
+
+.screen-shader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/screen.png'); /* Path to your screen shader image */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none; /* Make shader divs non-interactive */
+    z-index: 4; /* Sit above containers, below overlay text */
+    opacity: 0.6; /* Adjust transparency here (example: 0.6) */
+}
