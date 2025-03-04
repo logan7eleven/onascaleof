@@ -263,9 +263,9 @@ body {
 
 .image-overlay {
     position: absolute;
-    width: 90%; /* Match image size */
-    height: 90%; /* Match image size */
-    top: 50%;
+    width: 100%; /* Match image size */
+    height: 100%; /* Match image size */
+    top: 0%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 0.7);
