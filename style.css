@@ -46,7 +46,7 @@ body {
     background-color: #555;
     padding-top: 1.5%;
     padding-bottom: 1.5%;
-    border-radius: 20px;
+    border-radius: 2%;
 }
 
 #site-title {
@@ -115,8 +115,6 @@ body {
     height: 100%;
     width: 100%;
     position: relative;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
     overflow: hidden;
     background-color: #000; /* Scale background to black */
 }
@@ -290,7 +288,7 @@ body {
     background-position: center center;
     font-weight: bold; /* Made font bolder */
     border-radius: 0.5em;
-    text-shadow: 0px 0px 2px white;
+    text-shadow: 0px 0px 0.5em white;
     color: #000;
     display: flex;
     align-items: center;
