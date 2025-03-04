@@ -1,4 +1,3 @@
---- START OF FILE script.js ---
 document.addEventListener('DOMContentLoaded', function () {
     // Elements from the HTML (No changes)
     const mainContainer = document.getElementById('main-container');
