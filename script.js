@@ -374,7 +374,6 @@ const firebaseConfig = {
             personLeftInfoText.style.display = 'none';
             personRightInfoText.style.display = 'none';
         }
-        }
     });
 
     // Window resize event handlers
