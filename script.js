@@ -215,13 +215,11 @@ const firebaseConfig = {
 
     function submitVote() {
         // ... (Submit Vote function - outline related code removed) ...
-              if (!voteSubmitted) {
-
-
-        voteMarker.style.display = 'block';
-         voteMarker.style.left = `${50 + (currentVote / 2)}%`;
+        if (!voteSubmitted) {
+            voteMarker.style.display = 'block';
+            voteMarker.style.left = `${50 + (currentVote / 2)}%`;
         } else {
-          voteMarker.style.left = '50%';
+            voteMarker.style.left = '50%';
         }
 
         buttonEnter.disabled = true;
@@ -232,25 +230,24 @@ const firebaseConfig = {
           vote_value: currentVote,
           peopleID: peopleID,
         })
-          .then(() => {
+        .then(() => {
             console.log("Vote submitted:", { albumID, vote_value: currentVote, peopleID });
-          })
-          .catch(error => {
+        })
+        .catch(error => {
             console.error("Error submitting vote:", error);
-          });
-      }
+        });
     }
 
     function moveScale(direction, clickedSide) {
         // ... (No changes in moveScale) ...
-              if (!voteSubmitted) {
+        if (!voteSubmitted) {
         if (direction === "right") {
           currentVote = Math.min(100, currentVote + 5);
         } else if (direction === "left") {
           currentVote = Math.max(-100, currentVote - 5);
         }
         updateScale();
-      }
+        }
 
         // --- Add flash effect to person image container ---
         const personContainer = clickedSide === 'left' ? buttonPersonLeft.querySelector('.person-image-container') : buttonPersonRight.querySelector('.person-image-container');
