@@ -265,7 +265,7 @@ body {
     position: absolute;
     width: 100%; /* Match image size */
     height: 100%; /* Match image size */
-    top: 0%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 0.7);
