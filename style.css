@@ -43,8 +43,7 @@ body {
     align-items: center;
     position: relative;
     box-sizing: border-box;
-    background-image: url('images/plastic.png');
-    filter: brightness(0.65);
+    background-image: url('images/body.png');
     background-size: cover;
     background-repeat: repeat;
     background-position: center center;
