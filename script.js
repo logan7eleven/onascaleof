@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const numSegments = 20;
 
     // Firebase initialization (No changes)
-const firebaseConfig = {
+    const firebaseConfig = {
         apiKey: "AIzaSyCUt5sTKJRYe-gguuon8U7SlyZtttawTSA",
         authDomain: "onascaleof-2e3b4.firebaseapp.com",
         projectId: "onascaleof-2e3b4",
@@ -79,73 +79,69 @@ const firebaseConfig = {
         });
     }
 
-      function fetchAlbums(url) {
-        // ... (No changes in fetchAlbums) ...
-              return fetch(url)
-        .then(response => response.text())
-        .then(csv => {
-          const lines = csv.split('\n').filter(line => line.trim().length > 0);
-          return lines.map((line, index) => {
-            const [name, artist, url] = line.split(',');
-            return {
-              name: name.trim(),
-              artist: artist.trim(),
-              url: url.trim(),
-              albumID: index + 1
-            };
-          });
-        });
+    function fetchAlbums(url) {
+        return fetch(url)
+            .then(response => response.text())
+            .then(csv => {
+                const lines = csv.split('\n').filter(line => line.trim().length > 0);
+                return lines.map((line, index) => {
+                    const [name, artist, url] = line.split(',');
+                    return {
+                        name: name.trim(),
+                        artist: artist.trim(),
+                        url: url.trim(),
+                        albumID: index + 1
+                    };
+                });
+            });
     }
 
     function fetchPeople(url) {
-        // ... (No changes in fetchPeople) ...
-              return fetch(url)
-        .then(response => response.text())
-        .then(csv => {
-          const lines = csv.split('\n').filter(line => line.trim().length > 0);
-          return lines.map(line => {
-            const parts = line.split(',');
-            if (parts.length !== 4) {
-              console.warn("Skipping malformed line in people.csv:", line);
-              return null;
-            }
-            const [name, url, id, side] = parts.map(part => part.trim());
-            const peopleID = parseInt(id);
-            if (isNaN(peopleID)) {
-              console.warn("Invalid peopleID in line:", line);
-              return null;
-            }
-            return {
-              name: name,
-              url: url,
-              peopleID: peopleID,
-              side: side
-            };
-          }).filter(person => person !== null);
-        });
+        return fetch(url)
+            .then(response => response.text())
+            .then(csv => {
+                const lines = csv.split('\n').filter(line => line.trim().length > 0);
+                return lines.map(line => {
+                    const parts = line.split(',');
+                    if (parts.length !== 4) {
+                        console.warn("Skipping malformed line in people.csv:", line);
+                        return null;
+                    }
+                    const [name, url, id, side] = parts.map(part => part.trim());
+                    const peopleID = parseInt(id);
+                    if (isNaN(peopleID)) {
+                        console.warn("Invalid peopleID in line:", line);
+                        return null;
+                    }
+                    return {
+                        name: name,
+                        url: url,
+                        peopleID: peopleID,
+                        side: side
+                    };
+                }).filter(person => person !== null);
+            });
     }
 
     function loadPeople(data) {
-        // ... (No changes in loadPeople) ...
-              const filteredPeople = data.filter(person => person.peopleID === peopleID);
-      const leftPerson = filteredPeople.find(person => person.side === 'L');
-      const rightPerson = filteredPeople.find(person => person.side === 'R');
+        const filteredPeople = data.filter(person => person.peopleID === peopleID);
+        const leftPerson = filteredPeople.find(person => person.side === 'L');
+        const rightPerson = filteredPeople.find(person => person.side === 'R');
 
-      if (leftPerson) {
-        people.left = leftPerson;
-        personLeft.src = leftPerson.url;
-        personLeftInfoText.textContent = leftPerson.name;
-      }
-      if (rightPerson) {
-        people.right = rightPerson;
-        personRight.src = rightPerson.url;
-        personRightInfoText.textContent = rightPerson.name;
-      }
+        if (leftPerson) {
+            people.left = leftPerson;
+            personLeft.src = leftPerson.url;
+            personLeftInfoText.textContent = leftPerson.name;
+        }
+        if (rightPerson) {
+            people.right = rightPerson;
+            personRight.src = rightPerson.url;
+            personRightInfoText.textContent = rightPerson.name;
+        }
     }
 
     function updateDisplay() {
-        // ... (No changes in updateDisplay) ...
-                let album = shuffledAlbums[currentAlbumIndex];
+        let album = shuffledAlbums[currentAlbumIndex];
         albumImage.src = album.url;
         albumImage.style.outline = "";
         voteSubmitted = false;
@@ -160,8 +156,7 @@ const firebaseConfig = {
     }
 
     function shuffleArray(array) {
-        // ... (No changes in shuffleArray) ...
-                for (let i = array.length - 1; i > 0; i--) {
+        for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
@@ -169,8 +164,7 @@ const firebaseConfig = {
     }
 
     function createScaleSegments() {
-        // ... (No changes in createScaleSegments) ...
-                scaleSegmentsLeft.innerHTML = '';
+        scaleSegmentsLeft.innerHTML = '';
         scaleSegmentsRight.innerHTML = '';
 
         for (let i = 0; i < numSegments; i++) {
@@ -187,7 +181,6 @@ const firebaseConfig = {
     }
 
     function updateScale() {
-        // ... (Existing updateScale code) ...
         const leftActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(-currentVote / 5)));
         const rightActiveSegments = Math.max(0, Math.min(numSegments, Math.floor(currentVote / 5)));
 
@@ -214,7 +207,6 @@ const firebaseConfig = {
     }
 
     function submitVote() {
-        // ... (Submit Vote function - outline related code removed) ...
         if (!voteSubmitted) {
             voteMarker.style.display = 'block';
             voteMarker.style.left = `${50 + (currentVote / 2)}%`;
@@ -226,27 +218,27 @@ const firebaseConfig = {
         voteSubmitted = true;
         const albumID = shuffledAlbums[currentAlbumIndex].albumID;
         db.collection("votes").add({
-          albumID: albumID,
-          vote_value: currentVote,
-          peopleID: peopleID,
+            albumID: albumID,
+            vote_value: currentVote,
+            peopleID: peopleID,
         })
-        .then(() => {
-            console.log("Vote submitted:", { albumID, vote_value: currentVote, peopleID });
-        })
-        .catch(error => {
-            console.error("Error submitting vote:", error);
-        });
+            .then(() => {
+                console.log("Vote submitted:", { albumID, vote_value: currentVote, peopleID });
+            })
+            .catch(error => {
+                console.error("Error submitting vote:", error);
+            });
     }
 
     function moveScale(direction, clickedSide) {
-        // ... (No changes in moveScale) ...
         if (!voteSubmitted) {
-        if (direction === "right") {
-          currentVote = Math.min(100, currentVote + 5);
-        } else if (direction === "left") {
-          currentVote = Math.max(-100, currentVote - 5);
-        }
-        updateScale();
+            if (direction === "right") {
+                currentVote = Math.min(100, currentVote + 5);
+            } else if (direction === "left") {
+                currentVote = Math.max(-100, currentVote - 5);
+            }
+            updateScale();
+            updateVoteOutline(clickedSide);
         }
 
         // --- Add flash effect to person image container ---
@@ -258,14 +250,17 @@ const firebaseConfig = {
         // --- End flash effect ---
     }
 
+    function updateVoteOutline(clickedSide) {
+        // --- Person image outline effect removed from here ---
+    }
+
     function getNextAlbum() {
-        // ... (No changes in getNextAlbum) ...
         currentAlbumIndex++;
-      if (currentAlbumIndex >= shuffledAlbums.length) {
-        shuffledAlbums = shuffleArray([...albums]);
-        currentAlbumIndex = 0;
-      }
-      updateDisplay();
+        if (currentAlbumIndex >= shuffledAlbums.length) {
+            shuffledAlbums = shuffleArray([...albums]);
+            currentAlbumIndex = 0;
+        }
+        updateDisplay();
     }
 
     function updateAlbumContainerFlash() {
@@ -284,7 +279,7 @@ const firebaseConfig = {
 
         if (flashClass) {
             albumContainerElement.classList.add(flashClass);
-             setTimeout(() => {
+            setTimeout(() => {
                 albumContainerElement.classList.remove(flashClass);
             }, 200); // 200ms flash duration for album
         } else {
@@ -293,8 +288,8 @@ const firebaseConfig = {
         }
     }
 
-        voteMarker.style.backgroundColor = '#fff'; // vote marker white
-   // Event Listeners (CORRECTED buttonInfo)
+    voteMarker.style.backgroundColor = '#fff'; // vote marker white
+    // Event Listeners (CORRECTED buttonInfo)
     buttonPersonLeft.addEventListener('click', () => moveScale('left', 'left'));
     buttonPersonRight.addEventListener('click', () => moveScale('right', 'right'));
     buttonEnter.addEventListener('click', submitVote);
@@ -332,7 +327,7 @@ const firebaseConfig = {
 
         // --- Control text display as before ---
         if (infoMode) {
-           albumInfoText.style.display = 'flex';
+            albumInfoText.style.display = 'flex';
             personLeftInfoText.style.display = 'flex';
             personRightInfoText.style.display = 'flex';
             const album = shuffledAlbums[currentAlbumIndex];
