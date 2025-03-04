@@ -273,6 +273,14 @@ body {
     z-index: 2; /* Sit on top of images, below text */
 }
 
+.person-image-container .image-overlay {
+    width: 90%; /* Match person image size */
+    height: 90%; /* Match person image size */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .overlay-text {
     position: absolute; /* Position relative to .image-overlay */
     width: 100%;      /* Fill .image-overlay */
