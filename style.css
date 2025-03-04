@@ -288,8 +288,8 @@ body {
 .image-overlay {
     /* Default .image-overlay styles (for album) - KEEP THESE */
     position: absolute;
-    width: 90%; /* Match album image size */
-    height: 90%; /* Match album image size */
+    width: 100%;
+    height: 100%;
     top: 50%; /* Album overlay vertical centering */
     left: 50%;
     transform: translate(-50%, -50%);
