@@ -313,17 +313,23 @@ const firebaseConfig = {
     buttonInfo.addEventListener('click', () => {
         infoMode = !infoMode;
 
+        // --- Toggle 'image-overlay' display ---
+        document.querySelectorAll('.image-overlay').forEach(overlay => {
+            overlay.style.display = infoMode ? 'flex' : 'none';
+        });
+        // --- End Toggle 'image-overlay' display ---
+
         // --- Apply 'image-faded' to IMAGES ---
         albumImage.classList.toggle('image-faded', infoMode);
         personLeft.classList.toggle('image-faded', infoMode);
         personRight.classList.toggle('image-faded', infoMode);
         // --- End Apply 'image-faded' to IMAGES ---
 
+        // --- Control text display as before ---
         if (infoMode) {
-            albumInfoText.style.display = 'flex';
+           albumInfoText.style.display = 'flex';
             personLeftInfoText.style.display = 'flex';
             personRightInfoText.style.display = 'flex';
-
             const album = shuffledAlbums[currentAlbumIndex];
             albumInfoText.textContent = `${album.name}\nby ${album.artist}`;
             albumInfoText.style.fontSize = `${Math.floor(albumContainer.offsetHeight * 0.9 * 0.1)}px`;
@@ -335,6 +341,7 @@ const firebaseConfig = {
             albumInfoText.style.display = 'none';
             personLeftInfoText.style.display = 'none';
             personRightInfoText.style.display = 'none';
+        }
         }
     });
 
