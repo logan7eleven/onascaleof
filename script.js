@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (rightPerson) {
             people.right = rightPerson;
-            personRight.src = rightPerson.url;
-            personRightInfoText.textContent = rightPerson.name;
+            personRight.src = personRight.url;
+            personRightInfoText.textContent = personRight.name;
         }
     }
 
@@ -229,6 +229,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error("Error submitting vote:", error);
             });
     }
+        buttonPersonLeft.disabled = true; // Disable person buttons after vote
+        buttonPersonRight.disabled = true;
+}
 
     function moveScale(direction, clickedSide) {
         if (!voteSubmitted) {
@@ -261,6 +264,8 @@ document.addEventListener('DOMContentLoaded', function () {
             currentAlbumIndex = 0;
         }
         updateDisplay();
+        buttonPersonLeft.disabled = false;  // Re-enable person buttons on next album
+        buttonPersonRight.disabled = false;
     }
 
     function updateAlbumContainerFlash() {
@@ -290,27 +295,83 @@ document.addEventListener('DOMContentLoaded', function () {
 
     voteMarker.style.backgroundColor = '#fff'; // vote marker white
     // Event Listeners (CORRECTED buttonInfo)
-    buttonPersonLeft.addEventListener('click', () => moveScale('left', 'left'));
-    buttonPersonRight.addEventListener('click', () => moveScale('right', 'right'));
-    buttonEnter.addEventListener('click', submitVote);
-    buttonNext.addEventListener('click', async () => {
-        if (!voteSubmitted) {
-            try {
-                const albumID = shuffledAlbums[currentAlbumIndex].albumID;
-                await db.collection("votes").add({
-                    albumID: albumID,
-                    peopleID: peopleID,
-                    skips: 1
-                });
-                console.log("Skip recorded for album:", albumID);
-            } catch (error) {
-                console.error("Error logging skip:", error);
-            }
+    buttonPersonLeft.addEventListener('click', () =>  {
+        if (infoMode) {
+            infoMode = !infoMode;
+            document.querySelectorAll('.image-overlay').forEach(overlay => {
+                overlay.style.display = infoMode ? 'flex' : 'none';
+            });
+            albumImage.classList.toggle('image-faded', infoMode);
+            personLeft.classList.toggle('image-faded', infoMode);
+            personRight.classList.toggle('image-faded', infoMode);
+        } else {
+             moveScale('left', 'left');
         }
-        getNextAlbum();
+    });
+    buttonPersonRight.addEventListener('click', () => {
+        if (infoMode) {
+            infoMode = !infoMode;
+            document.querySelectorAll('.image-overlay').forEach(overlay => {
+                overlay.style.display = infoMode ? 'flex' : 'none';
+            });
+            albumImage.classList.toggle('image-faded', infoMode);
+            personLeft.classList.toggle('image-faded', infoMode);
+            personRight.classList.toggle('image-faded', infoMode);
+        } else { moveScale('right', 'right'); }
+    });
+    buttonEnter.addEventListener('click', () => {
+        if (infoMode) {
+            infoMode = !infoMode;
+            document.querySelectorAll('.image-overlay').forEach(overlay => {
+                overlay.style.display = infoMode ? 'flex' : 'none';
+            });
+            albumImage.classList.toggle('image-faded', infoMode);
+            personLeft.classList.toggle('image-faded', infoMode);
+            personRight.classList.toggle('image-faded', infoMode);
+        } else {
+            submitVote();
+        }
+    });
+    buttonNext.addEventListener('click', async () => {
+        if (infoMode) {
+            infoMode = !infoMode;
+            document.querySelectorAll('.image-overlay').forEach(overlay => {
+                overlay.style.display = infoMode ? 'flex' : 'none';
+            });
+            albumImage.classList.toggle('image-faded', infoMode);
+            personLeft.classList.toggle('image-faded', infoMode);
+            personRight.classList.toggle('image-faded', infoMode);
+        } else {
+            if (!voteSubmitted) {
+                try {
+                    const albumID = shuffledAlbums[currentAlbumIndex].albumID;
+                    await db.collection("votes").add({
+                        albumID: albumID,
+                        peopleID: peopleID,
+                        skips: 1
+                    });
+                    console.log("Skip recorded for album:", albumID);
+                } catch (error) {
+                    console.error("Error logging skip:", error);
+                }
+            }
+            getNextAlbum();
+        }
     });
 
-    buttonInfo.addEventListener('click', () => {
+    buttonInfo.addEventListener('click', () => { // info button listener
+
+        if (infoMode) { // if info mode is already active, turn it off
+          infoMode = !infoMode;
+
+        document.querySelectorAll('.image-overlay').forEach(overlay => {
+            overlay.style.display = infoMode ? 'flex' : 'none';
+        });
+         albumImage.classList.toggle('image-faded', infoMode);
+        personLeft.classList.toggle('image-faded', infoMode);
+        personRight.classList.toggle('image-faded', infoMode);
+
+        } else { // if info mode is off, turn it on
         infoMode = !infoMode;
 
         // --- Toggle 'image-overlay' display ---
@@ -327,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // --- Control text display as before ---
         if (infoMode) {
-            albumInfoText.style.display = 'flex';
+           albumInfoText.style.display = 'flex';
             personLeftInfoText.style.display = 'flex';
             personRightInfoText.style.display = 'flex';
             const album = shuffledAlbums[currentAlbumIndex];
@@ -342,6 +403,7 @@ document.addEventListener('DOMContentLoaded', function () {
             personLeftInfoText.style.display = 'none';
             personRightInfoText.style.display = 'none';
         }
+        } // end else
     });
 
     // Window resize event handlers
