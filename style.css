@@ -31,7 +31,7 @@ body {
     box-sizing: border-box;
     background-image: url('images/carpet.png');
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-position: center center;
     position: relative;
     overflow: hidden;
